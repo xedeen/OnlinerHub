@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="onliner" Class="DataClassesDataContext" EntityBase="Onliner.Model.IDbEntity" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=epbyminw2162;Initial Catalog=onliner;Integrated Security=True" SettingsObjectName="Onliner.Model.Properties.Settings" SettingsPropertyName="onlinerConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ArticleContainers" Member="ArticleContainers">
+    <Type Name="ArticleContainer">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ArticleId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Representation" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Article_ArticleContainer" Member="Article" ThisKey="ArticleId" OtherKey="Id" Type="Article" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Comments" Member="Comments">
+    <Type Name="Comment">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ArticleId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="CommentContent" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Article_Comment" Member="Article" ThisKey="ArticleId" OtherKey="Id" Type="Article" IsForeignKey="true" />
+      <Association Name="Author_Comment" Member="Author" ThisKey="AuthorId" OtherKey="Id" Type="Author" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Articles" Member="Articles">
+    <Type Name="Article">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="Uri" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="LastUpdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FeedType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Article_ArticleContainer" Member="ArticleContainers" ThisKey="Id" OtherKey="ArticleId" Type="ArticleContainer" />
+      <Association Name="Article_Comment" Member="Comments" ThisKey="Id" OtherKey="ArticleId" Type="Comment" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Authors" Member="Authors">
+    <Type Name="Author">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="AvatarUri" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ProfileUri" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="Author_Comment" Member="Comments" ThisKey="Id" OtherKey="AuthorId" Type="Comment" />
+    </Type>
+  </Table>
+</Database>
