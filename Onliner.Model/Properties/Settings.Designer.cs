@@ -26,7 +26,9 @@ namespace Onliner.Model.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=epbyminw2162;Initial Catalog=onliner;Integrated Security=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=e24bafa8-2d95-4c3b-8677-a2bb00a52dce.sqlserver.sequelizer.com;Database=dbe" +
+            "24bafa82d954c3b8677a2bb00a52dce;User ID=pifzisandswcunoi;Password=G4Czh4JAq7hBAG" +
+            "V5mWRoQmPUAi6FgWyinNxP884PRUNuJGdH653aVsMunQ877duB;")]
         public string onlinerConnectionString {
             get {
                 return ((string)(this["onlinerConnectionString"]));
