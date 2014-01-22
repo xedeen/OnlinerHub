@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OnlinerHubService")]
+[assembly: AssemblyTitle("OnlinerHub")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("EPAM Systems")]
-[assembly: AssemblyProduct("OnlinerHubService")]
+[assembly: AssemblyProduct("OnlinerHub")]
 [assembly: AssemblyCopyright("Copyright © EPAM Systems 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("97762614-9833-4a67-af2d-ef1267f593ac")]
+[assembly: Guid("dcc55f88-afde-4d3e-a87d-db7b0dec7524")]
 
 // Version information for an assembly consists of the following four values:
 //

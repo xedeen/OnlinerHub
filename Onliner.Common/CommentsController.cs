@@ -18,6 +18,12 @@ namespace Onliner.Common
             RetrieveComments(articleId);
         }
 
+        public int GetCommentsCount(long articleId)
+        {
+            var commentrepository = new CommentRepository();
+            return commentrepository.GetAll().Count(c => c.ArticleId.Equals(articleId));
+        }
+
         public List<Comment> RetrieveComments(long articleId)
         {
             var commentrepository = new CommentRepository();

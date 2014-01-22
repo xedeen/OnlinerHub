@@ -7,12 +7,12 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{96D61DB9-E411-4268-9D81-6DD48DA86DE9}</ProjectGuid>
+    <ProjectGuid>{F1EA755B-38A6-4A02-9D8C-539E1426CBF2}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OnlinerHubService</RootNamespace>
-    <AssemblyName>OnlinerHubService</AssemblyName>
+    <RootNamespace>OnlinerHub</RootNamespace>
+    <AssemblyName>OnlinerHub</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
     <UseIISExpress>true</UseIISExpress>
@@ -59,14 +59,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HubService.svc" />
+    <Content Include="Hub.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HubService.svc.cs">
-      <DependentUpon>HubService.svc</DependentUpon>
+    <Compile Include="Hub.svc.cs">
+      <DependentUpon>Hub.svc</DependentUpon>
     </Compile>
-    <Compile Include="IHubService.cs" />
+    <Compile Include="IHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -105,7 +105,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:23040/</IISUrl>
+          <IISUrl>http://localhost:25882/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
