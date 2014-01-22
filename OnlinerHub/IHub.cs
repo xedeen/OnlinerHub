@@ -28,8 +28,11 @@ namespace OnlinerHub
     [DataContract]
     public class FeedItemDto
     {
+        [DataMember]
         public long article_id { get; set; }
+        [DataMember]
         public string title { get; set; }
+        [DataMember]
         public string uri { get; set; } 
     }
 
