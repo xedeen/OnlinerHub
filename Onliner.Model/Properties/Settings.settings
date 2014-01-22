@@ -10,5 +10,13 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Server=e24bafa8-2d95-4c3b-8677-a2bb00a52dce.sqlserver.sequelizer.com;Database=dbe24bafa82d954c3b8677a2bb00a52dce;User ID=pifzisandswcunoi;Password=G4Czh4JAq7hBAGV5mWRoQmPUAi6FgWyinNxP884PRUNuJGdH653aVsMunQ877duB;</Value>
     </Setting>
+    <Setting Name="DataSourceConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=e24bafa8-2d95-4c3b-8677-a2bb00a52dce.sqlserver.sequelizer.com;Persist Security Info=True;User ID=pifzisandswcunoi;Password=G4Czh4JAq7hBAGV5mWRoQmPUAi6FgWyinNxP884PRUNuJGdH653aVsMunQ877duB&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=e24bafa8-2d95-4c3b-8677-a2bb00a52dce.sqlserver.sequelizer.com;Persist Security Info=True;User ID=pifzisandswcunoi;Password=G4Czh4JAq7hBAGV5mWRoQmPUAi6FgWyinNxP884PRUNuJGdH653aVsMunQ877duB</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

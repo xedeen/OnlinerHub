@@ -22,7 +22,7 @@ namespace Onliner.Model
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="onliner")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="DataSource")]
 	public partial class DataClassesDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -45,7 +45,7 @@ namespace Onliner.Model
     #endregion
 		
 		public DataClassesDataContext() : 
-				base(global::Onliner.Model.Properties.Settings.Default.onlinerConnectionString, mappingSource)
+				base(global::Onliner.Model.Properties.Settings.Default.DataSourceConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

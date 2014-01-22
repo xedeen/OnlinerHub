@@ -34,5 +34,17 @@ namespace Onliner.Model.Properties {
                 return ((string)(this["onlinerConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=e24bafa8-2d95-4c3b-8677-a2bb00a52dce.sqlserver.sequelizer.com;Persist" +
+            " Security Info=True;User ID=pifzisandswcunoi;Password=G4Czh4JAq7hBAGV5mWRoQmPUAi" +
+            "6FgWyinNxP884PRUNuJGdH653aVsMunQ877duB")]
+        public string DataSourceConnectionString {
+            get {
+                return ((string)(this["DataSourceConnectionString"]));
+            }
+        }
     }
 }

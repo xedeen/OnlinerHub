@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using Onliner.Model;
 
 namespace OnlinerHub
 {
@@ -17,7 +18,22 @@ namespace OnlinerHub
         [WebInvoke(UriTemplate = "comments?articleID={articleID}&cursor={cursor}", Method = "GET",
             ResponseFormat = WebMessageFormat.Json)]
         CommentPageDto GetComments(long articleId, int cursor);
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "articles?feedType={feedType}", Method = "GET",
+            ResponseFormat = WebMessageFormat.Json)]
+        List<FeedItemDto> GetFeed(FeedType feedType);
     }
+
+    [DataContract]
+    public class FeedItemDto
+    {
+        public long article_id { get; set; }
+        public string title { get; set; }
+        public string uri { get; set; } 
+    }
+
+    
 
     [DataContract]
     public class ArticleDto

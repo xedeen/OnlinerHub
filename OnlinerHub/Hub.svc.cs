@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Web.Caching;
 using Onliner.Common;
+using Onliner.Model;
 using Onliner.Model.AppModel;
 
 namespace OnlinerHub
@@ -14,6 +15,17 @@ namespace OnlinerHub
     // NOTE: In order to launch WCF Test Client for testing this service, please select Hub.svc or Hub.svc.cs at the Solution Explorer and start debugging.
     public class Hub : IHub
     {
+        public List<FeedItemDto> GetFeed(FeedType feedType)
+        {
+            var items = FeedController.Instance.GetRss(feedType);
+            return items.Select(item => new FeedItemDto
+                                                  {
+                                                      article_id = item.Id,
+                                                      title = item.Title,
+                                                      uri = item.Uri
+                                                  }).ToList();
+        }
+
         public ArticleDto GetArticle(long articleId, int cursor)
         {
             const int maxPageSize = 10000;
