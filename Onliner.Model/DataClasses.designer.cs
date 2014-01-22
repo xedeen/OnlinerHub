@@ -33,15 +33,15 @@ namespace Onliner.Model
     partial void InsertArticleContainer(ArticleContainer instance);
     partial void UpdateArticleContainer(ArticleContainer instance);
     partial void DeleteArticleContainer(ArticleContainer instance);
-    partial void InsertComment(Comment instance);
-    partial void UpdateComment(Comment instance);
-    partial void DeleteComment(Comment instance);
     partial void InsertArticle(Article instance);
     partial void UpdateArticle(Article instance);
     partial void DeleteArticle(Article instance);
     partial void InsertAuthor(Author instance);
     partial void UpdateAuthor(Author instance);
     partial void DeleteAuthor(Author instance);
+    partial void InsertComment(Comment instance);
+    partial void UpdateComment(Comment instance);
+    partial void DeleteComment(Comment instance);
     #endregion
 		
 		public DataClassesDataContext() : 
@@ -82,14 +82,6 @@ namespace Onliner.Model
 			}
 		}
 		
-		public System.Data.Linq.Table<Comment> Comments
-		{
-			get
-			{
-				return this.GetTable<Comment>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Article> Articles
 		{
 			get
@@ -103,6 +95,14 @@ namespace Onliner.Model
 			get
 			{
 				return this.GetTable<Author>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Comment> Comments
+		{
+			get
+			{
+				return this.GetTable<Comment>();
 			}
 		}
 	}
@@ -233,222 +233,6 @@ namespace Onliner.Model
 						this._ArticleId = default(long);
 					}
 					this.SendPropertyChanged("Article");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Comments")]
-	public partial class Comment : Onliner.Model.IDbEntity, INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private long _Id;
-		
-		private long _ArticleId;
-		
-		private long _AuthorId;
-		
-		private string _CommentContent;
-		
-		private EntityRef<Article> _Article;
-		
-		private EntityRef<Author> _Author;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(long value);
-    partial void OnIdChanged();
-    partial void OnArticleIdChanging(long value);
-    partial void OnArticleIdChanged();
-    partial void OnAuthorIdChanging(long value);
-    partial void OnAuthorIdChanged();
-    partial void OnCommentContentChanging(string value);
-    partial void OnCommentContentChanged();
-    #endregion
-		
-		public Comment()
-		{
-			this._Article = default(EntityRef<Article>);
-			this._Author = default(EntityRef<Author>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public long Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ArticleId", DbType="BigInt NOT NULL")]
-		public long ArticleId
-		{
-			get
-			{
-				return this._ArticleId;
-			}
-			set
-			{
-				if ((this._ArticleId != value))
-				{
-					if (this._Article.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnArticleIdChanging(value);
-					this.SendPropertyChanging();
-					this._ArticleId = value;
-					this.SendPropertyChanged("ArticleId");
-					this.OnArticleIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AuthorId", DbType="BigInt NOT NULL")]
-		public long AuthorId
-		{
-			get
-			{
-				return this._AuthorId;
-			}
-			set
-			{
-				if ((this._AuthorId != value))
-				{
-					if (this._Author.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnAuthorIdChanging(value);
-					this.SendPropertyChanging();
-					this._AuthorId = value;
-					this.SendPropertyChanged("AuthorId");
-					this.OnAuthorIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommentContent", DbType="NVarChar(MAX)")]
-		public string CommentContent
-		{
-			get
-			{
-				return this._CommentContent;
-			}
-			set
-			{
-				if ((this._CommentContent != value))
-				{
-					this.OnCommentContentChanging(value);
-					this.SendPropertyChanging();
-					this._CommentContent = value;
-					this.SendPropertyChanged("CommentContent");
-					this.OnCommentContentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Article_Comment", Storage="_Article", ThisKey="ArticleId", OtherKey="Id", IsForeignKey=true)]
-		public Article Article
-		{
-			get
-			{
-				return this._Article.Entity;
-			}
-			set
-			{
-				Article previousValue = this._Article.Entity;
-				if (((previousValue != value) 
-							|| (this._Article.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Article.Entity = null;
-						previousValue.Comments.Remove(this);
-					}
-					this._Article.Entity = value;
-					if ((value != null))
-					{
-						value.Comments.Add(this);
-						this._ArticleId = value.Id;
-					}
-					else
-					{
-						this._ArticleId = default(long);
-					}
-					this.SendPropertyChanged("Article");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Author_Comment", Storage="_Author", ThisKey="AuthorId", OtherKey="Id", IsForeignKey=true)]
-		public Author Author
-		{
-			get
-			{
-				return this._Author.Entity;
-			}
-			set
-			{
-				Author previousValue = this._Author.Entity;
-				if (((previousValue != value) 
-							|| (this._Author.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Author.Entity = null;
-						previousValue.Comments.Remove(this);
-					}
-					this._Author.Entity = value;
-					if ((value != null))
-					{
-						value.Comments.Add(this);
-						this._AuthorId = value.Id;
-					}
-					else
-					{
-						this._AuthorId = default(long);
-					}
-					this.SendPropertyChanged("Author");
 				}
 			}
 		}
@@ -847,6 +631,246 @@ namespace Onliner.Model
 		{
 			this.SendPropertyChanging();
 			entity.Author = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Comments")]
+	public partial class Comment : Onliner.Model.IDbEntity, INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private long _Id;
+		
+		private long _ArticleId;
+		
+		private long _AuthorId;
+		
+		private string _CommentContent;
+		
+		private System.Nullable<long> _OriginalId;
+		
+		private EntityRef<Article> _Article;
+		
+		private EntityRef<Author> _Author;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(long value);
+    partial void OnIdChanged();
+    partial void OnArticleIdChanging(long value);
+    partial void OnArticleIdChanged();
+    partial void OnAuthorIdChanging(long value);
+    partial void OnAuthorIdChanged();
+    partial void OnCommentContentChanging(string value);
+    partial void OnCommentContentChanged();
+    partial void OnOriginalIdChanging(System.Nullable<long> value);
+    partial void OnOriginalIdChanged();
+    #endregion
+		
+		public Comment()
+		{
+			this._Article = default(EntityRef<Article>);
+			this._Author = default(EntityRef<Author>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public long Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ArticleId", DbType="BigInt NOT NULL")]
+		public long ArticleId
+		{
+			get
+			{
+				return this._ArticleId;
+			}
+			set
+			{
+				if ((this._ArticleId != value))
+				{
+					if (this._Article.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnArticleIdChanging(value);
+					this.SendPropertyChanging();
+					this._ArticleId = value;
+					this.SendPropertyChanged("ArticleId");
+					this.OnArticleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AuthorId", DbType="BigInt NOT NULL")]
+		public long AuthorId
+		{
+			get
+			{
+				return this._AuthorId;
+			}
+			set
+			{
+				if ((this._AuthorId != value))
+				{
+					if (this._Author.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAuthorIdChanging(value);
+					this.SendPropertyChanging();
+					this._AuthorId = value;
+					this.SendPropertyChanged("AuthorId");
+					this.OnAuthorIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommentContent", DbType="NVarChar(MAX)")]
+		public string CommentContent
+		{
+			get
+			{
+				return this._CommentContent;
+			}
+			set
+			{
+				if ((this._CommentContent != value))
+				{
+					this.OnCommentContentChanging(value);
+					this.SendPropertyChanging();
+					this._CommentContent = value;
+					this.SendPropertyChanged("CommentContent");
+					this.OnCommentContentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OriginalId", DbType="BigInt")]
+		public System.Nullable<long> OriginalId
+		{
+			get
+			{
+				return this._OriginalId;
+			}
+			set
+			{
+				if ((this._OriginalId != value))
+				{
+					this.OnOriginalIdChanging(value);
+					this.SendPropertyChanging();
+					this._OriginalId = value;
+					this.SendPropertyChanged("OriginalId");
+					this.OnOriginalIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Article_Comment", Storage="_Article", ThisKey="ArticleId", OtherKey="Id", IsForeignKey=true)]
+		public Article Article
+		{
+			get
+			{
+				return this._Article.Entity;
+			}
+			set
+			{
+				Article previousValue = this._Article.Entity;
+				if (((previousValue != value) 
+							|| (this._Article.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Article.Entity = null;
+						previousValue.Comments.Remove(this);
+					}
+					this._Article.Entity = value;
+					if ((value != null))
+					{
+						value.Comments.Add(this);
+						this._ArticleId = value.Id;
+					}
+					else
+					{
+						this._ArticleId = default(long);
+					}
+					this.SendPropertyChanged("Article");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Author_Comment", Storage="_Author", ThisKey="AuthorId", OtherKey="Id", IsForeignKey=true)]
+		public Author Author
+		{
+			get
+			{
+				return this._Author.Entity;
+			}
+			set
+			{
+				Author previousValue = this._Author.Entity;
+				if (((previousValue != value) 
+							|| (this._Author.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Author.Entity = null;
+						previousValue.Comments.Remove(this);
+					}
+					this._Author.Entity = value;
+					if ((value != null))
+					{
+						value.Comments.Add(this);
+						this._AuthorId = value.Id;
+					}
+					else
+					{
+						this._AuthorId = default(long);
+					}
+					this.SendPropertyChanged("Author");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

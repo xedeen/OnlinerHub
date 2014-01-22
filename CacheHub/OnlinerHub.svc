@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="CacheHub.OnlinerHub" CodeBehind="OnlinerHub.svc.cs" %>

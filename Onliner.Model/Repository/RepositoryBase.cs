@@ -27,7 +27,7 @@ namespace Onliner.Model.Repository
             }
             else
             {
-                dbEntity = GetTable().Where(x => x.Id.Equals(entity.Id)).SingleOrDefault();
+                dbEntity = GetTable().SingleOrDefault(x => x.Id.Equals(entity.Id));
                 if (dbEntity == null)
                 {
                     return false;
@@ -49,7 +49,7 @@ namespace Onliner.Model.Repository
 
         public bool Delete(long id)
         {
-            var dbEntity = GetTable().Where(x => x.Id.Equals(id)).SingleOrDefault();
+            var dbEntity = GetTable().SingleOrDefault(x => x.Id.Equals(id));
 
             if (dbEntity == null)
             {

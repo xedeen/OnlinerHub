@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Onliner.Common", "Onliner.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlinerHub", "OnlinerHub\OnlinerHub.csproj", "{F1EA755B-38A6-4A02-9D8C-539E1426CBF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheHub", "CacheHub\CacheHub.csproj", "{D5343E71-33FC-4DAA-957D-918BC89EA116}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{F1EA755B-38A6-4A02-9D8C-539E1426CBF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1EA755B-38A6-4A02-9D8C-539E1426CBF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1EA755B-38A6-4A02-9D8C-539E1426CBF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5343E71-33FC-4DAA-957D-918BC89EA116}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5343E71-33FC-4DAA-957D-918BC89EA116}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5343E71-33FC-4DAA-957D-918BC89EA116}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5343E71-33FC-4DAA-957D-918BC89EA116}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

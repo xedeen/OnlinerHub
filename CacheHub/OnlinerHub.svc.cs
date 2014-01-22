@@ -3,59 +3,64 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Caching;
+using System.Runtime.Serialization;
+using System.ServiceModel;
 using System.Text;
-using System.Threading.Tasks;
-using Onliner.Model.AppModel;
-using Onliner.Model.Repository;
 using HAP = HtmlAgilityPack;
 
-namespace Onliner.Common
+namespace CacheHub
 {
-    public class CommentsComparer : IEqualityComparer<Comment>
+    public class OnlinerHub : IOnlinerHub
     {
-
-        #region IEqualityComparer<A> Members
-
-        public bool Equals(Comment x, Comment y)
+        public string GetReadability(string articleUrl)
         {
-            if (null == x.OriginalId || null == y.OriginalId)
-                return false;
-            return x.OriginalId == y.OriginalId;
+            return string.Format(
+                "https://www.readability.com/api/content/v1/parser?url={0}&token=ecd1f4e3683b5bfbd41c02c20229011983d03671",
+                articleUrl);
         }
 
-        public int GetHashCode(Comment obj)
+        public CommentsPageDto GetComments(string articleUrl, int cursor)
         {
-            return obj.OriginalId.GetHashCode();
+            const int numberOfObjectsPerPage = 20;
+            var cusrorNext = cursor;
+
+            var comments = ProcessComments(articleUrl);
+
+            if (null == comments)
+                return new CommentsPageDto {Error = "Cannot retrieve comments"};
+
+            if (comments.Count > numberOfObjectsPerPage)
+            {
+                cusrorNext = comments.Count > (cursor + 1)*numberOfObjectsPerPage
+                                 ? cursor + 1
+                                 : cursor;
+
+                comments =
+                    comments.Where(
+                        c =>
+                        c.InnerId >= cursor*numberOfObjectsPerPage && c.InnerId < (cursor + 1)*numberOfObjectsPerPage)
+                            .ToList();
+            }
+
+            return new CommentsPageDto
+                       {
+                           comments = comments,
+                           next_page_cursor = cusrorNext == cursor ? (int?) null : cusrorNext,
+                           previous_page_cursor = cursor > 0 ? cursor - 1 : (int?) null
+                       };
         }
 
-        #endregion
-    }
-
-    public class CommentsController : ControllerBase<CommentsController>
-    {
-        public void PushComments(long articleId)
+        private List<CommentDto> ProcessComments(string articleUrl)
         {
-            RetrieveComments(articleId);
-        }
+            ObjectCache cache = MemoryCache.Default;
 
-        public int GetCommentsCount(long articleId)
-        {
-            var commentrepository = new CommentRepository();
-            return commentrepository.GetAll().Count(c => c.ArticleId.Equals(articleId));
-        }
-
-        public List<Comment> RetrieveComments(long articleId)
-        {
-            var articleRepository = new ArticleRepository();
-            var article = articleRepository.GetAll().Get(articleId);
-
-            if (article.LastUpdate.HasValue &&
-                (DateTime.Now.ToUniversalTime() - article.LastUpdate.Value.ToUniversalTime()).TotalMinutes < 10)
-                return GetExistingComments(article);
+            if (cache.Contains(articleUrl))
+                return cache.Get(articleUrl) as List<CommentDto>;
 
             try
             {
-                var httpWebRequest = (HttpWebRequest) WebRequest.Create(article.Uri);
+                var httpWebRequest = (HttpWebRequest) WebRequest.Create(articleUrl);
                 httpWebRequest.Method = WebRequestMethods.Http.Get;
                 var response = httpWebRequest.GetResponse();
 
@@ -64,44 +69,30 @@ namespace Onliner.Common
                 {
                     html.LoadHtml(sr.ReadToEnd());
                 }
-                return MergeComments(article, ProcessCommentsInner(html, article.Id));
+                var comments = ProcessCommentsInner(html);
+
+                var cacheItemPolicy = new CacheItemPolicy();
+                cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddMinutes(5.0);
+                cache.Add(articleUrl, comments, cacheItemPolicy);
+
+                return comments;
             }
-            catch
-            {
-                return GetExistingComments(article);
+            catch (Exception e)
+            {   
+                return null;
             }
-
         }
 
-        private List<Comment> GetExistingComments(Article article)
-        {
-            var commentrepository = new CommentRepository();
-            var comments = commentrepository.GetAll().CommentsOf(article.Id).ToList();
-            return comments;
-        }
-
-        private List<Comment> MergeComments(Article article, IEnumerable<Comment> updatedComments)
-        {
-            var commentrepository = new CommentRepository();
-            var prevComments = commentrepository.GetAll().CommentsOf(article.Id);
-            var rollUp = from uc in updatedComments
-                       where !prevComments.Any(x=>x.OriginalId==uc.OriginalId)
-                       select uc;
-
-            foreach (var comment in rollUp)
-                commentrepository.Save(comment);
-            
-            return prevComments.Union(rollUp, new CommentsComparer()).ToList();
-        }
-
-        private IEnumerable<Comment> ProcessCommentsInner(HAP.HtmlDocument html, long articleId)
+        private List<CommentDto> ProcessCommentsInner(HAP.HtmlDocument html)
         {
             var node = html.GetElementbyId("onliner_comments").ChildNodes.FirstOrDefault(x => x.Name == "ul");
             if (node == null) return null;
 
             var commentNodes = node.ChildNodes.Where(c => c.Name == "li");
 
-            var comments = new List<Comment>();
+            var comments = new List<CommentDto>();
+            var currentInnerId = 0;
+
             foreach (var commentNode in commentNodes)
             {
                 long commentId = 0;
@@ -142,11 +133,9 @@ namespace Onliner.Common
                 var authorProfile = string.Empty;
                 var avatarUrl = string.Empty;
                 var commentProfileName = string.Empty;
-                var commentInfoText = string.Empty;
 
                 if (commentInfo != null)
-                {
-                    commentInfoText = commentInfo.OuterHtml;
+                {   
                     var strong = commentInfo.ChildNodes.FirstOrDefault(n => n.Name == "strong");
                     if (strong != null)
                     {
@@ -165,20 +154,22 @@ namespace Onliner.Common
                     }
                 }
 
-                Author author = null;
-                if (!string.IsNullOrEmpty(authorProfile) && !string.IsNullOrEmpty(commentProfileName))
+                var author = new AuthorDto
+                                       {
+                                           avatar_source_uri = avatarUrl,
+                                           name = commentProfileName,
+                                           profile_uri = authorProfile
+                                       };
+
+                if (null != commentContent)
                 {
-                    author = AuthorController.Instance.RetrieveAuthor(authorProfile, commentProfileName, avatarUrl);
-                }
-                if (null != author && null != commentContent)
-                {
-                    comments.Add(new Comment
+                    comments.Add(new CommentDto()
                                      {
-                                         ArticleId = articleId,
-                                         AuthorId = author.Id,
-                                         CommentContent = commentContent.OuterHtml,
-                                         OriginalId = commentId
+                                         content = commentContent.OuterHtml,
+                                         author = author,
+                                         InnerId = currentInnerId
                                      });
+                    currentInnerId++;
                 }
             }
             return comments;

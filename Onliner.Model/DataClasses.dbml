@@ -8,16 +8,6 @@
       <Association Name="Article_ArticleContainer" Member="Article" ThisKey="ArticleId" OtherKey="Id" Type="Article" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Comments" Member="Comments">
-    <Type Name="Comment">
-      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ArticleId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="AuthorId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="CommentContent" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Association Name="Article_Comment" Member="Article" ThisKey="ArticleId" OtherKey="Id" Type="Article" IsForeignKey="true" />
-      <Association Name="Author_Comment" Member="Author" ThisKey="AuthorId" OtherKey="Id" Type="Author" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Articles" Member="Articles">
     <Type Name="Article">
       <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -36,6 +26,17 @@
       <Column Name="AvatarUri" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="ProfileUri" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Association Name="Author_Comment" Member="Comments" ThisKey="Id" OtherKey="AuthorId" Type="Comment" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Comments" Member="Comments">
+    <Type Name="Comment">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ArticleId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="CommentContent" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="OriginalId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Association Name="Article_Comment" Member="Article" ThisKey="ArticleId" OtherKey="Id" Type="Article" IsForeignKey="true" />
+      <Association Name="Author_Comment" Member="Author" ThisKey="AuthorId" OtherKey="Id" Type="Author" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

@@ -31,7 +31,8 @@ namespace Onliner.Model.Repository
                                 Id = c.Id,
                                 ArticleId = c.ArticleId,
                                 AuthorId = c.AuthorId,
-                                CommentContent = c.CommentContent
+                                CommentContent = c.CommentContent,
+                                OriginalId = c.OriginalId
                             };
         }
 
@@ -40,6 +41,7 @@ namespace Onliner.Model.Repository
             dbEntity.ArticleId = entity.ArticleId;
             dbEntity.AuthorId = entity.AuthorId;
             dbEntity.CommentContent = entity.CommentContent;
+            dbEntity.OriginalId = entity.OriginalId;
         }
     }
 }

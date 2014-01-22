@@ -11,5 +11,6 @@ namespace Onliner.Model.AppModel
         public long ArticleId { get; set; }
         public long AuthorId { get; set; }
         public string CommentContent { get; set; }
+        public long? OriginalId { get; set; }
     }
 }
