@@ -1,0 +1,53 @@
+<!--
+***********************************************************************************************
+Microsoft.Silverlight.WindowsPhone.Overrides.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+      created a backup copy.  Incorrect changes to this file will make it
+      impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (C) Microsoft Corporation. All rights reserved.
+***********************************************************************************************
+-->
+
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="MSBuild64BitCheck" >
+    <Target Name="MSBuild64BitCheck">
+        <Error Text="Building Windows Phone application using MSBuild 64 bit is not supported. If you are using TFS build definitions, change the MSBuild platform to x86." Condition="'$([System.Environment]::Is64BitProcess)'=='True'"/>
+    </Target>
+  <!--
+    ============================================================
+    Windows Phone profile overrides for SL Build System
+    ============================================================
+  -->
+  <Import Project="Microsoft.WindowsPhone.Common.props" />
+  <PropertyGroup>
+    <WindowsPhoneSdkRegkeyRoot>Software\Microsoft\Microsoft SDKs</WindowsPhoneSdkRegkeyRoot>
+    <WindowsPhoneRegistryBase>$(WindowsPhoneSdkRegkeyRoot)\$(TargetFrameworkIdentifier)</WindowsPhoneRegistryBase>
+    <WindowsPhoneRegistryBaseVersion>$(TargetFrameworkVersion)</WindowsPhoneRegistryBaseVersion> 
+    <RuntimePathRegistryKey Condition="'$(RuntimePathRegistryKey)' == ''">$(WindowsPhoneRegistryBase)\$(WindowsPhoneRegistryBaseVersion)\ReferenceAssemblies</RuntimePathRegistryKey>
+    <CreateTestPage>false</CreateTestPage>
+    <TargetFrameworkMonikerDisplayName>Windows Phone 8.0</TargetFrameworkMonikerDisplayName>
+    <FrameworkRegistryBase>$(WindowsPhoneRegistryBase)</FrameworkRegistryBase>
+    <TargetedSDKArchitecture>$(Platform)</TargetedSDKArchitecture> 
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>Error</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(ProcessorArchitecture)'==''">
+    <ProcessorArchitecture>$(PlatformTarget)</ProcessorArchitecture>
+    <!--If Processor architecture is not set and Platform is a known target translate the
+        Platform into something ResolveAssemblyReference knows about.-->
+    <ProcessorArchitecture Condition=" '$(Platform)' == 'x86' ">x86</ProcessorArchitecture>
+    <ProcessorArchitecture Condition=" '$(Platform)' == 'ARM' ">arm</ProcessorArchitecture>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == 'WindowsPhone' and '$(TargetFrameworkVersion)' == 'v8.0'">
+    <WindowsPhoneSdkVersion>$(TargetFrameworkVersion)</WindowsPhoneSdkVersion>
+    <WindowsPhoneSdkInstallPath>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\$(TargetFrameworkIdentifier)\$(WindowsPhoneSdkVersion)\Install Path', 'Install Path', null, RegistryView.Registry32))</WindowsPhoneSdkInstallPath>
+    <WindowsPhone71RegistryBase>$(WindowsPhoneSdkRegkeyRoot)\Silverlight for WindowsPhone</WindowsPhone71RegistryBase>
+    <WindowsPhone71RegistryBaseVersion>v4.0</WindowsPhone71RegistryBaseVersion>
+    <WindowsPhone7RegistryBase>$(WindowsPhoneSdkRegkeyRoot)\Silverlight for Phone</WindowsPhone7RegistryBase>
+    <WindowsPhone7RegistryBaseVersion>v4.0</WindowsPhone7RegistryBaseVersion>
+    <WindowsPhoneFxReferencesDisplayName>.NET for Windows Phone</WindowsPhoneFxReferencesDisplayName>    
+  </PropertyGroup>
+
+</Project>

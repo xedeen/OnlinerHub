@@ -129,6 +129,9 @@
     </DesignData>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Lib\Microsoft.WindowsPhone.v8.0.Overrides.targets">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
