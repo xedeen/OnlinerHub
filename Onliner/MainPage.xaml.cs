@@ -77,7 +77,7 @@ namespace Onliner
             var uri = (item as FeedItemViewModel).Link;
             var webBrowserTask = new WebBrowserTask {Uri = uri};
             //webBrowserTask.Show();
-            NavigationService.Navigate(new Uri(string.Format("/ArticlePage.xaml?uri={0}", uri), UriKind.Relative));
+            NavigationService.Navigate(new Uri(string.Format("/ArticleViewerPage.xaml?uri={0}", uri), UriKind.Relative));
         }
 
         private void RequireFeedsForPage(string pageName)

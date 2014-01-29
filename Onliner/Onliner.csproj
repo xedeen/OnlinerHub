@@ -96,11 +96,17 @@
     <Compile Include="ArticlePage.xaml.cs">
       <DependentUpon>ArticlePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ArticleViewerPage.xaml.cs">
+      <DependentUpon>ArticleViewerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Contracts\ReadabilityResult.cs" />
+    <Compile Include="Controller\ArticleDownloader.cs" />
     <Compile Include="Controller\FeedsDownloader.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\CommentModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
@@ -113,6 +119,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ArticleViewModel.cs" />
+    <Compile Include="ViewModels\CommentsViewModel.cs" />
     <Compile Include="ViewModels\FeedItemViewModel.cs" />
     <Compile Include="ViewModels\FeedViewModel.cs" />
   </ItemGroup>
@@ -122,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="ArticlePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ArticleViewerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,12 +186,6 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Lib\Microsoft.Phone.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Lib\System.ServiceModel.Syndication.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Service References\OnlinerHub\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -204,6 +210,15 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\OnlinerHub\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Controls\HtmlTextBlockControl\HtmlTextBlockControl.csproj">
+      <Project>{48901D54-1574-47A3-88C3-413B5F1D0E3B}</Project>
+      <Name>HtmlTextBlockControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Lib\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

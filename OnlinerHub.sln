@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheHub", "CacheHub\CacheH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Onliner", "Onliner\Onliner.csproj", "{B5A5BE6A-C05B-42BB-A884-4044FD02E023}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{B7973F5B-B839-479F-9D50-A3A91E941B7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlTextBlockControl", "Controls\HtmlTextBlockControl\HtmlTextBlockControl.csproj", "{48901D54-1574-47A3-88C3-413B5F1D0E3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,8 +75,19 @@ Global
 		{B5A5BE6A-C05B-42BB-A884-4044FD02E023}.Release|x86.ActiveCfg = Release|x86
 		{B5A5BE6A-C05B-42BB-A884-4044FD02E023}.Release|x86.Build.0 = Release|x86
 		{B5A5BE6A-C05B-42BB-A884-4044FD02E023}.Release|x86.Deploy.0 = Release|x86
+		{48901D54-1574-47A3-88C3-413B5F1D0E3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48901D54-1574-47A3-88C3-413B5F1D0E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48901D54-1574-47A3-88C3-413B5F1D0E3B}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{48901D54-1574-47A3-88C3-413B5F1D0E3B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{48901D54-1574-47A3-88C3-413B5F1D0E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48901D54-1574-47A3-88C3-413B5F1D0E3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48901D54-1574-47A3-88C3-413B5F1D0E3B}.Release|ARM.ActiveCfg = Release|Any CPU
+		{48901D54-1574-47A3-88C3-413B5F1D0E3B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{48901D54-1574-47A3-88C3-413B5F1D0E3B} = {B7973F5B-B839-479F-9D50-A3A91E941B7C}
 	EndGlobalSection
 EndGlobal
