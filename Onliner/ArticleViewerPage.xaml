@@ -15,6 +15,33 @@
     xmlns:viewmodels="clr-namespace:Onliner.ViewModels"
     shell:SystemTray.IsVisible="True">
     <phone:PhoneApplicationPage.Resources>
+        <Style x:Key="RichTextStyle" TargetType="RichTextBox">
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeNormal}" />
+            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RichTextBox">
+                        <Grid Background="Transparent">
+                            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Margin="{StaticResource PhoneHorizontalMargin}">
+                                <ContentControl x:Name="ContentElement"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Padding="{TemplateBinding Padding}"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <vm:CommentsViewModel x:Key="commentsViewModel"/>
         <DataTemplate x:Key="CommentItemTemplate">
             <Grid Margin="0,6,0,0">
@@ -40,6 +67,38 @@
                 </Image>
                 <TextBlock Text="{Binding AuthorName}" Grid.Row="0" Grid.Column="1"
                                  Foreground="{StaticResource PhoneAccentBrush}" VerticalAlignment="Top"/>
+                
+                <Grid x:Name="ContentPanel" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="1" Visibility="{Binding BQExists}" Margin="32,0,0,0"  Background="{StaticResource PhoneInactiveBrush}">
+                        <TextBlock Text="{Binding BQAuthor}" Style="{StaticResource PhoneTextNormalStyle}" FontWeight="Bold" />
+                        <RichTextBox Style="{StaticResource RichTextStyle}">
+                            <Paragraph>
+                                <Run Text="{Binding BQContent}" />
+                            </Paragraph>
+                        </RichTextBox>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2">
+                            <RichTextBox Style="{StaticResource RichTextStyle}">
+                                <Paragraph>
+                                    <Run Text="503 (Building DS 126)" />
+                                </Paragraph>
+
+                                <Paragraph>
+                                    <Run Text="John Doe" FontWeight="Bold"/>
+                                    <LineBreak />
+                                    <Run Text="503 (Building DS 126)" />
+                                    <LineBreak />
+                                    <Hyperlink Click="Hyperlink_OnClick">e-mail:   johndoe@uni.gr</Hyperlink>
+                                    <Run Text="tel.:  +30 210-1234567" />
+                                </Paragraph>
+                            </RichTextBox>
+                        </StackPanel>
+                </Grid>
 
                 <TextBlock Text="{Binding Content}" TextWrapping="Wrap"
                                Grid.Row="1" Grid.Column="1"

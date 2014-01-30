@@ -37,11 +37,14 @@ namespace CacheHub
     [DataContract]
     public class CommentDto
     {
-        public int InnerId { get; set; }
+
+        public int inner_id { get; set; }
         [DataMember]
         public AuthorDto author { get; set; }
         [DataMember]
-        public string content { get; set; }
+        public ContentDto content { get; set; }
+        [DataMember]
+        public CiteDto blockquote { get; set; }
     }
 
     [DataContract]
@@ -53,5 +56,60 @@ namespace CacheHub
         public string profile_uri { get; set; }
         [DataMember]
         public string avatar_source_uri { get; set; }
+    }
+
+    [DataContract]
+    public class CiteDto
+    {
+        [DataMember]
+        public string title { get; set; }
+        [DataMember]
+        public ContentDto content { get; set; }
+        [DataMember]
+        public CiteDto child { get; set; }
+    }
+
+    [DataContract]
+    public class ContentDto
+    {
+        [DataMember]
+        public List<ParagraphDto> paragraph_list { get; set; }
+
+        public ContentDto()
+        {
+            paragraph_list = new List<ParagraphDto>();
+        }
+    }
+
+    [DataContract]
+    public class ParagraphDto
+    {
+        [DataMember]
+        public List<TextItemDto> items { get; set; }
+
+        public ParagraphDto()
+        {
+            items = new List<TextItemDto>();
+        }
+    }
+
+    [DataContract]
+    public class TextItemDto
+    {
+        [DataMember]
+        public string content { get; set; }
+
+        [DataMember]
+        public Uri link_uri { get; set; }
+
+        [DataMember]
+        public TextFormatters text_formatters { get; set; }
+    }
+
+    public enum TextFormatters
+    {
+        Bold = 0x0001,
+        Italic = 0x0010,
+        Undeline = 0x0100
     }
 }

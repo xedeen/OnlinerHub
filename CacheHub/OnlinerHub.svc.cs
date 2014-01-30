@@ -39,7 +39,7 @@ namespace CacheHub
                 comments =
                     comments.Where(
                         c =>
-                        c.InnerId >= cursor*numberOfObjectsPerPage && c.InnerId < (cursor + 1)*numberOfObjectsPerPage)
+                        c.inner_id >= cursor * numberOfObjectsPerPage && c.inner_id < (cursor + 1) * numberOfObjectsPerPage)
                             .ToList();
             }
 
@@ -81,6 +81,82 @@ namespace CacheHub
             {   
                 return null;
             }
+        }
+
+        private CiteDto GetBlockQuotes(HAP.HtmlNode commentContent)
+        {
+            var bqNode = commentContent.ChildNodes.FirstOrDefault(d => d.Name == "blockquote");
+            if (null == bqNode) return null;
+
+            var content =
+                bqNode.ChildNodes.FirstOrDefault(
+                    d =>
+                        d.Name == "div");
+
+            var text = "";
+            foreach (var node in content.ChildNodes.Where(c => c.Name != "blockquote" && c.Name != "cite"))
+            {
+                text += node.InnerHtml;
+            }
+            var cite = content.ChildNodes.FirstOrDefault(c => c.Name == "cite");
+            var result = new CiteDto
+            {
+                child = GetBlockQuotes(content),
+                title = null == cite ? string.Empty : cite.InnerText,
+                content = GetContent(content)
+            };
+            return result;
+        }
+
+        private ContentDto GetContent(HAP.HtmlNode commentContent)
+        {
+            var content = new ContentDto();
+
+            foreach (var node in commentContent.ChildNodes.Where(p=>p.Name=="p"))
+            {
+                content.paragraph_list.Add(ProcessParagraph(node));
+            }
+            return content;
+        }
+
+        private ParagraphDto ProcessParagraph(HAP.HtmlNode node)
+        {
+            var paragraph = new ParagraphDto();
+            if (!node.HasChildNodes)
+            {
+                paragraph.items.Add(new TextItemDto {content = node.InnerText.Trim('\n')});
+                return paragraph;
+            }
+            foreach (var childNode in node.ChildNodes)
+            {
+                switch (childNode.Name)
+                {
+                    case "br":
+                        paragraph.items.Add(new TextItemDto {});
+                        break;
+                    case "strong":
+                        paragraph.items.Add(new TextItemDto
+                        {
+                            content = childNode.InnerText,
+                            text_formatters = TextFormatters.Bold
+                        });
+                        break;
+                    case "em":
+                        paragraph.items.Add(new TextItemDto
+                        {
+                            content = childNode.InnerText,
+                            text_formatters = TextFormatters.Italic
+                        });
+                        break;
+                    default:
+                        paragraph.items.Add(new TextItemDto
+                        {
+                            content = childNode.InnerText,
+                        });
+                        break;
+                }
+            }
+            return paragraph;
         }
 
         private List<CommentDto> ProcessCommentsInner(HAP.HtmlDocument html)
@@ -164,11 +240,12 @@ namespace CacheHub
                 if (null != commentContent)
                 {
                     comments.Add(new CommentDto()
-                                     {
-                                         content = commentContent.OuterHtml,
-                                         author = author,
-                                         InnerId = currentInnerId
-                                     });
+                    {
+                        content = GetContent(commentContent),
+                        author = author,
+                        inner_id = currentInnerId,
+                        blockquote = GetBlockQuotes(commentContent)
+                    });
                     currentInnerId++;
                 }
             }
