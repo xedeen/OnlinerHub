@@ -6,8 +6,10 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using Windows.System;
 using Microsoft.Devices;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -86,6 +88,38 @@ namespace Onliner
                         _viewModel.LoadCommentPage(_pageNumber++);
                     }
                 }
+            }
+        }
+
+        private void UIElement_OnTap(object sender, GestureEventArgs e)
+        {
+            var richTB = sender as RichTextBox;
+            var textPointer = richTB.GetPositionFromPoint(e.GetPosition(richTB));
+
+            var element = textPointer.Parent as TextElement;
+            while (element != null && !(element is Underline))
+            {
+                if (element.ContentStart != null
+                    && element != element.ElementStart.Parent)
+                {
+                    element = element.ElementStart.Parent as TextElement;
+                }
+                else
+                {
+                    element = null;
+                }
+            }
+
+            if (element == null) return;
+
+            var underline = element as Underline;
+            if (underline.Name == "LinkToInfiniteSquare")
+            {
+                //Launcher.LaunchUriAsync(new Uri("http://www.infinitesquare.com"));
+            }
+            else if (underline.Name == "LinkToMyBlog")
+            {
+                //Launcher.LaunchUriAsync(new Uri("http://www.jonathanantoine.com"));
             }
         }
     }
