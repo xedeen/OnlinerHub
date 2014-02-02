@@ -67,43 +67,10 @@
                 </Image>
                 <TextBlock Text="{Binding AuthorName}" Grid.Row="0" Grid.Column="1"
                                  Foreground="{StaticResource PhoneAccentBrush}" VerticalAlignment="Top"/>
-                
-                <Grid x:Name="ContentPanel" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="1" Visibility="{Binding BQExists}" Margin="32,0,0,0"  Background="{StaticResource PhoneInactiveBrush}">
-                        <TextBlock Text="{Binding BQAuthor}" Style="{StaticResource PhoneTextNormalStyle}" FontWeight="Bold" />
-                        <RichTextBox Style="{StaticResource RichTextStyle}">
-                            <Paragraph>
-                                <Run Text="{Binding BQContent}" />
-                            </Paragraph>
-                        </RichTextBox>
-                    </StackPanel>
-                    <StackPanel Grid.Row="2">
-                            <RichTextBox Style="{StaticResource RichTextStyle}">
-                                <Paragraph>
-                                    <Run Text="503 (Building DS 126)" />
-                                </Paragraph>
 
-                                <Paragraph>
-                                    <Run Text="John Doe" FontWeight="Bold"/>
-                                    <LineBreak />
-                                    <Run Text="503 (Building DS 126)" />
-                                    <LineBreak />
-                                    <Hyperlink Click="Hyperlink_OnClick">e-mail:   johndoe@uni.gr</Hyperlink>
-                                    <Run Text="tel.:  +30 210-1234567" />
-                                </Paragraph>
-                            </RichTextBox>
-                        </StackPanel>
-                </Grid>
+                <ContentControl Grid.Row="1" Grid.Column="1"
+                                Content="{Binding Content, Converter={StaticResource CommentExtractor}}" />
 
-                <TextBlock Text="{Binding Content}" TextWrapping="Wrap"
-                               Grid.Row="1" Grid.Column="1"
-                               VerticalAlignment="Top"
-                               />
 
             </Grid>
         </DataTemplate>

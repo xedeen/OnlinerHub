@@ -97,7 +97,7 @@ namespace Onliner.OnlinerHub {
         
         private Onliner.OnlinerHub.AuthorDto authorField;
         
-        private string contentField;
+        private Onliner.OnlinerHub.ContentDto contentField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public Onliner.OnlinerHub.AuthorDto author {
@@ -113,7 +113,7 @@ namespace Onliner.OnlinerHub {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string content {
+        public Onliner.OnlinerHub.ContentDto content {
             get {
                 return this.contentField;
             }
@@ -181,6 +181,201 @@ namespace Onliner.OnlinerHub {
                 if ((object.ReferenceEquals(this.profile_uriField, value) != true)) {
                     this.profile_uriField = value;
                     this.RaisePropertyChanged("profile_uri");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ContentDto", Namespace="http://schemas.datacontract.org/2004/07/CacheHub")]
+    public partial class ContentDto : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.BlockItemDto> itemsField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.BlockItemDto> items {
+            get {
+                return this.itemsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.itemsField, value) != true)) {
+                    this.itemsField = value;
+                    this.RaisePropertyChanged("items");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BlockItemDto", Namespace="http://schemas.datacontract.org/2004/07/CacheHub")]
+    public partial class BlockItemDto : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.BlockItemDto> childrenField;
+        
+        private Onliner.OnlinerHub.ParagraphDto contentField;
+        
+        private bool is_blockquoteField;
+        
+        private string titleField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.BlockItemDto> children {
+            get {
+                return this.childrenField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.childrenField, value) != true)) {
+                    this.childrenField = value;
+                    this.RaisePropertyChanged("children");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Onliner.OnlinerHub.ParagraphDto content {
+            get {
+                return this.contentField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.contentField, value) != true)) {
+                    this.contentField = value;
+                    this.RaisePropertyChanged("content");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool is_blockquote {
+            get {
+                return this.is_blockquoteField;
+            }
+            set {
+                if ((this.is_blockquoteField.Equals(value) != true)) {
+                    this.is_blockquoteField = value;
+                    this.RaisePropertyChanged("is_blockquote");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string title {
+            get {
+                return this.titleField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.titleField, value) != true)) {
+                    this.titleField = value;
+                    this.RaisePropertyChanged("title");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ParagraphDto", Namespace="http://schemas.datacontract.org/2004/07/CacheHub")]
+    public partial class ParagraphDto : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.ParagraphItem> itemsField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.ParagraphItem> items {
+            get {
+                return this.itemsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.itemsField, value) != true)) {
+                    this.itemsField = value;
+                    this.RaisePropertyChanged("items");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ParagraphItem", Namespace="http://schemas.datacontract.org/2004/07/CacheHub")]
+    public partial class ParagraphItem : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string contentField;
+        
+        private string linkField;
+        
+        private string typeField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string content {
+            get {
+                return this.contentField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.contentField, value) != true)) {
+                    this.contentField = value;
+                    this.RaisePropertyChanged("content");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string link {
+            get {
+                return this.linkField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.linkField, value) != true)) {
+                    this.linkField = value;
+                    this.RaisePropertyChanged("link");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string type {
+            get {
+                return this.typeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.typeField, value) != true)) {
+                    this.typeField = value;
+                    this.RaisePropertyChanged("type");
                 }
             }
         }

@@ -99,8 +99,10 @@
     <Compile Include="ArticleViewerPage.xaml.cs">
       <DependentUpon>ArticleViewerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommentControl.cs" />
     <Compile Include="Contracts\ReadabilityResult.cs" />
     <Compile Include="Controller\ArticleDownloader.cs" />
+    <Compile Include="Controller\CommentExtractor.cs" />
     <Compile Include="Controller\FeedsDownloader.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">

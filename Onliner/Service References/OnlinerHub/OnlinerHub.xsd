@@ -18,7 +18,7 @@
   <xs:complexType name="CommentDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="author" nillable="true" type="tns:AuthorDto" />
-      <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="content" nillable="true" type="tns:ContentDto" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="CommentDto" nillable="true" type="tns:CommentDto" />
@@ -30,4 +30,45 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="AuthorDto" nillable="true" type="tns:AuthorDto" />
+  <xs:complexType name="ContentDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfBlockItemDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContentDto" nillable="true" type="tns:ContentDto" />
+  <xs:complexType name="ArrayOfBlockItemDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BlockItemDto" nillable="true" type="tns:BlockItemDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBlockItemDto" nillable="true" type="tns:ArrayOfBlockItemDto" />
+  <xs:complexType name="BlockItemDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="children" nillable="true" type="tns:ArrayOfBlockItemDto" />
+      <xs:element minOccurs="0" name="content" nillable="true" type="tns:ParagraphDto" />
+      <xs:element minOccurs="0" name="is_blockquote" type="xs:boolean" />
+      <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BlockItemDto" nillable="true" type="tns:BlockItemDto" />
+  <xs:complexType name="ParagraphDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfParagraphItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ParagraphDto" nillable="true" type="tns:ParagraphDto" />
+  <xs:complexType name="ArrayOfParagraphItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ParagraphItem" nillable="true" type="tns:ParagraphItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfParagraphItem" nillable="true" type="tns:ArrayOfParagraphItem" />
+  <xs:complexType name="ParagraphItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="link" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="type" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ParagraphItem" nillable="true" type="tns:ParagraphItem" />
 </xs:schema>

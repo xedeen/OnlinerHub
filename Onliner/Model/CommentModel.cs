@@ -54,8 +54,8 @@ namespace Onliner.Model
             }
         }
 
-        private string _content;
-        public string Content
+        private OnlinerHub.ContentDto _content;
+        public OnlinerHub.ContentDto Content
         {
             get { return _content; }
             set

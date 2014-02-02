@@ -10,6 +10,7 @@
     <Application.Resources>
         <local:LocalizedStrings xmlns:local="clr-namespace:Onliner" x:Key="LocalizedStrings"/>
         <controller:RssTextTrimmer xmlns:converter="clr-namespace:Onliner" x:Key="RssTextTrimmer" />
+        <controller:CommentExtractor xmlns:converter="clr-namespace:Onliner" x:Key="CommentExtractor" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
