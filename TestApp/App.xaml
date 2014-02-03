@@ -1,0 +1,33 @@
+﻿<Application 
+    x:Class="TestApp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:converters="clr-namespace:TestApp.Converters"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!--Application Resources-->
+    <Application.Resources>
+        <converters:TextTrimmer xmlns:converter="clr-namespace:Onliner" x:Key="TextTrimmer" />
+        <sys:Int32 x:Key="HeaderLen">73</sys:Int32>
+        <sys:Int32 x:Key="DescLen">88</sys:Int32>
+
+        <sys:Double x:Key="PanoramaItemHeaderFontSize">46</sys:Double>
+        <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
+            <Setter Property="FontSize" Value="{StaticResource PanoramaItemHeaderFontSize}"/>
+            <Setter Property="CharacterSpacing" Value="-35"/>
+        </Style>
+        
+        <local:LocalizedStrings xmlns:local="clr-namespace:TestApp" x:Key="LocalizedStrings"/>
+    </Application.Resources>
+
+    <Application.ApplicationLifetimeObjects>
+        <!--Required object that handles lifetime events for the application-->
+        <shell:PhoneApplicationService 
+            Launching="Application_Launching" Closing="Application_Closing" 
+            Activated="Application_Activated" Deactivated="Application_Deactivated"/>
+    </Application.ApplicationLifetimeObjects>
+
+</Application>
