@@ -72,11 +72,10 @@ namespace Onliner
                 : (sender as LongListSelector).SelectedItem as FeedItemViewModel == null
                     ? null
                     : (sender as LongListSelector).SelectedItem;
-
+            
             if (null == (item as FeedItemViewModel) || null == (item as FeedItemViewModel).Link) return;
             var uri = (item as FeedItemViewModel).Link;
-            var webBrowserTask = new WebBrowserTask {Uri = uri};
-            //webBrowserTask.Show();
+            (sender as LongListSelector).SelectedItem = null;
             NavigationService.Navigate(new Uri(string.Format("/ArticleViewerPage.xaml?uri={0}", uri), UriKind.Relative));
         }
 

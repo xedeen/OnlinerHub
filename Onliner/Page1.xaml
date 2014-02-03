@@ -55,40 +55,30 @@
             <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
-        
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid Grid.Row="1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Name="ContentPanel"  Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="1" Visibility="Visible" Margin="32,0,0,0"  Background="{StaticResource PhoneInactiveBrush}">
-                <TextBlock Text="Cite author" Style="{StaticResource PhoneTextNormalStyle}" FontWeight="Bold" />
-                <RichTextBox Style="{StaticResource RichTextStyle}">
+            <StackPanel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Grid.Row="0">
+                <RichTextBox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" TextWrapping="Wrap" TextAlignment="Left">
                     <Paragraph>
-                    <Run Text="Some blockquote content" />
+                        <Run Text="Сейчас владельцы элитных 1.4-2.0 атмо бензинчиков, а может и даже каких древних 3.0!, будут рассказывать куда скатилось Бентли, про дизели только на тракторах и т.д. :)"  />
                     </Paragraph>
                 </RichTextBox>
             </StackPanel>
-            <StackPanel Grid.Row="2">
-            <RichTextBox Style="{StaticResource RichTextStyle}">
-                <Paragraph>
-                    <Run  Text="503 (Building DS 126)" />
-                </Paragraph>
-                
-                <Paragraph>
-                    <Run Text="John Doe" FontWeight="Bold"/>
-                    <LineBreak />
-                    <Run Text="503 (Building DS 126)" />
-                    <LineBreak />
-                        <Hyperlink NavigateUri="johndoe@uni.gr">test link   </Hyperlink>
-                    <Run Text="tel.:  +30 210-1234567" />
-                </Paragraph>
-            </RichTextBox>
+            <StackPanel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Grid.Row="1">
+                <RichTextBox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" TextWrapping="Wrap" TextAlignment="Left">
+                    <Paragraph>
+                        <Run Text="Бери w12 бензин."  />
+                    </Paragraph>
+                </RichTextBox>
             </StackPanel>
         </Grid>
+
+
+       
     </Grid>
 
 </phone:PhoneApplicationPage>

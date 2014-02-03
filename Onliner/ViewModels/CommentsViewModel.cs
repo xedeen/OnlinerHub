@@ -89,7 +89,7 @@ namespace Onliner.ViewModels
 
         public void LoadCommentPage(int pageNumber)
         {
-            if (pageNumber == 1) this.CommentCollection.Clear();
+            if (pageNumber == 0) this.CommentCollection.Clear();
             IsLoading = true;
 
             var client = new OnlinerHubClient();
