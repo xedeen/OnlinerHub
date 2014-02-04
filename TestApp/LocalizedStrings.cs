@@ -1,6 +1,6 @@
-﻿using TestApp.Resources;
+﻿using Onliner.Resources;
 
-namespace TestApp
+namespace Onliner
 {
     /// <summary>
     /// Provides access to string resources.

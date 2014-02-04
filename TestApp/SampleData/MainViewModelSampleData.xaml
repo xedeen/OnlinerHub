@@ -1,7 +1,7 @@
 ﻿<vm:MainViewModel
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="clr-namespace:TestApp.ViewModels">
+    xmlns:vm="clr-namespace:Onliner.ViewModels">
     <vm:MainViewModel.Auto>
         <vm:FeedItemViewModel Title="Nokia reportedly dropping Samsung as component supplier amongst rumors of..." Description="Поиск истинного виновника в этой нашумевшей июньской аварии продолжается. Изначально ГАИ..." ImageUri="http://content.onliner.by/news/2014/02/thumbnail/2cb3f47e71c89c1c6676e87f7f0c7cec.jpg" Uri="http://auto.onliner.by/2014/02/03/sud-161" FeedType="Tech"/>
         <vm:FeedItemViewModel Title="Nokia reportedly dropping Samsung as component supplier amongst rumors of..." Description="Поиск истинного виновника в этой нашумевшей июньской аварии продолжается. Изначально ГАИ..." ImageUri="http://content.onliner.by/news/2014/02/thumbnail/0064571185d85867230de4cbfc652dd3.jpg" Uri="http://auto.onliner.by/2014/02/03/sud-161" FeedType="Auto"/>

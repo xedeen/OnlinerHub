@@ -1,16 +1,16 @@
 ﻿<Application 
-    x:Class="TestApp.App"
+    x:Class="Onliner.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:converters="clr-namespace:TestApp.Converters"
+    xmlns:converters="clr-namespace:Onliner.Converters"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!--Application Resources-->
     <Application.Resources>
-        <converters:TextTrimmer xmlns:converter="clr-namespace:TestApp" x:Key="TextTrimmer" />
-        <converters:CommentExtractor xmlns:converter="clr-namespace:TestApp" x:Key="CommentExtractor" />
+        <converters:TextTrimmer x:Key="TextTrimmer" />
+        <converters:CommentExtractor x:Key="CommentExtractor" />
         <sys:Int32 x:Key="HeaderLen">73</sys:Int32>
         <sys:Int32 x:Key="DescLen">88</sys:Int32>
 
@@ -44,7 +44,7 @@
         </DataTemplate>
 
 
-        <local:LocalizedStrings xmlns:local="clr-namespace:TestApp" x:Key="LocalizedStrings"/>
+        <local:LocalizedStrings xmlns:local="clr-namespace:Onliner" x:Key="LocalizedStrings"/>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Net;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using TestApp.ViewModels;
 
-namespace TestApp
+namespace Onliner
 {
     public partial class ArticlePage : PhoneApplicationPage
     {
@@ -36,11 +31,6 @@ namespace TestApp
         private void Browser_OnLoadCompleted(object sender, NavigationEventArgs e)
         {
             Browser.Opacity = 1;
-        }
-
-
-        private void PageChanged(object sender, SelectionChangedEventArgs e)
-        {
         }
 
         // Load data for the ViewModel Items

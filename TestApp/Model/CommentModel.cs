@@ -1,10 +1,10 @@
 ﻿using System;
-using TestApp.OnlinerHub;
+using Onliner.OnlinerHub;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 
-namespace TestApp.Model
+namespace Onliner.Model
 {
     public class CommentModel : INotifyPropertyChanged
 

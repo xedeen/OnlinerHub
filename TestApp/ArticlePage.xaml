@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="TestApp.ArticlePage"
+    x:Class="Onliner.ArticlePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -24,7 +24,7 @@
             <TextBlock Text="www.onliner.by"></TextBlock>
             <TextBlock  Style="{StaticResource PhoneTextTitle2Style}" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Path=Article.Title}" Margin="1,10"></TextBlock>
         </StackPanel>
-        <phone:WebBrowser Grid.Row="1" Name="Browser" LoadCompleted="Browser_OnLoadCompleted"></phone:WebBrowser>
+        <phone:WebBrowser Grid.Row="1" Name="Browser" LoadCompleted="Browser_OnLoadCompleted" IsScriptEnabled="True"></phone:WebBrowser>
         
 
         <!--Uncomment to see an alignment grid to help ensure your controls are

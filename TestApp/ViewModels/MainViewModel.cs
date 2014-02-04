@@ -10,10 +10,9 @@ using System.ServiceModel.Syndication;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
-using TestApp.Model;
-using TestApp.Resources;
+using Onliner.Model;
 
-namespace TestApp.ViewModels
+namespace Onliner.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
@@ -99,7 +98,8 @@ namespace TestApp.ViewModels
                 }
 
                 var text =
-                    "<html><head><style type=\"text/css\">body {background-color: black ;color:white} </style></head><body>" +
+                    "<!doctype html><html><head><style type=\"text/css\">body {background-color: black ;color:white} </style></head><title>" +
+                    current.title + "</title><body>" +
                     current.content + "</body></html>";
                 this.Article.Title = current.title;
                 Article.Content = text;

@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
-using System.Resources;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using TestApp.Resources;
-using TestApp.ViewModels;
+using Onliner.Resources;
+using Onliner.ViewModels;
 
-namespace TestApp
+namespace Onliner
 {
     public partial class App : Application
     {

@@ -5,10 +5,10 @@ using System.IO;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Windows;
-using TestApp.Model;
-using TestApp.OnlinerHub;
+using Onliner.Model;
+using Onliner.OnlinerHub;
 
-namespace TestApp.ViewModels
+namespace Onliner.ViewModels
 {
     public class CommentsViewModel : INotifyPropertyChanged
     {
@@ -105,15 +105,20 @@ namespace TestApp.ViewModels
                 {
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        foreach (var comment in e.Result.comments)
+                        if (!e.Result.previous_page_cursor.HasValue)
+                            this.CommentCollection.Clear();
+                        if (null != e.Result.comments)
                         {
-                            this.CommentCollection.Add(new CommentModel
+                            foreach (var comment in e.Result.comments)
                             {
-                                AuthorName = comment.author.name,
-                                AvatarUrl = new Uri(comment.author.avatar_source_uri),
-                                Content = comment.content,
-                                Profile = new Uri(comment.author.profile_uri)
-                            });
+                                this.CommentCollection.Add(new CommentModel
+                                {
+                                    AuthorName = comment.author.name,
+                                    AvatarUrl = new Uri(comment.author.avatar_source_uri),
+                                    Content = comment.content,
+                                    Profile = new Uri(comment.author.profile_uri)
+                                });
+                            }
                         }
                         EOF = null == e.Result.next_page_cursor;
                     });

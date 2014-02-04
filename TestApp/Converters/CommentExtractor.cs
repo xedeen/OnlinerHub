@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
-using TestApp.OnlinerHub;
+using Onliner.OnlinerHub;
 
-namespace TestApp.Converters
+namespace Onliner.Converters
 {
     public class CommentExtractor :IValueConverter
     {   
@@ -71,11 +68,14 @@ namespace TestApp.Converters
         {
             var res = string.Empty;
 
-            res += "<StackPanel xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Grid.Row=\"{ROWNUM}\"";
+            
             if (block.is_blockquote)
             {
-                res += string.Format(" Margin=\"{0},0,0,0\" Visibility=\"Visible\"", 32*level);
-                res += "  Background=\"{StaticResource PhoneInactiveBrush}\">";
+                res += "<Border xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Grid.Row=\"{ROWNUM}\" CornerRadius=\"6\" BorderBrush=\"Gray\" BorderThickness=\"2\"";
+                res += string.Format(" Margin=\"{0},0,0,0\">", 32*level);
+                res += "<StackPanel xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Width=\"Auto\" HorizontalAlignment=\"Stretch\"";
+
+                res += " Margin=\"5,0,5,0\" Visibility=\"Visible\">";
                 if (!string.IsNullOrEmpty(block.title))
                 {
                     res += string.Format("<TextBlock Text=\"{0}\"", block.title);
@@ -84,7 +84,7 @@ namespace TestApp.Converters
             }
             else
             {
-                res += ">";
+                res += "<StackPanel xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Grid.Row=\"{ROWNUM}\"  Width=\"Auto\" HorizontalAlignment=\"Stretch\">";
             }
             
             res += "<RichTextBox xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TextWrapping=\"Wrap\" TextAlignment=\"Left\">";
@@ -94,7 +94,8 @@ namespace TestApp.Converters
             foreach (var item in block.content.items)
             {
                 if (item.link != null)
-                    res += string.Format("<Hyperlink NavigateUri=\"{0}\">{1}</Hyperlink>", item.link, item.content);
+                    res += string.Format("<Hyperlink NavigateUri=\"{0}\" TargetName=\"_blank\">{1} </Hyperlink>",
+                        item.link, item.content);
                 else
                 {
                     if (!string.IsNullOrEmpty(item.content))
@@ -111,6 +112,9 @@ namespace TestApp.Converters
                 }
             }
             res += "</Paragraph></RichTextBox></StackPanel>";
+            if (block.is_blockquote)
+                res += "</Border>";
+
             return isEmpty ? string.Empty : res;
         }
 

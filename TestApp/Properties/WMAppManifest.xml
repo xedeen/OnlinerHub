@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
-  <DefaultLanguage xmlns="" code="en-US" />
+  <DefaultLanguage xmlns="" code="ru-RU" />
   <Languages xmlns="">
     <Language code="be" />
     <Language code="ru" />
@@ -9,7 +9,7 @@
     <Language code="uk-UA" />
     <Language code="be-BY" />
   </Languages>
-  <App xmlns="" ProductID="{8b8377b2-5e2b-47ca-b422-964f7ad02c02}" Title="Onliner Hub" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="xedin" Description="Неофициальный клиент www.onliner.by с возможностью чтения комментариев к статьям" Publisher="xedin" PublisherID="{6c393f0e-fa85-4b10-b068-5ec659ceb7ae}">
+  <App xmlns="" ProductID="{8b8377b2-5e2b-47ca-b422-964f7ad02c02}" Title="Onliner Hub" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Eugen Surovets" Description="Неофициальный клиент www.onliner.by с возможностью чтения комментариев к статьям" Publisher="Eugen Surovets" PublisherID="{6c393f0e-fa85-4b10-b068-5ec659ceb7ae}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -41,8 +41,6 @@
     </Tokens>
     <ScreenResolutions>
       <ScreenResolution Name="ID_RESOLUTION_WVGA" />
-      <ScreenResolution Name="ID_RESOLUTION_WXGA" />
-      <ScreenResolution Name="ID_RESOLUTION_HD720P" />
     </ScreenResolutions>
   </App>
 </Deployment>
