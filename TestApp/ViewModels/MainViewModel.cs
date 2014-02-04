@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization.Json;
 using System.ServiceModel.Syndication;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
+using TestApp.Model;
 using TestApp.Resources;
 
 namespace TestApp.ViewModels
@@ -21,6 +24,7 @@ namespace TestApp.ViewModels
             this.Auto = new ObservableCollection<FeedItemViewModel>();
             this.People = new ObservableCollection<FeedItemViewModel>();
             this.Realt = new ObservableCollection<FeedItemViewModel>();
+            Article = new ArticleViewModel();
         }
         
         public ObservableCollection<FeedItemViewModel> Tech { get; private set; }
@@ -45,6 +49,67 @@ namespace TestApp.ViewModels
             }
         }
 
+        private ArticleViewModel _article;
+
+        public ArticleViewModel Article
+        {
+            get { return _article; }
+            set
+            {
+                if (!value.Equals(_article))
+                {
+                    _article = value;
+                    NotifyPropertyChanged("Article");
+                }
+            }
+        }
+
+        public void LoadArticle(string uri)
+        {
+            IsLoading = true;
+            try
+            {
+                var requestUrl =
+                    string.Format(
+                        "https://www.readability.com/api/content/v1/parser?url={0}&token=ecd1f4e3683b5bfbd41c02c20229011983d03671",
+                        uri);
+                var wc = new WebClient();
+                wc.OpenReadCompleted += wc_GetArticleCompleted;
+                wc.OpenReadAsync(new Uri(requestUrl));
+            }
+            catch (Exception e)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(e.Message));
+            }
+        }
+
+        private void wc_GetArticleCompleted(object sender, OpenReadCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(e.Error.Message));
+            }
+            try
+            {
+                var serializer = new DataContractJsonSerializer(typeof(ReaderResult));
+                ReaderResult current;
+                using (var sr = new StreamReader(e.Result))
+                {
+                    current = (ReaderResult)serializer.ReadObject(sr.BaseStream);
+                }
+
+                var text =
+                    "<html><head><style type=\"text/css\">body {background-color: black ;color:white} </style></head><body>" +
+                    current.content + "</body></html>";
+                this.Article.Title = current.title;
+                Article.Content = text;
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+
+        }
 
         /// <summary>
         /// Creates and adds a few ItemViewModel objects into the Items collection.

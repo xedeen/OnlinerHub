@@ -9,17 +9,41 @@
 
     <!--Application Resources-->
     <Application.Resources>
-        <converters:TextTrimmer xmlns:converter="clr-namespace:Onliner" x:Key="TextTrimmer" />
+        <converters:TextTrimmer xmlns:converter="clr-namespace:TestApp" x:Key="TextTrimmer" />
+        <converters:CommentExtractor xmlns:converter="clr-namespace:TestApp" x:Key="CommentExtractor" />
         <sys:Int32 x:Key="HeaderLen">73</sys:Int32>
         <sys:Int32 x:Key="DescLen">88</sys:Int32>
 
         <sys:Double x:Key="PanoramaItemHeaderFontSize">46</sys:Double>
+        <sys:Double x:Key="ArticleTitleFontSize">23</sys:Double>
         <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
             <Setter Property="FontSize" Value="{StaticResource PanoramaItemHeaderFontSize}"/>
             <Setter Property="CharacterSpacing" Value="-35"/>
         </Style>
-        
+        <Style x:Key="ArticleTitleTextStyle" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
+            <Setter Property="FontSize" Value="{StaticResource ArticleTitleFontSize}"/>
+            <Setter Property="CharacterSpacing" Value="-35"/>
+        </Style>
+
+        <DataTemplate x:Key="SmallTitleTemplate">
+            <Grid>
+                <ContentPresenter Margin="0,15">
+                    <TextBlock Text="{Binding}" FontSize="36" />
+                </ContentPresenter>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="SmallHeaderTemplate">
+            <Grid>
+                <ContentPresenter Margin="0,5">
+                    <TextBlock Text="{Binding}" FontSize="36" />
+                </ContentPresenter>
+            </Grid>
+        </DataTemplate>
+
+
         <local:LocalizedStrings xmlns:local="clr-namespace:TestApp" x:Key="LocalizedStrings"/>
     </Application.Resources>
 

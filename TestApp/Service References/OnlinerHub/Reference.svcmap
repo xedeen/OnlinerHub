@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2514a233-2131-4485-8ef2-2d05fc61c25c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://onlinerhub.apphb.com/OnlinerHub.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OnlinerHub.wsdl" MetadataType="Wsdl" ID="36578afa-6836-4f92-bde0-a0dbba62313f" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?wsdl" />
+    <MetadataFile FileName="OnlinerHub.xsd" MetadataType="Schema" ID="48f74208-7027-4eaf-b9c3-154ce67d4caa" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd2" />
+    <MetadataFile FileName="OnlinerHub1.xsd" MetadataType="Schema" ID="d35cdfe6-1137-4a78-b8a7-c706fc607af4" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd0" />
+    <MetadataFile FileName="OnlinerHub2.xsd" MetadataType="Schema" ID="a3e5c062-069e-4912-b820-6660dc770f9d" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd1" />
+    <MetadataFile FileName="OnlinerHub.disco" MetadataType="Disco" ID="58241cb4-c677-43a5-ae58-644d20c13c3f" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
