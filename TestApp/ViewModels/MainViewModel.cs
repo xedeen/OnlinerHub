@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.ServiceModel.Syndication;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Xml.Linq;
 using Onliner.Model;
+using Onliner.Resources;
 
 namespace Onliner.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private readonly object _readLock = new object();
+
         public MainViewModel()
         {
             IsLoading = false;
@@ -31,8 +38,7 @@ namespace Onliner.ViewModels
         public ObservableCollection<FeedItemViewModel> People { get; private set; }
         public ObservableCollection<FeedItemViewModel> Realt { get; private set; }
 
-        private FeedType _currentType = FeedType.Auto;
-
+        private bool _storageFeedsRequested = false;
         private bool _isLoading = false;
         public bool IsLoading
         {
@@ -48,8 +54,28 @@ namespace Onliner.ViewModels
             }
         }
 
-        private ArticleViewModel _article;
+        private FeedType _currentSelectedPageType = FeedType.Auto;
+        private FeedType _currentFeedType = FeedType.Auto;
+        public FeedType CurrentFeedType
+        {
+            get { return _currentFeedType; }
+            set
+            {
+                _currentFeedType = value;
+                NotifyPropertyChanged("CurrentFeedType");
 
+            }
+        }
+
+        private FeedItemViewModel _selectedModel = null;
+        public void SetFeedSelection(FeedItemViewModel item)
+        {
+            _selectedModel = item;
+        }
+
+
+        private Dictionary<string, ArticleViewModel> _localArticles = new Dictionary<string, ArticleViewModel>();
+        private ArticleViewModel _article;
         public ArticleViewModel Article
         {
             get { return _article; }
@@ -65,6 +91,23 @@ namespace Onliner.ViewModels
 
         public void LoadArticle(string uri)
         {
+            if (_localArticles.ContainsKey(Article.Uri))
+            {
+                Article.Content = _localArticles[Article.Uri].Content;
+                Article.Title = _localArticles[Article.Uri].Title;
+                return;
+            }
+            else
+            {
+                var cachedArticle = TryGetArticleFromStorage(Article);
+                if (null != cachedArticle)
+                {
+                    Article.Content = cachedArticle.Content;
+                    Article.Title = cachedArticle.Title;
+                    return;
+                }
+            }
+
             IsLoading = true;
             try
             {
@@ -84,32 +127,73 @@ namespace Onliner.ViewModels
 
         private void wc_GetArticleCompleted(object sender, OpenReadCompletedEventArgs e)
         {
-            if (e.Error != null)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(e.Error.Message));
-            }
             try
             {
-                var serializer = new DataContractJsonSerializer(typeof(ReaderResult));
+                if (e.Error != null)
+                {
+                    //Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(AppResources.ArticleRetrieveError));
+                    Article.Title = _selectedModel.Title;
+                    Article.Content = FixHtml(_selectedModel.Title, _selectedModel.Description);
+                    return;
+                }
+
+                var serializer = new DataContractJsonSerializer(typeof (ReaderResult));
                 ReaderResult current;
                 using (var sr = new StreamReader(e.Result))
                 {
-                    current = (ReaderResult)serializer.ReadObject(sr.BaseStream);
+                    current = (ReaderResult) serializer.ReadObject(sr.BaseStream);
                 }
 
-                var text =
-                    "<!doctype html><html><head><style type=\"text/css\">body {background-color: black ;color:white} </style></head><title>" +
-                    current.title + "</title><body>" +
-                    current.content + "</body></html>";
-                this.Article.Title = current.title;
-                Article.Content = text;
+                Article.Title = current.title;
+                Article.Content = FixHtml(current.title, current.content);
+                if (!_localArticles.ContainsKey(Article.Uri))
+                    _localArticles.Add(Article.Uri, Article.Clone());
             }
             finally
             {
                 IsLoading = false;
             }
+        }
+
+        private string FixHtml(string title, string content)
+        {
+            return
+                "<!doctype html><html><head><style type=\"text/css\">body" +
+                (DarkThemeApplied
+                    ? " {background-color: black ;color:white} "
+                    : string.Empty) +
+                "</style></head><title>" +
+                title + "</title><body>" +
+                content + "</body></html>";
 
         }
+
+        public ImageBrush PanoramaBackgroundImage
+        {
+            get
+            {
+                var lightThemeEnabled = (Visibility) Application.Current.Resources
+                    ["PhoneLightThemeVisibility"] == Visibility.Visible;
+
+                var url = lightThemeEnabled
+                    ? "/Onliner;component/Assets/ocean_lights_light.png"
+                    : "/Onliner;component/Assets/ocean_lights_dark.png";
+                var brush = new ImageBrush
+                {ImageSource = new BitmapImage(new Uri(url, UriKind.Relative))};
+                return brush;
+            }
+        }
+
+        public bool DarkThemeApplied
+        {
+            get
+            {
+                return (Visibility) Application.Current.Resources
+                    ["PhoneLightThemeVisibility"] != Visibility.Visible;
+            }
+        }
+
+
 
         /// <summary>
         /// Creates and adds a few ItemViewModel objects into the Items collection.
@@ -119,7 +203,9 @@ namespace Onliner.ViewModels
             IsLoading = true;
             var wc = new WebClient();
             wc.OpenReadCompleted += wc_OpenReadCompleted;
-            _currentType = feedType;
+            _currentFeedType = feedType;
+
+            LoadFeedsFromStorage();
 
             Uri feedUri;
             switch (feedType)
@@ -142,83 +228,39 @@ namespace Onliner.ViewModels
 
         private void wc_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
-            if (e.Error != null)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(e.Error.Message));
-            }
             try
             {
-                switch (_currentType)
+                if (e.Error != null)
                 {
-                    case FeedType.Auto:
-                        Auto.Clear();
-                        break;
-                    case FeedType.People:
-                        People.Clear();
-                        break;
-                    case FeedType.Realt:
-                        Realt.Clear();
-                        break;
-                    case FeedType.Tech:
-                        Tech.Clear();
-                        break;
+                    //Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(AppResources.FeedUpdateError));
+                    return;
                 }
-
+                var atLeastOneItemMerged = false;
                 using (var reader = XmlReader.Create(e.Result))
                 {
                     SyndicationFeed feed = SyndicationFeed.Load(reader);
-                    var items = new List<FeedItemViewModel>();
                     foreach (SyndicationItem item in feed.Items)
                     {
                         SyndicationElementExtension media =
                             item.ElementExtensions.FirstOrDefault(ee => ee.OuterName == "thumbnail");
                         XAttribute attribute = media == null ? null : media.GetObject<XElement>().Attribute("url");
 
-                        switch (_currentType)
+                        var merged = MergeFeedItem(new FeedItemViewModel
                         {
-                            case FeedType.Auto:
-                                Auto.Add(new FeedItemViewModel
-                                {
-                                    Description = item.Summary.Text,
-                                    Uri = item.Links[0].Uri.ToString(),
-                                    Title = item.Title.Text,
-                                    ImageUri = (null != attribute) ? attribute.Value : string.Empty,
-                                    FeedType = _currentType
-                                });
-                                break;
-                            case FeedType.People:
-                                People.Add(new FeedItemViewModel
-                                {
-                                    Description = item.Summary.Text,
-                                    Uri = item.Links[0].Uri.ToString(),
-                                    Title = item.Title.Text,
-                                    ImageUri = (null != attribute) ? attribute.Value : string.Empty,
-                                    FeedType = _currentType
-                                });
-                                break;
-                            case FeedType.Realt:
-                                Realt.Add(new FeedItemViewModel
-                                {
-                                    Description = item.Summary.Text,
-                                    Uri = item.Links[0].Uri.ToString(),
-                                    Title = item.Title.Text,
-                                    ImageUri = (null != attribute) ? attribute.Value : string.Empty,
-                                    FeedType = _currentType
-                                });
-                                break;
-                            case FeedType.Tech:
-                                Tech.Add(new FeedItemViewModel
-                                {
-                                    Description = item.Summary.Text,
-                                    Uri = item.Links[0].Uri.ToString(),
-                                    Title = item.Title.Text,
-                                    ImageUri = (null != attribute) ? attribute.Value : string.Empty,
-                                    FeedType = _currentType
-                                });
-                                break;
-                        }
+                            Description = item.Summary.Text,
+                            Uri = item.Links[0].Uri.ToString(),
+                            Title = item.Title.Text,
+                            ImageUri = (null != attribute) ? attribute.Value : string.Empty,
+                            FeedType = CurrentFeedType,
+                            PublishDate = item.PublishDate.LocalDateTime
+                        });
+
+                        atLeastOneItemMerged = atLeastOneItemMerged || merged;
+
                     }
                 }
+                if (atLeastOneItemMerged)
+                    Sort();
             }
             catch (Exception exception)
             {
@@ -226,10 +268,241 @@ namespace Onliner.ViewModels
             }
             finally
             {
+                CurrentFeedType = _currentSelectedPageType;
                 IsLoading = false;
             }
-
         }
+
+        private void Sort()
+        {
+            switch (_currentFeedType)
+            {
+                case FeedType.Auto:
+                    var ordered = Auto.OrderByDescending(item => item.PublishDate).ToList();
+                    Auto.Clear();
+                    foreach (var item in ordered)
+                    {
+                        Auto.Add(item);
+                    }
+                    break;
+                case FeedType.People:
+                    ordered = People.OrderByDescending(item => item.PublishDate).ToList();
+                    People.Clear();
+                    foreach (var item in ordered)
+                    {
+                        People.Add(item);
+                    }
+                    break;
+                case FeedType.Realt:
+                    ordered = Realt.OrderByDescending(item => item.PublishDate).ToList();
+                    Realt.Clear();
+                    foreach (var item in ordered)
+                    {
+                        Realt.Add(item);
+                    }
+                    break;
+                case FeedType.Tech:
+                    ordered = Tech.OrderByDescending(item => item.PublishDate).ToList();
+                    Tech.Clear();
+                    foreach (var item in ordered)
+                    {
+                        Tech.Add(item);
+                    }
+                    break;
+            }
+        }
+
+
+        private bool MergeFeedItem(FeedItemViewModel feedItem)
+        {
+            switch (feedItem.FeedType)
+            {
+                case FeedType.Auto:
+                    if (Auto.All(item => item.Uri != feedItem.Uri))
+                    {
+                        Auto.Add(feedItem);
+                        return true;
+                    }
+                    break;
+                case FeedType.People:
+                    if (People.All(item => item.Uri != feedItem.Uri))
+                    {
+                        People.Add(feedItem);
+                        return true;
+                    }
+                    break;
+                case FeedType.Realt:
+                    if (Realt.All(item => item.Uri != feedItem.Uri))
+                    {
+                        Realt.Add(feedItem);
+                        return true;
+                    }
+                    break;
+                case FeedType.Tech:
+                    if (Tech.All(item => item.Uri != feedItem.Uri))
+                    {
+                        Tech.Add(feedItem);
+                        return true;
+                    }
+                    break;
+            }
+            return false;
+        }
+
+
+        public void Save()
+        {
+            SaveFeeds();
+            SaveArticles();
+        }
+
+        private void SaveFeeds()
+        {
+            lock (_readLock)
+            {
+                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (!store.DirectoryExists("Feeds"))
+                        store.CreateDirectory("Feeds");
+
+                    foreach (var model in Auto.Union(Tech).Union(Realt).Union(People))
+                    {
+                        var fileName = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(model.Uri)) + ".feed";
+                        fileName = Path.Combine("Feeds", fileName);
+                        Save(store, fileName, model);
+                    }
+                }
+            }
+        }
+
+        private void SaveArticles()
+        {
+            lock (_readLock)
+            {
+                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (!store.DirectoryExists("Articles"))
+                        store.CreateDirectory("Articles");
+
+                    foreach (var model in _localArticles.Values)
+                    {
+                        var fileName = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(model.Uri)) +
+                                       ".article";
+                        fileName = Path.Combine("Articles", fileName);
+                        Save(store, fileName, model);
+                    }
+                }
+            }
+        }
+
+        private void LoadFeedsFromStorage()
+        {
+            if (_storageFeedsRequested)
+                return;
+            //temp usage
+            /*using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (store.DirectoryExists("Feeds"))
+                {
+                    foreach (var fileName in store.GetFileNames(Path.Combine("Feeds", "*.*")))
+                    {
+                        store.DeleteFile(Path.Combine("Feeds", fileName));
+                    }
+                    store.DeleteDirectory("Feeds");
+                }
+                if (store.DirectoryExists("Articles"))
+                {
+                    foreach (var fileName in store.GetFileNames(Path.Combine("Articles", "*.*")))
+                    {
+                        store.DeleteFile(Path.Combine("Articles", fileName));
+                    }
+                    store.DeleteDirectory("Articles");
+                }
+            }
+            return;*/
+            try
+            {
+                lock (_readLock)
+                {
+                    using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                    {
+                        if (!store.DirectoryExists("Feeds"))
+                            store.CreateDirectory("Feeds");
+
+                        foreach (var filePath in store.GetFileNames(Path.Combine("Feeds", "*.feed")))
+                        {
+                            var feedItem = Load<FeedItemViewModel>(store, Path.Combine("Feeds", filePath));
+                            switch (feedItem.FeedType)
+                            {
+                                case FeedType.Auto:
+                                    Auto.Add(feedItem);
+                                    break;
+                                case FeedType.People:
+                                    People.Add(feedItem);
+                                    break;
+                                case FeedType.Realt:
+                                    Realt.Add(feedItem);
+                                    break;
+                                case FeedType.Tech:
+                                    Tech.Add(feedItem);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                Sort();
+                _storageFeedsRequested = true;
+            }
+        }
+
+
+        private ArticleViewModel TryGetArticleFromStorage(ArticleViewModel article)
+        {
+            lock (_readLock)
+            {
+                using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (!store.DirectoryExists("Articles"))
+                        store.CreateDirectory("Articles");
+
+                    var fileName = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(article.Uri)) +
+                                      ".article";
+
+                    if (!store.FileExists(Path.Combine("Articles", fileName)))
+                        return null;
+
+                    var localArticle = Load<ArticleViewModel>(store, Path.Combine("Articles", fileName));
+                    if (!_localArticles.ContainsKey(localArticle.Uri))
+                        _localArticles.Add(localArticle.Uri, localArticle);
+                    return localArticle;
+                }
+            }
+        }
+
+        public static void Save<T>(IsolatedStorageFile store, string fileName, T item)
+        {
+            using (var fileStream = new IsolatedStorageFileStream(fileName, FileMode.Create, FileAccess.Write,
+                FileShare.None, store))
+            {
+                var serializer = new DataContractSerializer(typeof (T));
+                serializer.WriteObject(fileStream, item);
+            }
+        }
+
+        public T Load<T>(IsolatedStorageFile store, string fileName)
+        {
+            using (var fileStream = new IsolatedStorageFileStream(fileName, FileMode.Open, FileAccess.Read,
+                FileShare.None, store))
+            {
+                var serializer = new DataContractSerializer(typeof (T));
+                return (T) serializer.ReadObject(fileStream);
+            }
+        }
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)

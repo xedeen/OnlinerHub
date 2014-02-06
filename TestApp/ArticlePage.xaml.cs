@@ -4,6 +4,7 @@ using System.Windows.Data;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Onliner.Resources;
 
 namespace Onliner
 {
@@ -13,11 +14,26 @@ namespace Onliner
         public ArticlePage()
         {
             InitializeComponent();
+            BuildLocalizedApplicationBar();
 
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
             this.Loaded += MainPage_Loaded;
             App.ViewModel.Article.PropertyChanged += Article_PropertyChanged;
+        }
+
+        private void BuildLocalizedApplicationBar()
+        {
+            ApplicationBar = new ApplicationBar();
+            var appBarButton =
+                new ApplicationBarIconButton(new Uri("/Assets/AppBar/1f503-Refresh.48.png", UriKind.Relative));
+            appBarButton.Text = AppResources.RefreshMenuText;
+            appBarButton.Click += Refresh_OnClick;
+            ApplicationBar.Buttons.Add(appBarButton);
+            appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/e25c-Typing.48.png", UriKind.Relative));
+            appBarButton.Text = AppResources.CommentsMenuText;
+            appBarButton.Click += Comments_OnClick;
+            ApplicationBar.Buttons.Add(appBarButton);
         }
 
         void Article_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -70,9 +86,7 @@ namespace Onliner
             binding = new Binding("IsLoading") { Source = DataContext };
             BindingOperations.SetBinding(
                 progressIndicator, ProgressIndicator.IsIndeterminateProperty, binding);
-
-            progressIndicator.Text = "Loading article...";
-
+            progressIndicator.Text = AppResources.ArticleLoadingMsg;
         }
 
 
@@ -82,6 +96,11 @@ namespace Onliner
             NavigationService.Navigate(
                 new Uri(string.Format("/CommentsPage.xaml?uri={0}&title={1}", uri, App.ViewModel.Article.Title),
                     UriKind.Relative));
+        }
+
+        private void Refresh_OnClick(object sender, EventArgs e)
+        {
+            App.ViewModel.LoadArticle(App.ViewModel.Article.Uri);
         }
     }
 }

@@ -8,6 +8,7 @@
     <Language code="uk" />
     <Language code="uk-UA" />
     <Language code="be-BY" />
+    <Language code="en" />
   </Languages>
   <App xmlns="" ProductID="{8b8377b2-5e2b-47ca-b422-964f7ad02c02}" Title="Onliner Hub" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Eugen Surovets" Description="Неофициальный клиент www.onliner.by с возможностью чтения комментариев к статьям" Publisher="Eugen Surovets" PublisherID="{6c393f0e-fa85-4b10-b068-5ec659ceb7ae}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
@@ -26,16 +27,11 @@
           <Count>0</Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileMedium.png</BackgroundImageURI>
           <Title>Onliner Hub</Title>
-          <BackContent>
-          </BackContent>
-          <BackBackgroundImageURI>
-          </BackBackgroundImageURI>
-          <BackTitle>
-          </BackTitle>
-          <DeviceLockImageURI>
-          </DeviceLockImageURI>
-          <HasLarge>
-          </HasLarge>
+          <BackContent></BackContent>
+          <BackBackgroundImageURI></BackBackgroundImageURI>
+          <BackTitle></BackTitle>
+          <DeviceLockImageURI></DeviceLockImageURI>
+          <HasLarge></HasLarge>
         </TemplateFlip>
       </PrimaryToken>
     </Tokens>

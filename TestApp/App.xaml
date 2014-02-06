@@ -13,7 +13,6 @@
         <converters:CommentExtractor x:Key="CommentExtractor" />
         <sys:Int32 x:Key="HeaderLen">73</sys:Int32>
         <sys:Int32 x:Key="DescLen">88</sys:Int32>
-
         <sys:Double x:Key="PanoramaItemHeaderFontSize">46</sys:Double>
         <sys:Double x:Key="ArticleTitleFontSize">23</sys:Double>
         <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">
@@ -42,8 +41,6 @@
                 </ContentPresenter>
             </Grid>
         </DataTemplate>
-
-
         <local:LocalizedStrings xmlns:local="clr-namespace:Onliner" x:Key="LocalizedStrings"/>
     </Application.Resources>
 
@@ -53,5 +50,4 @@
             Launching="Application_Launching" Closing="Application_Closing" 
             Activated="Application_Activated" Deactivated="Application_Deactivated"/>
     </Application.ApplicationLifetimeObjects>
-
 </Application>

@@ -122,46 +122,46 @@
     <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
   </data>
   <data name="ResourceLanguage" xml:space="preserve">
-    <value>en-US</value>
+    <value>uk-UA</value>
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>Onliner Hub</value>
+    <value>Onliner клієнт</value>
   </data>
   <data name="FeedUpdateError" xml:space="preserve">
-    <value>Cannot access www.onliner.by to retrieve new articles. Check your internet connection!</value>
+    <value>Не вдається отримати доступ до www.onliner.by для отримання нових статей. Перевірте підключення до Інтернету!</value>
   </data>
   <data name="ArticleRetrieveError" xml:space="preserve">
-    <value>Cannot load simplified content from Readability. Article description would be used instead. Check your internet connection!</value>
+    <value>Неможливо завантажити спрощену контент з Readability. Опис статтi буде використовуватися замість цього. Перевірте підключення до Інтернету!</value>
   </data>
   <data name="ArticleLoadingMsg" xml:space="preserve">
-    <value>Loading article...</value>
+    <value>Завантаження статті...</value>
   </data>
   <data name="CommentLoadingMsg" xml:space="preserve">
-    <value>Loading comments...</value>
+    <value>Завантаження коментарів ...</value>
   </data>
   <data name="FeedLoadingMsg" xml:space="preserve">
-    <value>Loading articles...</value>
+    <value>Завантаження статті ...</value>
   </data>
   <data name="AutoSectionTitle" xml:space="preserve">
-    <value>Auto</value>
+    <value>Авто</value>
   </data>
   <data name="CommentsMenuText" xml:space="preserve">
-    <value>Comments</value>
+    <value>Коментарі</value>
   </data>
   <data name="MainTitle" xml:space="preserve">
     <value>www.onliner.by</value>
   </data>
   <data name="PeopleSectionTitle" xml:space="preserve">
-    <value>People</value>
+    <value>Люди</value>
   </data>
   <data name="RealtSectionTitle" xml:space="preserve">
-    <value>Realty</value>
+    <value>Нерухомість</value>
   </data>
   <data name="RefreshMenuText" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Обновить</value>
   </data>
   <data name="TechSectionTitle" xml:space="preserve">
-    <value>Technologies</value>
+    <value>Технології</value>
   </data>
 </root>

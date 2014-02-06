@@ -12,11 +12,10 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="False">
+    shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-
         <!-- LOCALIZATION NOTE:
             To localize the displayed strings copy their values to appropriately named
             keys in the app's neutral language resource file (AppResources.resx) then
@@ -37,11 +36,7 @@
          -->
 
          <!--Panorama control-->
-        <phone:Panorama Title="www.onliner.by" Name="MainPanorama">
-            <phone:Panorama.Background>
-                <ImageBrush ImageSource="/Onliner;component/Assets/wave.png"/>
-            </phone:Panorama.Background>
-            
+        <phone:Panorama Background="{Binding PanoramaBackgroundImage}" Title="{Binding Path=LocalizedResources.MainTitle, Source={StaticResource LocalizedStrings}}" Name="MainPanorama">
             <phone:PanoramaItem Name="Tech">
                 <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
                 <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}">
@@ -52,7 +47,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Технологии"
+                                <TextBlock Text="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}"
                                            Style="{StaticResource PanoramaItemHeaderTextStyle}"
                                            Grid.Row="0"/>
                             </Grid>
@@ -62,7 +57,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="12,0,0,34" Height="254" Width="401">
                                 <!--Replace rectangle with image-->
-                                <Image Height="224" Width="401" VerticalAlignment="Top">
+                                <Image Height="224" Width="401" VerticalAlignment="Top" CacheMode="BitmapCache">
                                     <Image.Source>
                                         <BitmapImage UriSource="{Binding ImageUri}"
                                      CreateOptions="BackgroundCreation"/>
@@ -73,7 +68,7 @@
                                         <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".6"/>
                                     </StackPanel.Background>
                                     <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
+                                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSmallStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
                                 </StackPanel>
                                 
                             </StackPanel>
@@ -91,7 +86,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Авто"
+                                <TextBlock Text="{Binding Path=LocalizedResources.AutoSectionTitle, Source={StaticResource LocalizedStrings}}"
                                            Style="{StaticResource PanoramaItemHeaderTextStyle}"
                                            Grid.Row="0"/>
                             </Grid>
@@ -130,7 +125,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Люди"
+                                <TextBlock Text="{Binding Path=LocalizedResources.PeopleSectionTitle, Source={StaticResource LocalizedStrings}}"
                                            Style="{StaticResource PanoramaItemHeaderTextStyle}"
                                            Grid.Row="0"/>
                             </Grid>
@@ -169,7 +164,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Недвижимость"
+                                <TextBlock Text="{Binding Path=LocalizedResources.RealtSectionTitle, Source={StaticResource LocalizedStrings}}"
                                            Style="{StaticResource PanoramaItemHeaderTextStyle}"
                                            Grid.Row="0"/>
                             </Grid>
@@ -199,14 +194,5 @@
                 </phone:LongListSelector>
             </phone:PanoramaItem>
         </phone:Panorama>
-
-        <!--Uncomment to see an alignment grid to help ensure your controls are
-            aligned on common boundaries.  The image has a top margin of -32px to
-            account for the System Tray. Set this to 0 (or remove the margin altogether)
-            if the System Tray is hidden.
-
-            Before shipping remove this XAML and the image itself.-->
-        <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
-
     </Grid>
 </phone:PhoneApplicationPage>

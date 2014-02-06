@@ -3,8 +3,13 @@ using System.ComponentModel;
 
 namespace Onliner.ViewModels
 {
-    public class ArticleViewModel : INotifyPropertyChanged
+    public class ArticleViewModel : INotifyPropertyChanged 
     {
+        public ArticleViewModel Clone()
+        {
+            return (ArticleViewModel) this.MemberwiseClone();
+        }
+
         private string _title;
         public string Title
         {

@@ -122,46 +122,46 @@
     <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
   </data>
   <data name="ResourceLanguage" xml:space="preserve">
-    <value>en-US</value>
+    <value>ru-RU</value>
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>Onliner Hub</value>
+    <value>Onliner клиент</value>
   </data>
   <data name="FeedUpdateError" xml:space="preserve">
-    <value>Cannot access www.onliner.by to retrieve new articles. Check your internet connection!</value>
+    <value>Нет доступа к www.onliner.by. Проверьте свое Интернет соединение!</value>
   </data>
   <data name="ArticleRetrieveError" xml:space="preserve">
-    <value>Cannot load simplified content from Readability. Article description would be used instead. Check your internet connection!</value>
+    <value>Не могу загрузить упрощенный контент. Проверьте свое Интернет соединение!</value>
   </data>
   <data name="ArticleLoadingMsg" xml:space="preserve">
-    <value>Loading article...</value>
+    <value>Загрузка статьи...</value>
   </data>
   <data name="CommentLoadingMsg" xml:space="preserve">
-    <value>Loading comments...</value>
+    <value>Загрузка комментариев...</value>
   </data>
   <data name="FeedLoadingMsg" xml:space="preserve">
-    <value>Loading articles...</value>
+    <value>Загрузка статей...</value>
   </data>
   <data name="AutoSectionTitle" xml:space="preserve">
-    <value>Auto</value>
+    <value>Авто</value>
   </data>
   <data name="CommentsMenuText" xml:space="preserve">
-    <value>Comments</value>
+    <value>Комментарии</value>
   </data>
   <data name="MainTitle" xml:space="preserve">
     <value>www.onliner.by</value>
   </data>
   <data name="PeopleSectionTitle" xml:space="preserve">
-    <value>People</value>
+    <value>Люди</value>
   </data>
   <data name="RealtSectionTitle" xml:space="preserve">
-    <value>Realty</value>
+    <value>Недвижимость</value>
   </data>
   <data name="RefreshMenuText" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Обновить</value>
   </data>
   <data name="TechSectionTitle" xml:space="preserve">
-    <value>Technologies</value>
+    <value>Технологии</value>
   </data>
 </root>

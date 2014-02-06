@@ -12,7 +12,7 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="False">
+    shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -21,7 +21,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Background="{StaticResource PhoneChromeBrush}" Margin="5,5">
-            <TextBlock Text="www.onliner.by"></TextBlock>
+            <TextBlock Text="{Binding Path=LocalizedResources.MainTitle, Source={StaticResource LocalizedStrings}}"></TextBlock>
             <TextBlock  Style="{StaticResource PhoneTextTitle2Style}" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Path=Article.Title}" Margin="1,10"></TextBlock>
         </StackPanel>
         <phone:WebBrowser Grid.Row="1" Name="Browser" LoadCompleted="Browser_OnLoadCompleted" IsScriptEnabled="True"></phone:WebBrowser>
@@ -35,11 +35,4 @@
             Before shipping remove this XAML and the image itself.-->
         <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
     </Grid>
-    
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Assets/e25c-Typing.48.png" Text="Read comments" Click="Comments_OnClick"/>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
-
 </phone:PhoneApplicationPage>

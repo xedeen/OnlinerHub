@@ -99,7 +99,20 @@ namespace Onliner.ViewModels
             }
         }
 
-        
+        private DateTime _publishDate;
+        public DateTime PublishDate
+        {
+            get { return _publishDate; }
+            set
+            {
+                if (value != _publishDate)
+                {
+                    _publishDate = value;
+                    NotifyPropertyChanged("PublishDate");
+                }
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)

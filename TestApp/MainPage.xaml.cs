@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Onliner.Resources;
 using Onliner.ViewModels;
 
 namespace Onliner
@@ -18,11 +19,22 @@ namespace Onliner
         public MainPage()
         {
             InitializeComponent();
+            //BuildLocalizedApplicationBar();
 
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
             this.Loaded += MainPage_Loaded;
             MainPanorama.SelectionChanged += PageChanged;
+        }
+
+        private void BuildLocalizedApplicationBar()
+        {   
+            ApplicationBar = new ApplicationBar();
+            var appBarButton =
+                new ApplicationBarIconButton(new Uri("/Assets/AppBar/1f503-Refresh.48.png", UriKind.Relative));
+            appBarButton.Text = AppResources.RefreshMenuText;
+            appBarButton.Click += Refresh_OnClick;
+            ApplicationBar.Buttons.Add(appBarButton);
         }
 
         private void PageChanged(object sender, SelectionChangedEventArgs e)
@@ -59,7 +71,9 @@ namespace Onliner
 
             if (null == (item as FeedItemViewModel) || null == (item as FeedItemViewModel).Uri) return;
             var uri = (item as FeedItemViewModel).Uri;
+
             (sender as LongListSelector).SelectedItem = null;
+            App.ViewModel.SetFeedSelection(item as FeedItemViewModel);
             NavigationService.Navigate(new Uri(string.Format("/ArticlePage.xaml?uri={0}", uri), UriKind.Relative));
         }
 
@@ -92,11 +106,13 @@ namespace Onliner
             binding = new Binding("IsLoading") { Source = DataContext };
             BindingOperations.SetBinding(
                 progressIndicator, ProgressIndicator.IsIndeterminateProperty, binding);
-
-            progressIndicator.Text = "Loading articles...";
-
+            progressIndicator.Text = AppResources.FeedLoadingMsg;
         }
 
 
+        private void Refresh_OnClick(object sender, EventArgs e)
+        {
+            App.ViewModel.LoadData(App.ViewModel.CurrentFeedType);
+        }
     }
 }

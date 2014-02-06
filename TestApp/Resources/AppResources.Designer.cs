@@ -70,6 +70,105 @@ namespace Onliner.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading article....
+        /// </summary>
+        public static string ArticleLoadingMsg {
+            get {
+                return ResourceManager.GetString("ArticleLoadingMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot load simplified content from Readability. Article description would be used instead. Check your internet connection!.
+        /// </summary>
+        public static string ArticleRetrieveError {
+            get {
+                return ResourceManager.GetString("ArticleRetrieveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto.
+        /// </summary>
+        public static string AutoSectionTitle {
+            get {
+                return ResourceManager.GetString("AutoSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading comments....
+        /// </summary>
+        public static string CommentLoadingMsg {
+            get {
+                return ResourceManager.GetString("CommentLoadingMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comments.
+        /// </summary>
+        public static string CommentsMenuText {
+            get {
+                return ResourceManager.GetString("CommentsMenuText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading articles....
+        /// </summary>
+        public static string FeedLoadingMsg {
+            get {
+                return ResourceManager.GetString("FeedLoadingMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot access www.onliner.by to retrieve new articles. Check your internet connection!.
+        /// </summary>
+        public static string FeedUpdateError {
+            get {
+                return ResourceManager.GetString("FeedUpdateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to www.onliner.by.
+        /// </summary>
+        public static string MainTitle {
+            get {
+                return ResourceManager.GetString("MainTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to People.
+        /// </summary>
+        public static string PeopleSectionTitle {
+            get {
+                return ResourceManager.GetString("PeopleSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Realty.
+        /// </summary>
+        public static string RealtSectionTitle {
+            get {
+                return ResourceManager.GetString("RealtSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string RefreshMenuText {
+            get {
+                return ResourceManager.GetString("RefreshMenuText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LeftToRight.
         /// </summary>
         public static string ResourceFlowDirection {
@@ -84,6 +183,15 @@ namespace Onliner.Resources {
         public static string ResourceLanguage {
             get {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Technologies.
+        /// </summary>
+        public static string TechSectionTitle {
+            get {
+                return ResourceManager.GetString("TechSectionTitle", resourceCulture);
             }
         }
     }

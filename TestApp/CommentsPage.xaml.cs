@@ -5,6 +5,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Onliner.Model;
+using Onliner.Resources;
 using Onliner.ViewModels;
 
 namespace Onliner
@@ -19,10 +20,20 @@ namespace Onliner
         public CommentsPage()
         {
             InitializeComponent();
-
+            BuildLocalizedApplicationBar();
             _viewModel = (CommentsViewModel)Resources["commentsViewModel"];
             commentsListBox.ItemRealized += commentsListBox_ItemRealized;
             this.Loaded += CommentsPage_Loaded;
+        }
+
+        private void BuildLocalizedApplicationBar()
+        {
+            ApplicationBar = new ApplicationBar();
+            var appBarButton =
+                new ApplicationBarIconButton(new Uri("/Assets/AppBar/1f503-Refresh.48.png", UriKind.Relative));
+            appBarButton.Text = AppResources.RefreshMenuText;
+            appBarButton.Click += Refresh_OnClick;
+            ApplicationBar.Buttons.Add(appBarButton);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -63,8 +74,7 @@ namespace Onliner
             binding = new Binding("IsLoading") {Source = _viewModel};
             BindingOperations.SetBinding(
                 progressIndicator, ProgressIndicator.IsIndeterminateProperty, binding);
-
-            progressIndicator.Text = "Loading comments...";
+            progressIndicator.Text = AppResources.CommentLoadingMsg;
         }
 
         private void commentsListBox_ItemRealized(object sender, ItemRealizationEventArgs e)
@@ -83,6 +93,12 @@ namespace Onliner
                 }
             }
 
+        }
+
+        private void Refresh_OnClick(object sender, EventArgs e)
+        {
+            _pageNumber = 0;
+            _viewModel.LoadCommentPage(_pageNumber++);
         }
     }
 }

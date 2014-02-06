@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
@@ -86,9 +87,15 @@ namespace Onliner
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             // Ensure that application state is restored appropriately
-            if (!App.ViewModel.IsLoading)
+            if (!e.IsApplicationInstancePreserved)
             {
-                App.ViewModel.LoadData(FeedType.Auto);
+                ViewModel.CurrentFeedType = IsolatedStorageSettings.ApplicationSettings.Contains("CurrentFeedType")
+                    ? (FeedType)IsolatedStorageSettings.ApplicationSettings["CurrentFeedType"]
+                    : FeedType.Auto;
+                if (!ViewModel.IsLoading)
+                {
+                    ViewModel.LoadData(ViewModel.CurrentFeedType);
+                }
             }
         }
 
@@ -97,12 +104,16 @@ namespace Onliner
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
             // Ensure that required application state is persisted here.
+            IsolatedStorageSettings.ApplicationSettings["CurrentFeedType"] = ViewModel.CurrentFeedType;
+            ViewModel.Save();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            IsolatedStorageSettings.ApplicationSettings["CurrentFeedType"] = ViewModel.CurrentFeedType;
+            ViewModel.Save();
         }
 
         // Code to execute if a navigation fails
