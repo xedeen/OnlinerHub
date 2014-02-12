@@ -27,7 +27,7 @@
             <Setter Property="CharacterSpacing" Value="-35"/>
         </Style>
 
-        <DataTemplate x:Key="SmallTitleTemplate">
+       <DataTemplate x:Key="SmallTitleTemplate">
             <Grid>
                 <ContentPresenter Margin="0,15">
                     <TextBlock Text="{Binding}" FontSize="36" />
@@ -36,7 +36,7 @@
         </DataTemplate>
         <DataTemplate x:Key="SmallHeaderTemplate">
             <Grid>
-                <ContentPresenter Margin="0,5">
+                <ContentPresenter Margin="0,25">
                     <TextBlock Text="{Binding}" FontSize="36" />
                 </ContentPresenter>
             </Grid>

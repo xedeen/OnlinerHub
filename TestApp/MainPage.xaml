@@ -36,23 +36,23 @@
          -->
 
          <!--Panorama control-->
-        <phone:Panorama Background="{Binding PanoramaBackgroundImage}" Title="{Binding Path=LocalizedResources.MainTitle, Source={StaticResource LocalizedStrings}}" Name="MainPanorama">
+        <phone:Panorama TitleTemplate="{StaticResource SmallTitleTemplate}" Background="{Binding PanoramaBackgroundImage}" Title="{Binding Path=LocalizedResources.MainTitle, Source={StaticResource LocalizedStrings}}" Name="MainPanorama">
             <phone:PanoramaItem Name="Tech">
-                <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
-                <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}">
-                    <phone:LongListSelector.ListHeaderTemplate>
-                        <DataTemplate>
-                            <Grid Margin="12,0,0,38">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}"
+                <phone:PanoramaItem.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid Margin="12,0,0,38">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}"
                                            Style="{StaticResource PanoramaItemHeaderTextStyle}"
                                            Grid.Row="0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </phone:LongListSelector.ListHeaderTemplate>
+                        </Grid>
+                    </DataTemplate>
+                </phone:PanoramaItem.HeaderTemplate>
+                <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
+                <phone:LongListSelector Margin="0,-68,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="12,0,0,34" Height="254" Width="401">
@@ -65,7 +65,7 @@
                                 </Image>
                                 <StackPanel Width="401" Height="170" Margin="-401,53,0,0">
                                     <StackPanel.Background>
-                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".6"/>
+                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".9"/>
                                     </StackPanel.Background>
                                     <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
                                     <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSmallStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
