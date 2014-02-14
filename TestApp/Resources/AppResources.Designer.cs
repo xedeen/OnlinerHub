@@ -187,6 +187,24 @@ namespace Onliner.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to app settings.
+        /// </summary>
+        public static string SettingsTitle {
+            get {
+                return ResourceManager.GetString("SettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subscriptions:.
+        /// </summary>
+        public static string SubscriptionsBlockTitle {
+            get {
+                return ResourceManager.GetString("SubscriptionsBlockTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Technologies.
         /// </summary>
         public static string TechSectionTitle {

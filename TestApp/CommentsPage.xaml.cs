@@ -34,6 +34,7 @@ namespace Onliner
             appBarButton.Text = AppResources.RefreshMenuText;
             appBarButton.Click += Refresh_OnClick;
             ApplicationBar.Buttons.Add(appBarButton);
+            ApplicationBar.Mode = ApplicationBarMode.Minimized;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

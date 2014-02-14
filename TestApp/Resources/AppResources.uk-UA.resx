@@ -164,4 +164,10 @@
   <data name="TechSectionTitle" xml:space="preserve">
     <value>Технології</value>
   </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>настройки</value>
+  </data>
+  <data name="SubscriptionsBlockTitle" xml:space="preserve">
+    <value>Підписки:</value>
+  </data>
 </root>

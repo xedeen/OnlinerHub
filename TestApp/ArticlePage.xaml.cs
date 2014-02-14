@@ -34,6 +34,7 @@ namespace Onliner
             appBarButton.Text = AppResources.CommentsMenuText;
             appBarButton.Click += Comments_OnClick;
             ApplicationBar.Buttons.Add(appBarButton);
+            ApplicationBar.Mode = ApplicationBarMode.Minimized;
         }
 
         void Article_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

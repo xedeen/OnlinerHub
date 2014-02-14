@@ -164,4 +164,10 @@
   <data name="TechSectionTitle" xml:space="preserve">
     <value>Technologies</value>
   </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>app settings</value>
+  </data>
+  <data name="SubscriptionsBlockTitle" xml:space="preserve">
+    <value>Subscriptions:</value>
+  </data>
 </root>

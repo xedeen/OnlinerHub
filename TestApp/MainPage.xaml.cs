@@ -19,7 +19,7 @@ namespace Onliner
         public MainPage()
         {
             InitializeComponent();
-            //BuildLocalizedApplicationBar();
+            BuildLocalizedApplicationBar();
 
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
@@ -30,11 +30,10 @@ namespace Onliner
         private void BuildLocalizedApplicationBar()
         {   
             ApplicationBar = new ApplicationBar();
-            var appBarButton =
-                new ApplicationBarIconButton(new Uri("/Assets/AppBar/1f503-Refresh.48.png", UriKind.Relative));
-            appBarButton.Text = AppResources.RefreshMenuText;
-            appBarButton.Click += Refresh_OnClick;
-            ApplicationBar.Buttons.Add(appBarButton);
+            var menuItem = new ApplicationBarMenuItem(AppResources.SettingsTitle);
+            menuItem.Click += Settings_OnClick;
+            ApplicationBar.MenuItems.Add(menuItem);
+            ApplicationBar.Mode = ApplicationBarMode.Minimized;
         }
 
         private void PageChanged(object sender, SelectionChangedEventArgs e)
@@ -109,10 +108,10 @@ namespace Onliner
             progressIndicator.Text = AppResources.FeedLoadingMsg;
         }
 
-
-        private void Refresh_OnClick(object sender, EventArgs e)
-        {
-            App.ViewModel.LoadData(App.ViewModel.CurrentFeedType);
+        private void Settings_OnClick(object sender, EventArgs e)
+        {   
+            NavigationService.Navigate(
+                new Uri("/SettingsPage.xaml", UriKind.Relative));
         }
     }
 }

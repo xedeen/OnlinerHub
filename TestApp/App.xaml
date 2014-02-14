@@ -11,6 +11,7 @@
     <Application.Resources>
         <converters:TextTrimmer x:Key="TextTrimmer" />
         <converters:CommentExtractor x:Key="CommentExtractor" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Collapsed" />
         <sys:Int32 x:Key="HeaderLen">73</sys:Int32>
         <sys:Int32 x:Key="DescLen">88</sys:Int32>
         <sys:Double x:Key="PanoramaItemHeaderFontSize">46</sys:Double>
@@ -36,7 +37,7 @@
         </DataTemplate>
         <DataTemplate x:Key="SmallHeaderTemplate">
             <Grid>
-                <ContentPresenter Margin="0,25">
+                <ContentPresenter Margin="0,0">
                     <TextBlock Text="{Binding}" FontSize="36" />
                 </ContentPresenter>
             </Grid>

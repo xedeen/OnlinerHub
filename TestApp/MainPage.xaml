@@ -12,8 +12,12 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
-
+    shell:SystemTray.IsVisible="True"
+    xmlns:vm="clr-namespace:Onliner.ViewModels">
+    <phone:PhoneApplicationPage.Resources>
+        <vm:AppSettings x:Key="appSettings"></vm:AppSettings>
+    </phone:PhoneApplicationPage.Resources>
+    
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!-- LOCALIZATION NOTE:
@@ -37,7 +41,7 @@
 
          <!--Panorama control-->
         <phone:Panorama TitleTemplate="{StaticResource SmallTitleTemplate}" Background="{Binding PanoramaBackgroundImage}" Title="{Binding Path=LocalizedResources.MainTitle, Source={StaticResource LocalizedStrings}}" Name="MainPanorama">
-            <phone:PanoramaItem Name="Tech">
+            <phone:PanoramaItem Name="Tech" Visibility="{Binding Source={StaticResource appSettings}, Path=IsOnlinerTechSubscribed, Converter={StaticResource BoolToHiddenConverter}}">
                 <phone:PanoramaItem.HeaderTemplate>
                     <DataTemplate>
                         <Grid Margin="12,0,0,38">
@@ -65,7 +69,7 @@
                                 </Image>
                                 <StackPanel Width="401" Height="170" Margin="-401,53,0,0">
                                     <StackPanel.Background>
-                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".9"/>
+                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".8"/>
                                     </StackPanel.Background>
                                     <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
                                     <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSmallStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
@@ -76,7 +80,7 @@
                     </phone:LongListSelector.ItemTemplate>
                 </phone:LongListSelector>
             </phone:PanoramaItem>
-            <phone:PanoramaItem Name="Auto">
+            <phone:PanoramaItem Name="Auto"  Visibility="{Binding Source={StaticResource appSettings}, Path=IsOnlinerAutoSubscribed, Converter={StaticResource BoolToHiddenConverter}}">
                 <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
                 <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Auto}">
                     <phone:LongListSelector.ListHeaderTemplate>
@@ -104,7 +108,7 @@
                                 </Image>
                                 <StackPanel Width="401" Height="170" Margin="-401,53,0,0">
                                     <StackPanel.Background>
-                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".6"/>
+                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".8"/>
                                     </StackPanel.Background>
                                     <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
                                     <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
@@ -115,7 +119,7 @@
                     </phone:LongListSelector.ItemTemplate>
                 </phone:LongListSelector>
             </phone:PanoramaItem>
-            <phone:PanoramaItem Name="People">
+            <phone:PanoramaItem Name="People"  Visibility="{Binding Source={StaticResource appSettings}, Path=IsOnlinerPeopleSubscribed, Converter={StaticResource BoolToHiddenConverter}}">
                 <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
                 <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding People}">
                     <phone:LongListSelector.ListHeaderTemplate>
@@ -143,7 +147,7 @@
                                 </Image>
                                 <StackPanel Width="401" Height="170" Margin="-401,53,0,0">
                                     <StackPanel.Background>
-                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".6"/>
+                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".8"/>
                                     </StackPanel.Background>
                                     <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
                                     <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
@@ -154,7 +158,7 @@
                     </phone:LongListSelector.ItemTemplate>
                 </phone:LongListSelector>
             </phone:PanoramaItem>
-            <phone:PanoramaItem Name="Realt">
+            <phone:PanoramaItem Name="Realt"  Visibility="{Binding Source={StaticResource appSettings}, Path=IsOnlinerRealtSubscribed, Converter={StaticResource BoolToHiddenConverter}}">
                 <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
                 <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Realt}">
                     <phone:LongListSelector.ListHeaderTemplate>
@@ -182,7 +186,7 @@
                                 </Image>
                                 <StackPanel Width="401" Height="170" Margin="-401,53,0,0">
                                     <StackPanel.Background>
-                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".6"/>
+                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".8"/>
                                     </StackPanel.Background>
                                     <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
                                     <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
