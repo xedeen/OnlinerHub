@@ -168,6 +168,9 @@
     <value>app settings</value>
   </data>
   <data name="SubscriptionsBlockTitle" xml:space="preserve">
-    <value>Subscriptions:</value>
+    <value>subscriptions</value>
+  </data>
+  <data name="StorageBlockTitle" xml:space="preserve">
+    <value>storage</value>
   </data>
 </root>

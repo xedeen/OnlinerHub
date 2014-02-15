@@ -113,6 +113,20 @@ namespace Onliner.ViewModels
             }
         }
 
+        private bool _isRead;
+        public bool IsRead
+        {
+            get { return _isRead; }
+            set
+            {
+                if (value != _isRead)
+                {
+                    _isRead = value;
+                    NotifyPropertyChanged("IsRead");
+                }
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)

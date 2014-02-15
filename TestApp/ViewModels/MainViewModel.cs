@@ -33,6 +33,8 @@ namespace Onliner.ViewModels
             Article = new ArticleViewModel();
         }
         
+        private readonly AppSettings _settings = new AppSettings();
+
         public ObservableCollection<FeedItemViewModel> Tech { get; private set; }
         public ObservableCollection<FeedItemViewModel> Auto { get; private set; }
         public ObservableCollection<FeedItemViewModel> People { get; private set; }
@@ -71,6 +73,7 @@ namespace Onliner.ViewModels
         public void SetFeedSelection(FeedItemViewModel item)
         {
             _selectedModel = item;
+            _selectedModel.IsRead = true;
         }
 
 
@@ -273,12 +276,25 @@ namespace Onliner.ViewModels
             }
         }
 
-        private void Sort()
+        private void Sort(bool sortAll=false)
         {
-            switch (_currentFeedType)
+            if (!sortAll)
+                Sort(_currentFeedType);
+            else
+            {
+                Sort(FeedType.Auto);
+                Sort(FeedType.People);
+                Sort(FeedType.Realt);
+                Sort(FeedType.Tech);
+            }
+        }
+
+        private void Sort(FeedType feedType)
+        {
+            switch (feedType)
             {
                 case FeedType.Auto:
-                    var ordered = Auto.OrderByDescending(item => item.PublishDate).ToList();
+                    var ordered = Auto.OrderBy(item => item.IsRead).ThenByDescending(item => item.PublishDate).ToList();
                     Auto.Clear();
                     foreach (var item in ordered)
                     {
@@ -286,7 +302,7 @@ namespace Onliner.ViewModels
                     }
                     break;
                 case FeedType.People:
-                    ordered = People.OrderByDescending(item => item.PublishDate).ToList();
+                    ordered = People.OrderBy(item => item.IsRead).ThenByDescending(item => item.PublishDate).ToList();
                     People.Clear();
                     foreach (var item in ordered)
                     {
@@ -294,7 +310,7 @@ namespace Onliner.ViewModels
                     }
                     break;
                 case FeedType.Realt:
-                    ordered = Realt.OrderByDescending(item => item.PublishDate).ToList();
+                    ordered = Realt.OrderBy(item => item.IsRead).ThenByDescending(item => item.PublishDate).ToList();
                     Realt.Clear();
                     foreach (var item in ordered)
                     {
@@ -302,7 +318,7 @@ namespace Onliner.ViewModels
                     }
                     break;
                 case FeedType.Tech:
-                    ordered = Tech.OrderByDescending(item => item.PublishDate).ToList();
+                    ordered = Tech.OrderBy(item => item.IsRead).ThenByDescending(item => item.PublishDate).ToList();
                     Tech.Clear();
                     foreach (var item in ordered)
                     {
@@ -453,7 +469,7 @@ namespace Onliner.ViewModels
             }
             finally
             {
-                Sort();
+                Sort(true);
                 _storageFeedsRequested = true;
             }
         }

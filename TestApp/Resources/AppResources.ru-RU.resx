@@ -168,6 +168,9 @@
     <value>настройки</value>
   </data>
   <data name="SubscriptionsBlockTitle" xml:space="preserve">
-    <value>Подписки:</value>
+    <value>подписки</value>
+  </data>
+  <data name="StorageBlockTitle" xml:space="preserve">
+    <value>хранилище</value>
   </data>
 </root>

@@ -168,6 +168,9 @@
     <value>налады</value>
   </data>
   <data name="SubscriptionsBlockTitle" xml:space="preserve">
-    <value>Падпiскi:</value>
+    <value>падпiскi</value>
+  </data>
+  <data name="StorageBlockTitle" xml:space="preserve">
+    <value>cховiшча</value>
   </data>
 </root>

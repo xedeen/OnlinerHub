@@ -20,33 +20,49 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="{Binding Path=LocalizedResources.MainTitle, Source={StaticResource LocalizedStrings}}"></TextBlock>
-            <TextBlock Text="{Binding Path=LocalizedResources.SettingsTitle, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+        
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="{Binding Path=LocalizedResources.SubscriptionsBlockTitle, Source={StaticResource LocalizedStrings}}"></TextBlock>
-            </StackPanel>
-            <tk:ToggleSwitch Grid.Row="1" Content="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerTechSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
-            <tk:ToggleSwitch Grid.Row ="2" Content="{Binding Path=LocalizedResources.AutoSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerAutoSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
-            <tk:ToggleSwitch Grid.Row ="3" Content="{Binding Path=LocalizedResources.PeopleSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerPeopleSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
-            <tk:ToggleSwitch Grid.Row ="4" Content="{Binding Path=LocalizedResources.RealtSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerRealtSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
+            <phone:Pivot Title="{Binding Path=LocalizedResources.SettingsTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:PivotItem>
+                    <Grid Margin="12,0,12,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <TextBlock Text="{Binding Path=LocalizedResources.SubscriptionsBlockTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextTitle1Style}"></TextBlock>
+                        </StackPanel>
+                        <tk:ToggleSwitch Grid.Row="1" Content="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerTechSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
+                        <tk:ToggleSwitch Grid.Row ="2" Content="{Binding Path=LocalizedResources.AutoSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerAutoSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
+                        <tk:ToggleSwitch Grid.Row ="3" Content="{Binding Path=LocalizedResources.PeopleSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerPeopleSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
+                        <tk:ToggleSwitch Grid.Row ="4" Content="{Binding Path=LocalizedResources.RealtSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerRealtSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
+                    </Grid>
+                </phone:PivotItem>
+                <phone:PivotItem>
+                    <Grid  Margin="12,0,12,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <TextBlock Text="{Binding Path=LocalizedResources.StorageBlockTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextTitle1Style}"></TextBlock>
+                        </StackPanel>
+                        <tk:ToggleSwitch Grid.Row="1" Content="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerTechSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
+                        <tk:ToggleSwitch Grid.Row ="2" Content="{Binding Path=LocalizedResources.AutoSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerAutoSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
+                        <tk:ToggleSwitch Grid.Row ="3" Content="{Binding Path=LocalizedResources.PeopleSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerPeopleSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
+                        <tk:ToggleSwitch Grid.Row ="4" Content="{Binding Path=LocalizedResources.RealtSectionTitle, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding Source={StaticResource appSettings}, Path=IsOnlinerRealtSubscribed, Mode=TwoWay}"></tk:ToggleSwitch>
+                    </Grid>
+                </phone:PivotItem>
+            </phone:Pivot>
         </Grid>
+        
     </Grid>
 
 </phone:PhoneApplicationPage>

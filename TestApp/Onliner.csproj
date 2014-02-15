@@ -159,8 +159,6 @@
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <None Include="Onliner_2014_02_04_18_13_48.sap" />
-    <None Include="Onliner_2014_02_05_19_31_35.sap" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
@@ -227,7 +225,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
-      <HintPath>..\..\packages\WPtoolkit.Kinnara.4.2014.02.10\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+      <HintPath>..\..\..\sln\packages\WPtoolkit.Kinnara.4.2014.02.10\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Syndication, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
