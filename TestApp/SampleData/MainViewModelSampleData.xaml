@@ -49,4 +49,7 @@
     <vm:MainViewModel.Article>
         <vm:ArticleViewModel Content="dfkgjdlfkjgdlfkjgdlfkgjldfkjgdlfk" Title="Nokia reportedly dropping Samsung as component supplier amongst rumors of..."></vm:ArticleViewModel>
     </vm:MainViewModel.Article>
+    <vm:MainViewModel.Settings>
+        <vm:AppSettings IsMinimalFeedStyle="False" IsOnlinerTechSubscribed="True" IsOnlinerAutoSubscribed="True" IsOnlinerRealtSubscribed="True"></vm:AppSettings>
+    </vm:MainViewModel.Settings>
 </vm:MainViewModel>

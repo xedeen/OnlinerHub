@@ -12,6 +12,7 @@ using System.ServiceModel.Syndication;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Onliner.Model;
@@ -33,7 +34,8 @@ namespace Onliner.ViewModels
             Article = new ArticleViewModel();
         }
         
-        private readonly AppSettings _settings = new AppSettings();
+        
+
 
         public ObservableCollection<FeedItemViewModel> Tech { get; private set; }
         public ObservableCollection<FeedItemViewModel> Auto { get; private set; }
@@ -41,6 +43,14 @@ namespace Onliner.ViewModels
         public ObservableCollection<FeedItemViewModel> Realt { get; private set; }
 
         private bool _storageFeedsRequested = false;
+
+        public readonly AppSettings _appSettings = new AppSettings();
+
+        public AppSettings Settings
+        {
+            get { return _appSettings; }
+        }
+
         private bool _isLoading = false;
         public bool IsLoading
         {
@@ -166,25 +176,10 @@ namespace Onliner.ViewModels
                     ? " {background-color: black ;color:white} "
                     : string.Empty) +
                 "</style></head><title>" +
-                title + "</title><body>" +
+                title + "</title><body" +
+                string.Format(" font-family: \"{0}\"> ", Settings.ArticleFont) +
                 content + "</body></html>";
 
-        }
-
-        public ImageBrush PanoramaBackgroundImage
-        {
-            get
-            {
-                var lightThemeEnabled = (Visibility) Application.Current.Resources
-                    ["PhoneLightThemeVisibility"] == Visibility.Visible;
-
-                var url = lightThemeEnabled
-                    ? "/Onliner;component/Assets/ocean_lights_light.png"
-                    : "/Onliner;component/Assets/ocean_lights_dark.png";
-                var brush = new ImageBrush
-                {ImageSource = new BitmapImage(new Uri(url, UriKind.Relative))};
-                return brush;
-            }
         }
 
         public bool DarkThemeApplied
@@ -391,6 +386,39 @@ namespace Onliner.ViewModels
             }
         }
 
+        public void ClearCache()
+        {
+            try
+            {
+                lock (_readLock)
+                {
+                    using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                    {
+                        if (store.DirectoryExists("Feeds"))
+                        {
+                            foreach (var fileName in store.GetFileNames(Path.Combine("Feeds", "*.*")))
+                            {
+                                store.DeleteFile(Path.Combine("Feeds", fileName));
+                            }
+                            store.DeleteDirectory("Feeds");
+                        }
+                        if (store.DirectoryExists("Articles"))
+                        {
+                            foreach (var fileName in store.GetFileNames(Path.Combine("Articles", "*.*")))
+                            {
+                                store.DeleteFile(Path.Combine("Articles", fileName));
+                            }
+                            store.DeleteDirectory("Articles");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Error clearing cache. Try again later!"));
+            }
+        }
+
         private void SaveArticles()
         {
             lock (_readLock)
@@ -415,27 +443,6 @@ namespace Onliner.ViewModels
         {
             if (_storageFeedsRequested)
                 return;
-            //temp usage
-            /*using (var store = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (store.DirectoryExists("Feeds"))
-                {
-                    foreach (var fileName in store.GetFileNames(Path.Combine("Feeds", "*.*")))
-                    {
-                        store.DeleteFile(Path.Combine("Feeds", fileName));
-                    }
-                    store.DeleteDirectory("Feeds");
-                }
-                if (store.DirectoryExists("Articles"))
-                {
-                    foreach (var fileName in store.GetFileNames(Path.Combine("Articles", "*.*")))
-                    {
-                        store.DeleteFile(Path.Combine("Articles", fileName));
-                    }
-                    store.DeleteDirectory("Articles");
-                }
-            }
-            return;*/
             try
             {
                 lock (_readLock)

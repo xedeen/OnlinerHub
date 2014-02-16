@@ -97,6 +97,15 @@ namespace Onliner.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove all data from local storage.
+        /// </summary>
+        public static string ClearCacheTitle {
+            get {
+                return ResourceManager.GetString("ClearCacheTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading comments....
         /// </summary>
         public static string CommentLoadingMsg {
@@ -115,11 +124,29 @@ namespace Onliner.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do not store read articles locally.
+        /// </summary>
+        public static string DeleteReadArticlesTitle {
+            get {
+                return ResourceManager.GetString("DeleteReadArticlesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading articles....
         /// </summary>
         public static string FeedLoadingMsg {
             get {
                 return ResourceManager.GetString("FeedLoadingMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use minimal style for feed list.
+        /// </summary>
+        public static string FeedStyleTitle {
+            get {
+                return ResourceManager.GetString("FeedStyleTitle", resourceCulture);
             }
         }
         
@@ -133,11 +160,47 @@ namespace Onliner.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Font family.
+        /// </summary>
+        public static string FontFamilyTitle {
+            get {
+                return ResourceManager.GetString("FontFamilyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size.
+        /// </summary>
+        public static string FontSizeTitle {
+            get {
+                return ResourceManager.GetString("FontSizeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to www.onliner.by.
         /// </summary>
         public static string MainTitle {
             get {
                 return ResourceManager.GetString("MainTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark article read when opened.
+        /// </summary>
+        public static string MarkReadWhenOpenTitle {
+            get {
+                return ResourceManager.GetString("MarkReadWhenOpenTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string On {
+            get {
+                return ResourceManager.GetString("On", resourceCulture);
             }
         }
         
@@ -219,6 +282,15 @@ namespace Onliner.Resources {
         public static string TechSectionTitle {
             get {
                 return ResourceManager.GetString("TechSectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to view style.
+        /// </summary>
+        public static string ViewSettingsBlockTitle {
+            get {
+                return ResourceManager.GetString("ViewSettingsBlockTitle", resourceCulture);
             }
         }
     }

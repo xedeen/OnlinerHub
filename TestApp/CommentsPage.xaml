@@ -72,20 +72,18 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{StaticResource commentsViewModel}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel Background="{StaticResource PhoneChromeBrush}" Margin="5,5">
-            <TextBlock Text="www.onliner.by"></TextBlock>
-            <TextBlock  Style="{StaticResource PhoneTextTitle2Style}" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Title}" Margin="1,10"></TextBlock>
-        </StackPanel>
-
         <!--TitlePanel contains the name of the application and page title-->
-        <phone:LongListSelector Name="commentsListBox" Grid.Row="1"
+        <phone:LongListSelector Name="commentsListBox" 
                  DataContext="{StaticResource commentsViewModel}"
                  ItemTemplate="{StaticResource CommentItemTemplate}"                 
                  ItemsSource="{Binding CommentCollection}"                               
-                 ListFooter="{Binding}"/>
+                 ListFooter="{Binding}">
+            <phone:LongListSelector.ListHeader>
+                <StackPanel Background="{StaticResource PhoneChromeBrush}" Margin="5,5">
+                    <TextBlock Text="www.onliner.by"></TextBlock>
+                    <TextBlock  Style="{StaticResource PhoneTextTitle2Style}" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Title}" Margin="1,10"></TextBlock>
+                </StackPanel>
+            </phone:LongListSelector.ListHeader>
+            </phone:LongListSelector>
     </Grid>
 </phone:PhoneApplicationPage>

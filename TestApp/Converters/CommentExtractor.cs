@@ -8,7 +8,11 @@ using Onliner.OnlinerHub;
 namespace Onliner.Converters
 {
     public class CommentExtractor :IValueConverter
-    {   
+    {
+        public CommentExtractor()
+        {
+            
+        }
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var x = "<Grid xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Name=\"ContentPanel\"  Margin=\"12,0,12,0\"><Grid.RowDefinitions>";

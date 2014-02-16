@@ -8,6 +8,11 @@ namespace Onliner.Converters
 {
     public class TextTrimmer : IValueConverter
     {
+        public TextTrimmer()
+        {
+            
+        }
+
         // Clean up text fields from each SyndicationItem. 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -51,8 +56,8 @@ namespace Onliner.Converters
                 // Using LastIndexOf we can find the last space character in the string and truncate there. 
                 fixedString = fixedString.Substring(0, fixedString.LastIndexOf(" "));
             }
-
-            fixedString += "...";
+            if (fixedString.Length < value.ToString().Length)
+                fixedString += "...";
 
             return fixedString;
         }

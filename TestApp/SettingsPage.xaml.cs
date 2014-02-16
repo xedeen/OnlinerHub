@@ -15,6 +15,12 @@ namespace Onliner
         public SettingsPage()
         {
             InitializeComponent();
+            DataContext = App.ViewModel;
+        }
+
+        private void ClearCache_Click(object sender, RoutedEventArgs e)
+        {
+            App.ViewModel.ClearCache();
         }
     }
 }

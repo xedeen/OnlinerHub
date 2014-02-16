@@ -173,4 +173,25 @@
   <data name="StorageBlockTitle" xml:space="preserve">
     <value>cховiшча</value>
   </data>
+  <data name="ViewSettingsBlockTitle" xml:space="preserve">
+    <value>стыль</value>
+  </data>
+  <data name="FeedStyleTitle" xml:space="preserve">
+    <value>Спрошчаны стыль спiса навiн</value>
+  </data>
+  <data name="MarkReadWhenOpenTitle" xml:space="preserve">
+    <value>Памячаць як прачытанае пры адкрыццi артыкула</value>
+  </data>
+  <data name="FontFamilyTitle" xml:space="preserve">
+    <value>Шрыфт</value>
+  </data>
+  <data name="FontSizeTitle" xml:space="preserve">
+    <value>Памер шрыфта</value>
+  </data>
+  <data name="ClearCacheTitle" xml:space="preserve">
+    <value>Ачысціць лакальнае сховішча</value>
+  </data>
+  <data name="DeleteReadArticlesTitle" xml:space="preserve">
+    <value>Не захоўваць прачытанныя артыкулы</value>
+  </data>
 </root>

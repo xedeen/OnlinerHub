@@ -97,6 +97,8 @@
     </Compile>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\CommentExtractor.cs" />
+    <Compile Include="Converters\FeedTemplateSelector.cs" />
+    <Compile Include="Converters\FeedBackGroundSelector.cs" />
     <Compile Include="Converters\TextTrimmer.cs" />
     <Compile Include="ArticlePage.xaml.cs">
       <DependentUpon>ArticlePage.xaml</DependentUpon>
@@ -177,8 +179,6 @@
     <None Include="Service References\OnlinerHub\OnlinerHub2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Resource Include="Assets\ocean_lights_dark.png" />
-    <Resource Include="Assets\ocean_lights_light.png" />
     <Content Include="Assets\AppBar\1f503-Refresh.48.png" />
     <Content Include="ServiceReferences.ClientConfig" />
   </ItemGroup>

@@ -12,190 +12,38 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True"
-    xmlns:vm="clr-namespace:Onliner.ViewModels">
-    <phone:PhoneApplicationPage.Resources>
-        <vm:AppSettings x:Key="appSettings"></vm:AppSettings>
-    </phone:PhoneApplicationPage.Resources>
+    shell:SystemTray.IsVisible="True">
     
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <!-- LOCALIZATION NOTE:
-            To localize the displayed strings copy their values to appropriately named
-            keys in the app's neutral language resource file (AppResources.resx) then
-            replace the hard-coded text value between the attributes' quotation marks
-            with the binding clause whose path points to that string name.
-
-            For example:
-
-                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
-
-            This binding points to the template's string resource named "ApplicationTitle".
-
-            Adding supported languages in the Project Properties tab will create a
-            new resx file per language that can carry the translated values of your
-            UI strings. The binding in these examples will cause the value of the
-            attributes to be drawn from the .resx file that matches the
-            CurrentUICulture of the app at run time.
-         -->
-
-         <!--Panorama control-->
-        <phone:Panorama TitleTemplate="{StaticResource SmallTitleTemplate}" Background="{Binding PanoramaBackgroundImage}" Title="{Binding Path=LocalizedResources.MainTitle, Source={StaticResource LocalizedStrings}}" Name="MainPanorama">
-            <phone:PanoramaItem Name="Tech" Visibility="{Binding Source={StaticResource appSettings}, Path=IsOnlinerTechSubscribed, Converter={StaticResource BoolToHiddenConverter}}">
-                <phone:PanoramaItem.HeaderTemplate>
-                    <DataTemplate>
-                        <Grid Margin="12,0,0,38">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}"
-                                           Style="{StaticResource PanoramaItemHeaderTextStyle}"
-                                           Grid.Row="0"/>
-                        </Grid>
-                    </DataTemplate>
-                </phone:PanoramaItem.HeaderTemplate>
-                <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
-                <phone:LongListSelector Margin="0,-68,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}">
-                    <phone:LongListSelector.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="12,0,0,34" Height="254" Width="401">
-                                <!--Replace rectangle with image-->
-                                <Image Height="224" Width="401" VerticalAlignment="Top" CacheMode="BitmapCache">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{Binding ImageUri}"
-                                     CreateOptions="BackgroundCreation"/>
-                                    </Image.Source>
-                                </Image>
-                                <StackPanel Width="401" Height="170" Margin="-401,53,0,0">
-                                    <StackPanel.Background>
-                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".8"/>
-                                    </StackPanel.Background>
-                                    <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSmallStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
-                                </StackPanel>
-                                
-                            </StackPanel>
-                        </DataTemplate>
-                    </phone:LongListSelector.ItemTemplate>
-                </phone:LongListSelector>
+        <phone:Panorama TitleTemplate="{StaticResource SmallTitleTemplate}" 
+                        Background="{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedBackGroundSelector}}" Title="{Binding Path=LocalizedResources.MainTitle, Source={StaticResource LocalizedStrings}}" Name="MainPanorama">
+            <phone:PanoramaItem Name="Tech" Visibility="{Binding Settings.IsOnlinerTechSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                                Header="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}"
+                                HeaderTemplate="{StaticResource PanoramaItemHeaderTemplate}">
+                <phone:LongListSelector Margin="0,-68,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}"
+                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
             </phone:PanoramaItem>
-            <phone:PanoramaItem Name="Auto"  Visibility="{Binding Source={StaticResource appSettings}, Path=IsOnlinerAutoSubscribed, Converter={StaticResource BoolToHiddenConverter}}">
-                <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
-                <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Auto}">
-                    <phone:LongListSelector.ListHeaderTemplate>
-                        <DataTemplate>
-                            <Grid Margin="12,0,0,38">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Path=LocalizedResources.AutoSectionTitle, Source={StaticResource LocalizedStrings}}"
-                                           Style="{StaticResource PanoramaItemHeaderTextStyle}"
-                                           Grid.Row="0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </phone:LongListSelector.ListHeaderTemplate>
-                    <phone:LongListSelector.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="12,0,0,34" Height="254" Width="401">
-                                <!--Replace rectangle with image-->
-                                <Image Height="224" Width="401" VerticalAlignment="Top">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{Binding ImageUri}"
-                                     CreateOptions="BackgroundCreation"/>
-                                    </Image.Source>
-                                </Image>
-                                <StackPanel Width="401" Height="170" Margin="-401,53,0,0">
-                                    <StackPanel.Background>
-                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".8"/>
-                                    </StackPanel.Background>
-                                    <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
-                                </StackPanel>
-
-                            </StackPanel>
-                        </DataTemplate>
-                    </phone:LongListSelector.ItemTemplate>
-                </phone:LongListSelector>
+            <phone:PanoramaItem Name="Auto"  
+                                Visibility="{Binding Settings.IsOnlinerAutoSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                                HeaderTemplate="{StaticResource PanoramaItemHeaderTemplate}"
+                                Header="{Binding Path=LocalizedResources.AutoSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Auto}"
+                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
             </phone:PanoramaItem>
-            <phone:PanoramaItem Name="People"  Visibility="{Binding Source={StaticResource appSettings}, Path=IsOnlinerPeopleSubscribed, Converter={StaticResource BoolToHiddenConverter}}">
-                <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
-                <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding People}">
-                    <phone:LongListSelector.ListHeaderTemplate>
-                        <DataTemplate>
-                            <Grid Margin="12,0,0,38">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Path=LocalizedResources.PeopleSectionTitle, Source={StaticResource LocalizedStrings}}"
-                                           Style="{StaticResource PanoramaItemHeaderTextStyle}"
-                                           Grid.Row="0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </phone:LongListSelector.ListHeaderTemplate>
-                    <phone:LongListSelector.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="12,0,0,34" Height="254" Width="401">
-                                <!--Replace rectangle with image-->
-                                <Image Height="224" Width="401" VerticalAlignment="Top">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{Binding ImageUri}"
-                                     CreateOptions="BackgroundCreation"/>
-                                    </Image.Source>
-                                </Image>
-                                <StackPanel Width="401" Height="170" Margin="-401,53,0,0">
-                                    <StackPanel.Background>
-                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".8"/>
-                                    </StackPanel.Background>
-                                    <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
-                                </StackPanel>
-
-                            </StackPanel>
-                        </DataTemplate>
-                    </phone:LongListSelector.ItemTemplate>
-                </phone:LongListSelector>
+            <phone:PanoramaItem Name="People"  
+                                Visibility="{Binding Settings.IsOnlinerPeopleSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                                HeaderTemplate="{StaticResource PanoramaItemHeaderTemplate}"
+                                Header="{Binding Path=LocalizedResources.PeopleSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding People}"
+                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
             </phone:PanoramaItem>
-            <phone:PanoramaItem Name="Realt"  Visibility="{Binding Source={StaticResource appSettings}, Path=IsOnlinerRealtSubscribed, Converter={StaticResource BoolToHiddenConverter}}">
-                <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
-                <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Realt}">
-                    <phone:LongListSelector.ListHeaderTemplate>
-                        <DataTemplate>
-                            <Grid Margin="12,0,0,38">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Path=LocalizedResources.RealtSectionTitle, Source={StaticResource LocalizedStrings}}"
-                                           Style="{StaticResource PanoramaItemHeaderTextStyle}"
-                                           Grid.Row="0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </phone:LongListSelector.ListHeaderTemplate>
-                    <phone:LongListSelector.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="12,0,0,34" Height="254" Width="401">
-                                <!--Replace rectangle with image-->
-                                <Image Height="224" Width="401" VerticalAlignment="Top">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{Binding ImageUri}"
-                                     CreateOptions="BackgroundCreation"/>
-                                    </Image.Source>
-                                </Image>
-                                <StackPanel Width="401" Height="170" Margin="-401,53,0,0">
-                                    <StackPanel.Background>
-                                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".8"/>
-                                    </StackPanel.Background>
-                                    <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
-                                </StackPanel>
-
-                            </StackPanel>
-                        </DataTemplate>
-                    </phone:LongListSelector.ItemTemplate>
-                </phone:LongListSelector>
+            <phone:PanoramaItem Name="Realt"  
+                                Visibility="{Binding Settings.IsOnlinerRealtSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                                HeaderTemplate="{StaticResource PanoramaItemHeaderTemplate}"
+                                Header="{Binding Path=LocalizedResources.RealtSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Realt}"
+                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
             </phone:PanoramaItem>
         </phone:Panorama>
     </Grid>

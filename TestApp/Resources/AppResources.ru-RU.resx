@@ -173,4 +173,25 @@
   <data name="StorageBlockTitle" xml:space="preserve">
     <value>хранилище</value>
   </data>
+  <data name="ViewSettingsBlockTitle" xml:space="preserve">
+    <value>стиль</value>
+  </data>
+  <data name="FeedStyleTitle" xml:space="preserve">
+    <value>Упрощенный стиль списка новостей</value>
+  </data>
+  <data name="MarkReadWhenOpenTitle" xml:space="preserve">
+    <value>Помечать как прочитанное при открытии</value>
+  </data>
+  <data name="FontFamilyTitle" xml:space="preserve">
+    <value>Шрифт</value>
+  </data>
+  <data name="FontSizeTitle" xml:space="preserve">
+    <value>Размер шрифта</value>
+  </data>
+  <data name="ClearCacheTitle" xml:space="preserve">
+    <value>Очистить локальное хранилище</value>
+  </data>
+  <data name="DeleteReadArticlesTitle" xml:space="preserve">
+    <value>Не сохранять прочитанные статьи</value>
+  </data>
 </root>
