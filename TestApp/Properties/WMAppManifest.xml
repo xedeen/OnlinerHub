@@ -10,7 +10,7 @@
     <Language code="be-BY" />
     <Language code="en" />
   </Languages>
-  <App xmlns="" ProductID="{8b8377b2-5e2b-47ca-b422-964f7ad02c02}" Title="Onliner Hub" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Eugen Surovets" Description="Неофициальный клиент www.onliner.by с возможностью чтения комментариев к статьям" Publisher="Eugen Surovets" PublisherID="{6c393f0e-fa85-4b10-b068-5ec659ceb7ae}">
+  <App xmlns="" ProductID="{8b8377b2-5e2b-47ca-b422-964f7ad02c02}" Title="Onliner Hub" RuntimeType="Silverlight" Version="1.0.1.0" Genre="apps.normal" Author="Eugen Surovets" Description="Неофициальный клиент www.onliner.by с возможностью чтения комментариев к статьям" Publisher="Eugen Surovets" PublisherID="{6c393f0e-fa85-4b10-b068-5ec659ceb7ae}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />

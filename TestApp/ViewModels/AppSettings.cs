@@ -19,6 +19,7 @@ namespace Onliner.ViewModels
         private const string isMinimalFeedStyle = "isMinimalFeedStyle";
         private const string articleFontName = "articleFontName";
         private const string articleFontSize = "articleFontSize";
+        private const string isMarkReadWhenOpen = "isMarkReadWhenOpen";
         private const string isDeleteReadArticles = "isDeleteReadArticles";
         
         private const bool subscribtionSettingDefault = true;
@@ -58,6 +59,20 @@ namespace Onliner.ViewModels
                 {
                     Save();
                     NotifyPropertyChanged("ArticleFontSize");
+                }
+            }
+        }
+
+        public bool IsMarkReadWhenOpen
+        {
+            get { return GetValueOrDefault<bool>(isMarkReadWhenOpen, subscribtionSettingDefault); }
+
+            set
+            {
+                if (AddOrUpdateValue(isMarkReadWhenOpen, value))
+                {
+                    Save();
+                    NotifyPropertyChanged("IsMarkReadWhenOpen");
                 }
             }
         }

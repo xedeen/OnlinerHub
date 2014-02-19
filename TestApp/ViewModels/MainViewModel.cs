@@ -83,7 +83,8 @@ namespace Onliner.ViewModels
         public void SetFeedSelection(FeedItemViewModel item)
         {
             _selectedModel = item;
-            _selectedModel.IsRead = true;
+            if (Settings.IsMarkReadWhenOpen)
+                _selectedModel.IsRead = true;
         }
 
 
@@ -171,15 +172,35 @@ namespace Onliner.ViewModels
         private string FixHtml(string title, string content)
         {
             return
-                "<!doctype html><html><head><style type=\"text/css\">body" +
-                (DarkThemeApplied
-                    ? " {background-color: black ;color:white} "
-                    : string.Empty) +
-                "</style></head><title>" +
-                title + "</title><body" +
-                string.Format(" font-family: \"{0}\"> ", Settings.ArticleFont) +
-                content + "</body></html>";
+                "<!doctype html><html><head><style type=\"text/css\">body"
+                + "{font-family: " + Settings.ArticleFont + "; "
+                + "font-size: " + FromFontSize(Settings.ArticleFontSize) + "; "
+                + (DarkThemeApplied
+                    ? " background-color: black ;color:white; "
+                    : string.Empty)
+                + "}</style></head><title>"
+                + title + "</title><body"
+                + string.Format(" font-family: \"{0}\"> ", Settings.ArticleFont)
+                + content + "</body></html>";
 
+        }
+
+        private string FromFontSize(string articleFontSize)
+        {
+            switch (articleFontSize)
+            {
+                case "x-small":
+                    return "9px";
+                case "small":
+                    return "13px";
+                case "medium":
+                    return "16px";
+                case "large":
+                    return "22px";
+                case "x-large":
+                    return "24px";
+            }
+            return "16px";
         }
 
         public bool DarkThemeApplied
@@ -369,6 +390,7 @@ namespace Onliner.ViewModels
 
         private void SaveFeeds()
         {
+            var saveReadFeeds = !Settings.IsDeleteReadArticles;
             lock (_readLock)
             {
                 using (var store = IsolatedStorageFile.GetUserStoreForApplication())
@@ -378,9 +400,13 @@ namespace Onliner.ViewModels
 
                     foreach (var model in Auto.Union(Tech).Union(Realt).Union(People))
                     {
-                        var fileName = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(model.Uri)) + ".feed";
-                        fileName = Path.Combine("Feeds", fileName);
-                        Save(store, fileName, model);
+                        if (saveReadFeeds || model.IsRead == false)
+                        {
+                            var fileName = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(model.Uri)) +
+                                           ".feed";
+                            fileName = Path.Combine("Feeds", fileName);
+                            Save(store, fileName, model);
+                        }
                     }
                 }
             }

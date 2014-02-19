@@ -21,6 +21,8 @@ namespace Onliner
         private void ClearCache_Click(object sender, RoutedEventArgs e)
         {
             App.ViewModel.ClearCache();
+            var button = e.OriginalSource as Button;
+            if (button != null) button.IsEnabled = false;
         }
     }
 }
