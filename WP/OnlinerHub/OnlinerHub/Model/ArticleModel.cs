@@ -51,6 +51,8 @@ namespace OnlinerHub.Model
         #endregion
 
         #region inner_stuff
+
+        private Uri _currentUri;
         private CookieContainer _cookies;
         private ArticleLoadedError _error;
         private readonly AutoResetEvent _postEvent = new AutoResetEvent(false);
@@ -77,6 +79,7 @@ namespace OnlinerHub.Model
                 _error = null;
                 bool useRedirect = false;
 
+                _currentUri = new Uri(uri);
                 if (null == _cookies)
                 {
                     _cookies = new CookieContainer();
@@ -153,6 +156,35 @@ namespace OnlinerHub.Model
             NotifyArticleLoaded(_error);
         }
 
+        private void FixLinks(HAP.HtmlNode parentNode)
+        {
+            if (parentNode.Name == "a")
+            {
+                if (parentNode.HasAttributes && parentNode.Attributes.Contains("href"))
+                {
+                    var uriName = parentNode.Attributes["href"].Value;
+                    Uri uriResult;
+                    var result = Uri.TryCreate(uriName, UriKind.Absolute, out uriResult) &&
+                                 uriResult.Scheme == Uri.UriSchemeHttp;
+                    if (!result)
+                    {
+                        uriResult = new Uri(_currentUri, uriName);
+                        parentNode.Attributes["href"].Value = uriResult.ToString();
+                    }
+
+                }
+                if ((!parentNode.HasAttributes) || !parentNode.Attributes.Contains("target"))
+                    parentNode.Attributes.Add("target", "_blank");
+            }
+            if (parentNode.HasChildNodes)
+            {
+                foreach (var node in parentNode.ChildNodes)
+                {
+                    FixLinks(node);
+                }
+            }
+        }
+
         private void ProcessPost(HAP.HtmlDocument html)
         {
             var sb = new StringBuilder();
@@ -163,6 +195,8 @@ namespace OnlinerHub.Model
             
             var node = html.DocumentNode.SelectSingleNode("//article");
             if (null==node) return;
+
+            FixLinks(node);
             
             sb.AppendLine("<article class=\"b-posts-1-item\">");
             sb.AppendLine("<div class=\"article_title\">");

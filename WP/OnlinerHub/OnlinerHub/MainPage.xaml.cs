@@ -36,7 +36,7 @@ namespace OnlinerHub
 
             ArticleModel model = new ArticleModel();
             model.ArticleLoaded += model_ArticleLoaded;
-            model.BeginLoad("http://auto.onliner.by/2014/02/27/proisshestvie-84/");
+            model.BeginLoad("http://auto.onliner.by/2014/02/28/tank-4/");
         }
 
         void model_ArticleLoaded(object sender, ArticleModel.ArticleLoadedEventArgs args)
