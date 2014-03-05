@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.ServiceModel.Syndication;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -172,15 +173,20 @@ namespace Onliner.ViewModels
         private string FixHtml(string title, string content)
         {
             return
-                "<!doctype html><html><head><style type=\"text/css\">body"
-                + "{font-family: " + Settings.ArticleFont + "; "
+                "<!doctype html><html><head><style type=\"text/css\">" +
+                (DarkThemeApplied
+                    ? ".article_title{width:100%;background-color:#444; padding-bottom:16px;} "
+                    : ".article_title{width:100%;background-color:silver; padding-bottom:16px;} ") +
+                    " .article_title h3{margin:5px;} "+
+                "body {font-family: " + Settings.ArticleFont + "; "
                 + "font-size: " + FromFontSize(Settings.ArticleFontSize) + "; "
                 + (DarkThemeApplied
                     ? " background-color: black ;color:white; "
                     : string.Empty)
                 + "}</style></head><title>"
                 + title + "</title><body"
-                + string.Format(" font-family: \"{0}\"> ", Settings.ArticleFont)
+                + string.Format(" font-family: \"{0}\"> ", Settings.ArticleFont) +
+                string.Format("<div class = \"article_title\"><h3>{0}</h3></div>", title)
                 + content + "</body></html>";
 
         }
@@ -561,6 +567,57 @@ namespace Onliner.ViewModels
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private string SelectItemFromFeed(ObservableCollection<FeedItemViewModel> feedCollection, bool isNextItem)
+        {
+            var currIndex = 0;
+            currIndex += feedCollection.TakeWhile(item => item.Uri != _selectedModel.Uri).Count();
+            if ((!isNextItem && currIndex > 0) || (isNextItem && currIndex < feedCollection.Count - 1))
+            {
+                var newIndex = isNextItem ? currIndex + 1 : currIndex - 1;
+                SetFeedSelection(feedCollection[newIndex]);
+                return feedCollection[newIndex].Uri;
+            }
+            return null;
+        }
+
+        public string GetPrevUri()
+        {
+            if (null == _selectedModel)
+                return null;
+
+            switch (_selectedModel.FeedType)
+            {
+                case FeedType.Auto:
+                    return SelectItemFromFeed(Auto, false);
+                case FeedType.People:
+                    return SelectItemFromFeed(People, false);
+                case FeedType.Realt:
+                    return SelectItemFromFeed(Realt, false);
+                case FeedType.Tech:
+                    return SelectItemFromFeed(Tech, false);
+            }
+            return null;
+        }
+
+        public string GetNextUri()
+        {
+            if (null == _selectedModel)
+                return null;
+
+            switch (_selectedModel.FeedType)
+            {
+                case FeedType.Auto:
+                    return SelectItemFromFeed(Auto, true);
+                case FeedType.People:
+                    return SelectItemFromFeed(People, true);
+                case FeedType.Realt:
+                    return SelectItemFromFeed(Realt, true);
+                case FeedType.Tech:
+                    return SelectItemFromFeed(Tech, true);
+            }
+            return null;
         }
     }
 }
