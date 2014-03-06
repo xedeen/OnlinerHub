@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using HtmlAgilityPack;
 
 namespace Onliner.Model
 {
@@ -45,6 +46,8 @@ namespace Onliner.Model
 
         #region properties
         public List<global::OnlinerHub.Model.CommentModel> Comments { get; set; }
+        public ArticleOutfit ArticleOutfit { get; set; }
+
         #endregion
 
         #region inner_stuff
@@ -148,7 +151,7 @@ namespace Onliner.Model
 
         private void ProcessArticle(HtmlAgilityPack.HtmlDocument html)
         {
-            ProcessPost(html);
+            ArticleOutfit = ProcessPost(html, CreateMappings());
             Comments = ProcessComments(html);
             NotifyArticleLoaded(_error);
         }
@@ -173,6 +176,17 @@ namespace Onliner.Model
                 if ((!parentNode.HasAttributes) || !parentNode.Attributes.Contains("target"))
                     parentNode.Attributes.Add("target", "_blank");
             }
+
+            if (parentNode.Name == "iframe")
+            {
+                if (parentNode.HasAttributes && parentNode.Attributes.Contains("src"))
+                {
+                    var uriName = parentNode.Attributes["src"].Value;
+                    uriName = uriName.Replace("<iframe src=\"//", "<iframe src=\"http://");
+                    parentNode.Attributes["src"].Value = uriName;
+                }
+            }
+
             if (parentNode.HasChildNodes)
             {
                 foreach (var node in parentNode.ChildNodes)
@@ -182,16 +196,122 @@ namespace Onliner.Model
             }
         }
 
-        private void ProcessPost(HtmlAgilityPack.HtmlDocument html)
+
+
+        private List<Mapping> CreateMappings()
+        {
+            var lst = new List<Mapping>();
+
+            lst.Add(new Mapping
+            {
+                DestinationName = "ParentNode",
+                Type = MappingType.SingleNodeContent,
+                XPath = "//article"
+            });
+
+            lst.Add( new Mapping
+            {
+                DestinationName = "CommentsCount",
+                Type = MappingType.NodeValue,
+                XPath = "a[@class='comment-icon-1']/span"
+            });
+
+            lst.Add(new Mapping
+            {
+                DestinationName = "Tags",
+                Type = MappingType.Tagging,
+                XPath = "div[@class='b-post-tags-1']/*[self::strong or self::small]/a",
+            });
+
+            return lst;
+        }
+
+        private ArticleOutfit ProcessPost(HtmlAgilityPack.HtmlDocument html, List<Mapping> mappings )
+        {
+            var mapping = mappings.FirstOrDefault(m => m.DestinationName == "ParentNode");
+            if (null == mapping) return null;
+
+            var node = html.DocumentNode.SelectSingleNode(mapping.XPath);
+            if (null == node) return null;
+            FixLinks(node);
+
+            var result = new ArticleOutfit();
+            foreach (var mapping1 in mappings)
+            {
+                if (mapping1.DestinationName.ToLower().Equals("parentnode"))
+                    continue;
+
+                ProcessMapping(mapping1, node, result);
+            }
+            return result;
+        }
+
+        private void ProcessMapping(Mapping mapping, HtmlNode node, ArticleOutfit result)
+        {
+            var propertyInfo = result.GetType().GetProperty(mapping.DestinationName);
+            if (null==propertyInfo) return;
+
+            switch (mapping.Type)
+            {
+                case MappingType.SingleNodeContent:
+                    var select = node.SelectSingleNode(mapping.XPath);
+                    if (null != select)
+                        propertyInfo.SetValue(result, Convert.ChangeType(select.OuterHtml, propertyInfo.PropertyType));
+                    break;
+                case MappingType.NodeValue:
+                    select = node.SelectSingleNode(mapping.XPath);
+                    if (null != select)
+                    {
+                        propertyInfo.SetValue(result, Convert.ChangeType(select.InnerText, propertyInfo.PropertyType));
+                    }
+                    break;
+                case MappingType.NodeCollectionContent:
+                    var content = new StringBuilder();
+                    foreach (var childNode in node.ChildNodes)
+                    {
+                        if (!string.IsNullOrEmpty(mapping.IncludeNodeTypes) && !mapping.IncludeNodeTypes.Contains(childNode.Name))
+                            continue;
+                        if (!string.IsNullOrEmpty(mapping.ExcludeNodeTypes) && mapping.ExcludeNodeTypes.Contains(childNode.Name))
+                            continue;
+                        content.Append(childNode.OuterHtml);
+                    }
+                    propertyInfo.SetValue(result, Convert.ChangeType(content.ToString(), propertyInfo.PropertyType));
+                    break;
+                case MappingType.Tagging:
+                    var tagsOuter = node.SelectNodes(mapping.XPath);
+                    var tagList = new List<ArticleTag>();
+                    if (null == tagsOuter)
+                        break;
+
+                    foreach (var tagNode in tagsOuter)
+                    {
+                        var tag = new ArticleTag {TagType = ArticleTagType.Small};
+                        if (tagNode.HasAttributes && tagNode.Attributes.Contains("href"))
+                        {
+                            tag.Content = tagNode.InnerText;
+                            tag.Uri = tagNode.Attributes["href"].Value;
+
+                            if (tagNode.ParentNode.Name.ToLower().Equals("strong")) tag.TagType = ArticleTagType.Strong;
+                            if (!string.IsNullOrEmpty(tagNode.ParentNode.InnerText))
+                                tag.Category = tagNode.ParentNode.InnerText;
+                            tagList.Add(tag);
+                        }
+                    }
+                    propertyInfo.SetValue(result, Convert.ChangeType(tagList, propertyInfo.PropertyType));
+                    break;
+            }
+        }
+
+        private ArticleOutfit ProcessPost2(HtmlAgilityPack.HtmlDocument html)
         {
             var sb = new StringBuilder();
-            var resource = System.Windows.Application.GetResourceStream(new Uri(@"/OnlinerHub;component/Resources/PageCss.txt", UriKind.Relative));
+            //var resource = Application.GetResourceStream(new Uri(@"/OnlinerHub;component/Resources/PageCss.txt", UriKind.Relative));
 
-            var streamReader = new StreamReader(resource.Stream);
-            sb.Append(streamReader.ReadToEnd());
+            //var streamReader = new StreamReader(resource.Stream);
+            //sb.Append(streamReader.ReadToEnd());
             
             var node = html.DocumentNode.SelectSingleNode("//article");
-            if (null==node) return;
+            if (null==node) return null;
 
             FixLinks(node);
             
@@ -236,6 +356,7 @@ namespace Onliner.Model
             sb.AppendLine("</body>");
             sb.AppendLine("</html>");
             var s = sb.ToString();
+            return new ArticleOutfit {Content = sb.ToString()};
         }
 
 

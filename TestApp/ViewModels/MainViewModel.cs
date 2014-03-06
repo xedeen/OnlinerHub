@@ -106,6 +106,10 @@ namespace Onliner.ViewModels
 
         public void LoadArticle(string uri)
         {
+            var model = new Model.ArticleModel();
+            model.ArticleLoaded += model_ArticleLoaded;
+            model.BeginLoad(uri);
+
             if (_localArticles.ContainsKey(Article.Uri))
             {
                 Article.Content = _localArticles[Article.Uri].Content;
@@ -138,6 +142,11 @@ namespace Onliner.ViewModels
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(e.Message));
             }
+        }
+
+        void model_ArticleLoaded(object sender, ArticleModel.ArticleLoadedEventArgs args)
+        {
+            var model = args.ArticleModel;
         }
 
         private void wc_GetArticleCompleted(object sender, OpenReadCompletedEventArgs e)
@@ -177,7 +186,7 @@ namespace Onliner.ViewModels
                 (DarkThemeApplied
                     ? ".article_title{width:100%;background-color:#444; padding-bottom:16px;} "
                     : ".article_title{width:100%;background-color:silver; padding-bottom:16px;} ") +
-                    " .article_title h3{margin:5px;} "+
+                    ""+
                 "body {font-family: " + Settings.ArticleFont + "; "
                 + "font-size: " + FromFontSize(Settings.ArticleFontSize) + "; "
                 + (DarkThemeApplied

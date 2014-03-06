@@ -115,6 +115,7 @@
     <Compile Include="Model\ContentModel.cs" />
     <Compile Include="Model\ParagraphItemModel.cs" />
     <Compile Include="Model\ParagraphModel.cs" />
+    <Compile Include="Model\ArticleOutfit.cs" />
     <Compile Include="Model\ReaderResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
