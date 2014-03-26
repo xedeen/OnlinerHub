@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IOnlinerHub.cs" />
+    <Compile Include="Model\FeedCard.cs" />
     <Compile Include="OnlinerHub.svc.cs">
       <DependentUpon>OnlinerHub.svc</DependentUpon>
     </Compile>

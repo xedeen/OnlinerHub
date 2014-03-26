@@ -42,5 +42,6 @@
                 </i:Interaction.Triggers>
             </ToggleButton>
         </StackPanel>
+        <phone:WebBrowser Name="Browser" Margin="10,0,10,78"/>
     </Grid>
 </phone:PhoneApplicationPage>

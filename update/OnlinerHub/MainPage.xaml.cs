@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using OnlinerHub.Model;
 using OnlinerHub.Resources;
 
 namespace OnlinerHub
@@ -33,16 +33,6 @@ namespace OnlinerHub
             {
                 App.ViewModel.LoadData();
             }
-
-            ArticleModel model = new ArticleModel();
-            model.ArticleLoaded += model_ArticleLoaded;
-            model.BeginLoad("http://auto.onliner.by/2014/02/28/tank-4/");
-        }
-
-        void model_ArticleLoaded(object sender, ArticleModel.ArticleLoadedEventArgs args)
-        {
-            if (null != args.ArticleModel.ArticleContent)
-                Browser.NavigateToString(args.ArticleModel.ArticleContent);
         }
 
         // Sample code for building a localized ApplicationBar
@@ -60,5 +50,9 @@ namespace OnlinerHub
         //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
         //    ApplicationBar.MenuItems.Add(appBarMenuItem);
         //}
+        private void SettingsPanelButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
     }
 }

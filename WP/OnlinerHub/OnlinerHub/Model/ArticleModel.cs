@@ -48,6 +48,14 @@ namespace OnlinerHub.Model
 
         #region properties
         public List<CommentModel> Comments { get; set; }
+
+        private string _articleContent = string.Empty;
+
+        public string ArticleContent
+        {
+            get { return _articleContent; }
+        }
+
         #endregion
 
         #region inner_stuff
@@ -151,7 +159,7 @@ namespace OnlinerHub.Model
 
         private void ProcessArticle(HAP.HtmlDocument html)
         {
-            ProcessPost(html);
+            _articleContent = ProcessPost(html);
             Comments = ProcessComments(html);
             NotifyArticleLoaded(_error);
         }
@@ -185,16 +193,28 @@ namespace OnlinerHub.Model
             }
         }
 
-        private void ProcessPost(HAP.HtmlDocument html)
+        private string ProcessPost(HAP.HtmlDocument html)
         {
             var sb = new StringBuilder();
-            var resource = System.Windows.Application.GetResourceStream(new Uri(@"/OnlinerHub;component/Resources/PageCss.txt", UriKind.Relative));
+            try
+            {
+                var resource = System.Windows.Application.GetResourceStream(new Uri(@"/OnlinerHub;component/Resources/PageCss.txt", UriKind.Relative));
 
-            var streamReader = new StreamReader(resource.Stream);
-            sb.Append(streamReader.ReadToEnd());
+                var streamReader = new StreamReader(resource.Stream);
+                sb.Append(streamReader.ReadToEnd());
+            }
+            catch (Exception e)
+            {
+                _error = new ArticleLoadedError {Message = e.Message};
+                return null;
+            }
             
             var node = html.DocumentNode.SelectSingleNode("//article");
-            if (null==node) return;
+            if (null == node)
+            {
+                _error = new ArticleLoadedError {Message = "Cannot find root article node"};
+                return null;
+            }
 
             FixLinks(node);
             
@@ -238,7 +258,7 @@ namespace OnlinerHub.Model
             sb.AppendLine("</article>");
             sb.AppendLine("</body>");
             sb.AppendLine("</html>");
-            var s = sb.ToString();
+            return sb.ToString();
         }
 
 
