@@ -22,31 +22,82 @@ namespace CacheHub
 
         [OperationContract]
         [WebInvoke(UriTemplate = "content/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
-        void GetContent(string articleUrl);
+        ArticlePageDto GetContent(string articleUrl, int cursor);
+    }
+
+    public class FullArticlePage
+    {
+        public List<ArticlePageItemBase> ArticleParagraphs { get; set; }
+        public List<CommentDto> Comments { get; set; }
     }
 
     [DataContract]
-    public class ArticleDto
+    [KnownType(typeof(ArticleParagraphDto))]
+    [KnownType(typeof(ArticleTableDto))]
+    public class ArticlePageDto
     {
-        public List<ArticleParagraphDto> Paragraphs { get; set; }
+        [DataMember]
+        public string Error { get; set; }
+
+        [DataMember]
+        public List<ArticlePageItemBase> paragraphs { get; set; }
+
+        [DataMember]
+        public int? previous_page_cursor { get; set; }
+
+        [DataMember]
+        public int? next_page_cursor { get; set; }
     }
 
     [DataContract]
-    public class ArticleParagraphDto
+    public class ArticlePageItemBase
     {
+        public int inner_id { get; set; }
+    }
+
+    [DataContract]
+    public class ArticleParagraphDto : ArticlePageItemBase
+    {
+        [DataMember]
+        public List<ArticleParagraphContentDto> Content { get; set; }
+    }
+
+    [DataContract]
+    public class ArticleTableDto : ArticlePageItemBase
+    {
+        [DataMember]
+        public List<ArticleTableRowDto> Rows { get; set; }
+    }
+
+    [DataContract]
+    public class ArticleTableRowDto
+    {
+        [DataMember]
+        public List<ArticleTableCellDto> Cells { get; set; }
+    }
+
+    [DataContract]
+    public class ArticleTableCellDto
+    {
+        [DataMember]
         public List<ArticleParagraphContentDto> Content { get; set; }
     }
 
     [DataContract]
     public class ArticleParagraphContentDto
     {
+        [DataMember]
         public string ContentType { get; set; } //t for text, a for link, i for em b for strong, v for iframe
+        [DataMember]
         public string Content { get; set; }
+        [DataMember]
         public string Url { get; set; } //null for non-link or image source or iframe source
+        [DataMember]
         public string Thumbnail { get; set; } //only for youtube video
+        [DataMember]
         public string VideoId { get; set; }
+        [DataMember]
         public List<ArticleParagraphContentDto> ChildContent { get; set; }
-        
     }
 
 

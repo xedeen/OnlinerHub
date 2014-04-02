@@ -28,20 +28,19 @@ namespace CacheHub
         {
             const int numberOfObjectsPerPage = 20;
             var cusrorNext = cursor;
+            var page = ProcessArticlePage(articleUrl);
 
-            var comments = ProcessComments(articleUrl);
-
-            if (null == comments)
+            if (null == page || null == page.Comments)
                 return new CommentsPageDto {Error = "Cannot retrieve comments"};
 
-            if (comments.Count > numberOfObjectsPerPage)
+            if (page.Comments.Count > numberOfObjectsPerPage)
             {
-                cusrorNext = comments.Count > (cursor + 1)*numberOfObjectsPerPage
+                cusrorNext = page.Comments.Count > (cursor + 1) * numberOfObjectsPerPage
                                  ? cursor + 1
                                  : cursor;
 
-                comments =
-                    comments.Where(
+                page.Comments =
+                    page.Comments.Where(
                         c =>
                         c.inner_id >= cursor * numberOfObjectsPerPage && c.inner_id < (cursor + 1) * numberOfObjectsPerPage)
                             .ToList();
@@ -49,36 +48,104 @@ namespace CacheHub
 
             return new CommentsPageDto
                        {
-                           comments = comments,
+                           comments = page.Comments,
                            next_page_cursor = cusrorNext == cursor ? (int?) null : cusrorNext,
                            previous_page_cursor = cursor > 0 ? cursor - 1 : (int?) null
                        };
         }
 
-        public void GetContent(string articleUrl)
+        public ArticlePageDto GetContent(string articleUrl, int cursor)
         {
-            
+            const int numberOfObjectsPerPage = 3;
+            var cursorNext = cursor;
+            var page = ProcessArticlePage(articleUrl);
+
+            if (null == page || null == page.ArticleParagraphs)
+                return new ArticlePageDto { Error = "Cannot retrieve comments" };
+
+            if (page.ArticleParagraphs.Count > numberOfObjectsPerPage)
+            {
+                cursorNext = page.ArticleParagraphs.Count > (cursor + 1) * numberOfObjectsPerPage
+                                 ? cursor + 1
+                                 : cursor;
+
+                page.ArticleParagraphs =
+                    page.ArticleParagraphs.Where(
+                        c =>
+                        c.inner_id >= cursor * numberOfObjectsPerPage && c.inner_id < (cursor + 1) * numberOfObjectsPerPage)
+                            .ToList();
+            }
+
+            return new ArticlePageDto
+            {
+                paragraphs = page.ArticleParagraphs,
+                next_page_cursor = cursorNext == cursor ? (int?)null : cursorNext,
+                previous_page_cursor = cursor > 0 ? cursor - 1 : (int?)null
+            };
         }
 
-        private ArticleDto ProcessContentInner(HAP.HtmlDocument html)
+        private FullArticlePage ProcessArticlePage(string articleUrl)
+        {
+            var fullPage = new FullArticlePage();
+
+            ObjectCache cache = MemoryCache.Default;
+            if (cache.Contains(articleUrl + "/comments"))
+                fullPage.Comments = cache.Get(articleUrl + "/comments") as List<CommentDto>;
+            if (cache.Contains(articleUrl + "/content"))
+                fullPage.ArticleParagraphs = cache.Get(articleUrl + "/content") as List<ArticlePageItemBase>;
+
+            if (null == fullPage.Comments || null == fullPage.ArticleParagraphs)
+            {
+                try
+                {
+                    var httpWebRequest = (HttpWebRequest) WebRequest.Create(articleUrl);
+                    httpWebRequest.Method = WebRequestMethods.Http.Get;
+                    var response = httpWebRequest.GetResponse();
+
+                    var html = new HAP.HtmlDocument();
+                    using (var sr = new StreamReader(response.GetResponseStream()))
+                    {
+                        html.LoadHtml(sr.ReadToEnd());
+                    }
+
+                    if (null == fullPage.ArticleParagraphs)
+                    {
+                        fullPage.ArticleParagraphs = ProcessContentInner(html);
+                        cache.Add(articleUrl + "/content", fullPage.ArticleParagraphs,
+                        new CacheItemPolicy { AbsoluteExpiration = DateTime.Now.AddHours(1.0) });
+                    }
+                    if (null == fullPage.Comments)
+                    {
+                        fullPage.Comments = ProcessCommentsInner2(html);
+                        cache.Add(articleUrl + "/comments", fullPage.Comments,
+                            new CacheItemPolicy {AbsoluteExpiration = DateTime.Now.AddMinutes(5.0)});
+                    }
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+            return fullPage;
+        }
+
+        private List<ArticlePageItemBase> ProcessContentInner(HAP.HtmlDocument html)
         {
             var node = html.DocumentNode.Descendants("article").FirstOrDefault();
             if (node == null) return null;
-            var article = new ArticleDto();
-            article.Paragraphs =
+            int innerId = 0;
+            return
                 node.SelectNodes("div[@class='b-posts-1-item__text']/p|div[@class='b-posts-1-item__text']/table")
-                    .Select(ParseParagraph)
+                    .Select(pn => ParseParagraph(pn, innerId++))
                     .ToList();
-
-            return article;
         }
 
-        private ArticleParagraphDto ParseParagraph(HAP.HtmlNode paragraphNode)
+        private ArticlePageItemBase ParseParagraph(HAP.HtmlNode paragraphNode, int innerId)
         {
             if (paragraphNode.Name == "table")
-                return ProcessTableParagraph(paragraphNode);
-            var paragraph = new ArticleParagraphDto {Content = ProcessChildContent(paragraphNode)};
-            return paragraph;
+                return ProcessTableParagraph(paragraphNode, innerId);
+            return new ArticleParagraphDto {Content = ProcessChildContent(paragraphNode),inner_id = innerId};
+            
         }
 
         private List<ArticleParagraphContentDto> ProcessChildContent(HAP.HtmlNode node)
@@ -154,9 +221,35 @@ namespace CacheHub
             return result;
         }
 
-        private ArticleParagraphDto ProcessTableParagraph(HAP.HtmlNode node)
+        private ArticleTableDto ProcessTableParagraph(HAP.HtmlNode tableNode, int innerId)
         {
-            return new ArticleParagraphDto();
+            var table = new ArticleTableDto {inner_id = innerId};
+            var rows = tableNode.SelectNodes("tbody/tr");
+            foreach (var rowNode in rows)
+            {
+                var row = new ArticleTableRowDto();
+
+                var columns = rowNode.SelectNodes("td");
+                foreach (var cellNode in columns)
+                {
+                    var cellParagraph = cellNode.ChildNodes.FirstOrDefault(c => c.Name == "p");
+                    var cellContent = ProcessChildContent(cellParagraph ?? cellNode);
+                    if (null != cellContent)
+                    {
+                        var cell = new ArticleTableCellDto
+                        {
+                            Content = cellContent
+                        };
+                        if (null == row.Cells)
+                            row.Cells = new List<ArticleTableCellDto>();
+                        row.Cells.Add(cell);
+                    }
+                }
+                if (null == table.Rows)
+                    table.Rows = new List<ArticleTableRowDto>();
+                table.Rows.Add(row);
+            }
+            return table;
         }
 
         private ArticleParagraphContentDto ProcessIFrame(HAP.HtmlNode node)
@@ -187,39 +280,6 @@ namespace CacheHub
                 content.Url = url;
             }
             return content;
-        }
-
-        private List<CommentDto> ProcessComments(string articleUrl)
-        {
-            ObjectCache cache = MemoryCache.Default;
-
-            if (cache.Contains(articleUrl))
-                return cache.Get(articleUrl) as List<CommentDto>;
-
-            try
-            {
-                var httpWebRequest = (HttpWebRequest) WebRequest.Create(articleUrl);
-                httpWebRequest.Method = WebRequestMethods.Http.Get;
-                var response = httpWebRequest.GetResponse();
-
-                var html = new HAP.HtmlDocument();
-                using (var sr = new StreamReader(response.GetResponseStream()))
-                {
-                    html.LoadHtml(sr.ReadToEnd());
-                }
-                var comments = ProcessCommentsInner2(html);
-                //var content = ProcessContentInner(html);
-
-                var cacheItemPolicy = new CacheItemPolicy();
-                cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddMinutes(5.0);
-                cache.Add(articleUrl, comments, cacheItemPolicy);
-
-                return comments;
-            }
-            catch (Exception e)
-            {   
-                return null;
-            }
         }
 
         private List<CommentDto> ProcessCommentsInner2(HAP.HtmlDocument html)
@@ -344,224 +404,5 @@ namespace CacheHub
             }
             return currentFormatting;
         }
-
-
-        //private ParagraphDto ProcessBlockQuote(HAP.HtmlNode bqNode)
-        //{
-        //    var content =
-        //        bqNode.ChildNodes.FirstOrDefault(
-        //            d =>
-        //                d.Name == "div");
-        //    if (null == content) return null;
-
-        //    var title = content.ChildNodes.FirstOrDefault(c => c.Name == "cite");
-        //    ParagraphDto paragraph = null;
-        //    var children = new List<ParagraphDto>();
-
-        //    foreach (var node in content.ChildNodes)
-        //    {
-        //        switch (node.Name)
-        //        {
-        //            case "p":
-        //            case "#text":
-        //                paragraph = ProcessParagraph(node);
-        //                break;
-        //            case "blockquote":
-        //                children.Add(ProcessBlockQuote(node));
-        //                break;
-        //        }
-        //    }
-        //    if (null == paragraph) paragraph = new ParagraphDto();
-        //    paragraph.IsBlockQuote = true;
-        //    paragraph.CiteTitle = title == null ? string.Empty : title.InnerText;
-        //    paragraph.children = children;
-
-        //    return paragraph;
-        //}
-
-        //private ContentDto GetContent(HAP.HtmlNode commentContent)
-        //{
-        //    var content = new ContentDto();
-
-        //    foreach (var node in commentContent.ChildNodes)
-        //    {
-        //        switch (node.Name)
-        //        {
-        //            case "p":
-        //            case "#text":
-        //                content.paragraph_list.Add(ProcessParagraph(node));
-        //                break;
-        //            case "blockquote":
-        //                content.paragraph_list.Add(ProcessBlockQuote(node));
-        //                break;
-        //        }
-        //    }
-        //    return content;
-        //}
-
-
-        //private ParagraphDto ProcessParagraph(HAP.HtmlNode node)
-        //{
-        //    ParagraphDto paragraph;
-        //    switch (node.Name)
-        //    {
-        //        case "p":
-        //        case "#text":
-        //            paragraph = new ParagraphDto();
-        //            if (!node.HasChildNodes)
-        //            {
-        //                var text = node.InnerText.Trim('\n').Trim();
-        //                if (!string.IsNullOrEmpty(text))
-        //                    paragraph.items.Add(new TextItemDto {content = text});
-        //                else
-        //                    paragraph = null;
-        //                return paragraph;
-        //            }
-        //            foreach (var childNode in node.ChildNodes)
-        //            {
-        //                switch (childNode.Name)
-        //                {
-        //                    case "br":
-        //                        paragraph.items.Add(new TextItemDto());
-        //                        break;
-        //                    case "strong":
-        //                        paragraph.items.Add(new TextItemDto
-        //                        {
-        //                            content = childNode.InnerText.Trim('\n'),
-        //                            text_formatters = (int) TextFormatters.Bold
-        //                        });
-        //                        break;
-        //                    case "em":
-        //                        paragraph.items.Add(new TextItemDto
-        //                        {
-        //                            content = childNode.InnerText.Trim('\n'),
-        //                            text_formatters = (int) TextFormatters.Italic
-        //                        });
-        //                        break;
-        //                    case "cite":
-        //                        break;
-        //                    case "a":
-        //                        var lnk = childNode.HasAttributes && childNode.Attributes.Contains("href")
-        //                            ? childNode.Attributes["href"].Value
-        //                            : string.Empty;
-        //                        paragraph.items.Add(new TextItemDto
-        //                        {
-        //                            content = childNode.InnerText.Trim('\n'),
-        //                            text_formatters = (int) TextFormatters.Undeline,
-        //                            link_uri = Uri.IsWellFormedUriString(lnk, UriKind.Absolute)
-        //                                ? new Uri(lnk)
-        //                                : null
-        //                        });
-        //                        break;
-        //                    default:
-        //                        paragraph.items.Add(new TextItemDto
-        //                        {
-        //                            content = childNode.InnerText.Trim('\n'),
-        //                        });
-        //                        break;
-        //                }
-        //            }
-        //            break;
-        //        case "blockquote":
-        //            paragraph = ProcessBlockQuote(node);
-        //            break;
-        //        default:
-        //            paragraph = null;
-        //            break;
-        //    }
-        //    return paragraph;
-        //}
-
-        //private List<CommentDto> ProcessCommentsInner(HAP.HtmlDocument html)
-        //{
-        //    var node = html.GetElementbyId("onliner_comments").ChildNodes.FirstOrDefault(x => x.Name == "ul");
-        //    if (node == null) return null;
-
-        //    var commentNodes = node.ChildNodes.Where(c => c.Name == "li");
-
-        //    var comments = new List<CommentDto>();
-        //    var currentInnerId = 0;
-
-        //    foreach (var commentNode in commentNodes)
-        //    {
-        //        long commentId = 0;
-
-        //        if (commentNode.Attributes.Any(a => a.Name == "data-comment-id"))
-        //            Int64.TryParse(commentNode.Attributes["data-comment-id"].Value, out commentId);
-
-        //        var commentInfo =
-        //            commentNode.ChildNodes.FirstOrDefault(
-        //                d =>
-        //                d.Name == "div" && d.HasAttributes &&
-        //                d.Attributes.Any(a => a.Name == "class" && a.Value == "comment-info"));
-
-        //        var commentContent =
-        //            commentNode.ChildNodes.FirstOrDefault(
-        //                d =>
-        //                d.Name == "div" && d.HasAttributes &&
-        //                d.Attributes.Any(a => a.Name == "class" && a.Value == "comment-content"));
-
-        //        #region LIKES
-
-        //        //var commentActions =
-        //        //    commentNode.ChildNodes.FirstOrDefault(
-        //        //        d => d.Name == "div" && d.HasAttributes && d.Attributes.Any(a => a.Name == "class" && a.Value == "comment-actions"));
-
-        //        //if (null != commentActions && commentActions.ChildNodes.Any(c=>c.Name=="a"))
-        //        //{
-        //        //    var span =
-        //        //        commentActions.ChildNodes.First(c => c.Name == "a")
-        //        //                      .ChildNodes.FirstOrDefault(cc => cc.Name == "span");
-
-        //        //    if (null != span)
-        //        //        int.TryParse(span.InnerText, out likesCount);
-        //        //}
-
-        //        #endregion
-
-        //        var authorProfile = string.Empty;
-        //        var avatarUrl = string.Empty;
-        //        var commentProfileName = string.Empty;
-
-        //        if (commentInfo != null)
-        //        {   
-        //            var strong = commentInfo.ChildNodes.FirstOrDefault(n => n.Name == "strong");
-        //            if (strong != null)
-        //            {
-        //                var infoNode = strong.ChildNodes.FirstOrDefault(n => n.Name == "a");
-        //                if (infoNode != null)
-        //                {
-        //                    authorProfile = (infoNode.Attributes.Any(a => a.Name == "href"))
-        //                                        ? infoNode.Attributes["href"].Value
-        //                                        : string.Empty;
-        //                    if (infoNode.ChildNodes.Count > 0 && infoNode.ChildNodes.First().ChildNodes.Count > 0)
-        //                        avatarUrl = infoNode.ChildNodes[0].ChildNodes[0].Attributes.Any(a => a.Name == "src")
-        //                                        ? infoNode.ChildNodes[0].ChildNodes[0].Attributes["src"].Value
-        //                                        : string.Empty;
-        //                    commentProfileName = infoNode.InnerText.Trim('\"');
-        //                }
-        //            }
-        //        }
-
-        //        var author = new AuthorDto
-        //                               {
-        //                                   avatar_source_uri = avatarUrl,
-        //                                   name = commentProfileName,
-        //                                   profile_uri = authorProfile
-        //                               };
-
-        //        if (null != commentContent)
-        //        {
-        //            comments.Add(new CommentDto()
-        //            {
-        //                content = GetContent(commentContent),
-        //                author = author,
-        //                inner_id = currentInnerId
-        //            });
-        //            currentInnerId++;
-        //        }
-        //    }
-        //    return comments;
-        //}
     }
 }
