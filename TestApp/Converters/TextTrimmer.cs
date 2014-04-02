@@ -33,6 +33,7 @@ namespace Onliner.Converters
 
             // Remove newline characters
             fixedString = fixedString.Replace("\r", "").Replace("\n", "");
+            fixedString = fixedString.Replace("&nbsp;", " ").Replace("&NBSP;", " ");
 
             // Remove encoded HTML characters
             fixedString = HttpUtility.HtmlDecode(fixedString);

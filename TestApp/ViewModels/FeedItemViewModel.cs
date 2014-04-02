@@ -48,6 +48,11 @@ namespace Onliner.ViewModels
             }
         }
 
+        public string TitleU
+        {
+            get { return Title.ToUpper(); }
+        }
+
         private string _description;
         public string Description
         {
@@ -110,6 +115,25 @@ namespace Onliner.ViewModels
                     _publishDate = value;
                     NotifyPropertyChanged("PublishDate");
                 }
+            }
+        }
+
+        public string PublishDateS
+        {
+            get
+            {
+                if (DateTime.Now.Subtract(PublishDate).TotalMinutes < 10)
+                {
+                    var mm = (int) DateTime.Now.Subtract(PublishDate).TotalMinutes;
+                    return mm < 1
+                        ? "Сегодня, только что"
+                        : string.Format("Сегодня, {0} минут назад", mm);
+                }
+                if (PublishDate > DateTime.Today)
+                    return string.Format("Сегодня, в {0}", PublishDate.ToString("HH:mm"));
+                if (PublishDate > DateTime.Today.AddDays(-1))
+                    return string.Format("Вчера, в {0}", PublishDate.ToString("HH:mm"));
+                return PublishDate.ToString("dd.MM.yyyy, в HH:mm");
             }
         }
 

@@ -80,10 +80,23 @@ namespace Onliner
         // Load data for the ViewModel Items
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            MainPanorama.DefaultItem = MainPanorama.Items[1];
+            var pageN = 1;
+            switch (App.ViewModel.CurrentFeedType)
+            {
+                case FeedType.People:
+                    pageN = 2;
+                    break;
+                case FeedType.Realt:
+                    pageN = 3;
+                    break;
+                case FeedType.Tech:
+                    pageN = 0;
+                    break;
+            }
+            MainPanorama.DefaultItem = MainPanorama.Items[pageN];
             if (!App.ViewModel.IsLoading)
             {
-                App.ViewModel.LoadData(FeedType.Auto);
+                App.ViewModel.LoadData(App.ViewModel.CurrentFeedType);
             }
         }
 

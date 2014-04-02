@@ -106,10 +106,6 @@ namespace Onliner.ViewModels
 
         public void LoadArticle(string uri)
         {
-            var model = new Model.ArticleModel();
-            model.ArticleLoaded += model_ArticleLoaded;
-            model.BeginLoad(uri);
-
             if (_localArticles.ContainsKey(Article.Uri))
             {
                 Article.Content = _localArticles[Article.Uri].Content;
@@ -142,11 +138,6 @@ namespace Onliner.ViewModels
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(e.Message));
             }
-        }
-
-        void model_ArticleLoaded(object sender, ArticleModel.ArticleLoadedEventArgs args)
-        {
-            var model = args.ArticleModel;
         }
 
         private void wc_GetArticleCompleted(object sender, OpenReadCompletedEventArgs e)
@@ -302,7 +293,7 @@ namespace Onliner.ViewModels
             }
             finally
             {
-                CurrentFeedType = _currentSelectedPageType;
+                //CurrentFeedType = _currentSelectedPageType;
                 IsLoading = false;
             }
         }

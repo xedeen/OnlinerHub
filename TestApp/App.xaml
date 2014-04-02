@@ -18,9 +18,9 @@
         
         <sys:Int32 x:Key="HeaderLen">73</sys:Int32>
         <sys:Int32 x:Key="HeaderLenClear">100</sys:Int32>
-        <sys:Int32 x:Key="DescLen">88</sys:Int32>
+        <sys:Int32 x:Key="DescLen">108</sys:Int32>
         <sys:Int32 x:Key="DescLenClear">164</sys:Int32>
-        <sys:Double x:Key="PanoramaItemHeaderFontSize">46</sys:Double>
+        <sys:Double x:Key="PanoramaItemHeaderFontSize">36</sys:Double>
         <sys:Double x:Key="ArticleTitleFontSize">23</sys:Double>
         
         
@@ -37,11 +37,11 @@
         </Style>
 
         <DataTemplate x:Key="SmallTitleTemplate">
-            <Grid>
+            <!--<Grid>
                 <ContentPresenter Margin="0,15">
                     <TextBlock Text="{Binding}" FontSize="36" />
                 </ContentPresenter>
-            </Grid>
+            </Grid>-->
         </DataTemplate>
        <DataTemplate x:Key="SmallHeaderTemplate">
             <Grid>
@@ -52,38 +52,49 @@
         </DataTemplate>
 
         <DataTemplate x:Key="FeedItemTemplateRich">
-            <StackPanel Orientation="Horizontal" Margin="12,0,0,34" Height="254" Width="401">
-                <Image Height="224" Width="401" VerticalAlignment="Top" CacheMode="BitmapCache">
+            <Grid Width="400" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Background="Beige">
+                    <TextBlock Foreground="{StaticResource PhoneBackgroundBrush}" Text="{Binding PublishDateS}"></TextBlock>
+                </StackPanel>
+                <Image VerticalAlignment="Stretch" CacheMode="BitmapCache" Grid.Row="1">
                     <Image.Source>
                         <BitmapImage UriSource="{Binding ImageUri}" CreateOptions="BackgroundCreation"/>
                     </Image.Source>
                 </Image>
-                <StackPanel Width="401" Height="170" Margin="-401,53,0,0">
+                <StackPanel Grid.Row="2" Margin="0,0,0,20">
                     <StackPanel.Background>
-                        <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity=".8"/>
+                        <SolidColorBrush Color="Beige" Opacity="1"/>
                     </StackPanel.Background>
-                    <TextBlock Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0" 
-                               Style="{StaticResource PhoneTextTitle3Style}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
-                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,5,0" 
-                               Style="{StaticResource PhoneTextNormalStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
+                    <TextBlock Text="{Binding TitleU, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0,5,8" 
+                               Foreground="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextTitle2Style}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,0,15" 
+                               Foreground ="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextNormalStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:Key="FeedItemTemplateClear">
-            <Grid Margin="12,0,0,34">
+            <Grid Width="400" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding Title, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLenClear}}" 
-                           TextWrapping="Wrap" Margin="5,0" 
-                           Style="{StaticResource PhoneTextTitle3Style}" 
-                           FontSize="{StaticResource PhoneFontSizeNormal}" 
-                           FontWeight="Bold" />
-                <TextBlock Grid.Row="1" Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLenClear}}" 
-                           TextWrapping="Wrap" Margin="15,0,5,0" 
-                           Style="{StaticResource PhoneTextNormalStyle}" 
-                           FontSize="{StaticResource PhoneFontSizeSmall}"/>
+                <StackPanel Grid.Row="0" Background="Beige">
+                    <TextBlock Foreground="{StaticResource PhoneBackgroundBrush}" Text="{Binding PublishDateS}"></TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Margin="0,0,0,20">
+                    <StackPanel.Background>
+                        <SolidColorBrush Color="Beige" Opacity="1"/>
+                    </StackPanel.Background>
+                    <TextBlock Text="{Binding TitleU, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLenClear}}" TextWrapping="Wrap" Margin="5,0,5,8" 
+                               Foreground="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextTitle2Style}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLenClear}}" TextWrapping="Wrap" Margin="15,0,0,15" 
+                               Foreground ="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextNormalStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
+                </StackPanel>
             </Grid>
         </DataTemplate>
         
@@ -93,7 +104,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{Binding}" Style="{StaticResource PanoramaItemHeaderTextStyle}" Grid.Row="0"/>
+                <TextBlock Foreground="{StaticResource PhoneBackgroundBrush}" Text="{Binding}" Style="{StaticResource PanoramaItemHeaderTextStyle}" Grid.Row="0"/>
             </Grid>
         </DataTemplate>
         

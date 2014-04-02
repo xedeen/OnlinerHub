@@ -30,7 +30,9 @@ namespace Onliner.Converters
                 var brush = new ImageBrush { ImageSource = new BitmapImage(new Uri(url, UriKind.Relative)) };
                 return brush;
             }
-            return (Brush) Application.Current.Resources["PhoneBackgroundBrush"];
+            //return (Brush) Application.Current.Resources["PhoneBackgroundBrush"];
+            //return (Brush) Application.Current.Resources["PhoneForegroundBrush"];
+            return (Brush)new SolidColorBrush(Color.FromArgb(255, 245, 245, 220));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

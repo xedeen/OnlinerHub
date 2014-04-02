@@ -144,7 +144,7 @@
     <value>Завантаження статті ...</value>
   </data>
   <data name="AutoSectionTitle" xml:space="preserve">
-    <value>Авто</value>
+    <value>auto.onliner.by</value>
   </data>
   <data name="CommentsMenuText" xml:space="preserve">
     <value>Коментарі</value>
@@ -153,16 +153,16 @@
     <value>www.onliner.by</value>
   </data>
   <data name="PeopleSectionTitle" xml:space="preserve">
-    <value>Люди</value>
+    <value>people.onliner.by</value>
   </data>
   <data name="RealtSectionTitle" xml:space="preserve">
-    <value>Нерухомість</value>
+    <value>realt.onliner.by</value>
   </data>
   <data name="RefreshMenuText" xml:space="preserve">
     <value>Обновить</value>
   </data>
   <data name="TechSectionTitle" xml:space="preserve">
-    <value>Технології</value>
+    <value>tech.onliner.by</value>
   </data>
   <data name="SettingsTitle" xml:space="preserve">
     <value>настройки</value>

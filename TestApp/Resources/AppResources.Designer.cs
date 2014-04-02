@@ -88,7 +88,7 @@ namespace Onliner.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto.
+        ///   Looks up a localized string similar to AUTO ONLINER.BY.
         /// </summary>
         public static string AutoSectionTitle {
             get {
@@ -205,7 +205,7 @@ namespace Onliner.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to People.
+        ///   Looks up a localized string similar to PEOPLE ONLINER.BY.
         /// </summary>
         public static string PeopleSectionTitle {
             get {
@@ -214,7 +214,7 @@ namespace Onliner.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Realty.
+        ///   Looks up a localized string similar to REALT ONLINER.BY.
         /// </summary>
         public static string RealtSectionTitle {
             get {
@@ -277,7 +277,7 @@ namespace Onliner.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Technologies.
+        ///   Looks up a localized string similar to TECHNOLOGIES ONLINER.BY.
         /// </summary>
         public static string TechSectionTitle {
             get {

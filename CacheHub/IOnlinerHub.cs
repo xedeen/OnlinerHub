@@ -19,7 +19,36 @@ namespace CacheHub
         [OperationContract]
         [WebInvoke(UriTemplate = "comments/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
         CommentsPageDto GetComments(string articleUrl, int cursor);
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "content/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
+        void GetContent(string articleUrl);
     }
+
+    [DataContract]
+    public class ArticleDto
+    {
+        public List<ArticleParagraphDto> Paragraphs { get; set; }
+    }
+
+    [DataContract]
+    public class ArticleParagraphDto
+    {
+        public List<ArticleParagraphContentDto> Content { get; set; }
+    }
+
+    [DataContract]
+    public class ArticleParagraphContentDto
+    {
+        public string ContentType { get; set; } //t for text, a for link, i for em b for strong, v for iframe
+        public string Content { get; set; }
+        public string Url { get; set; } //null for non-link or image source or iframe source
+        public string Thumbnail { get; set; } //only for youtube video
+        public string VideoId { get; set; }
+        public List<ArticleParagraphContentDto> ChildContent { get; set; }
+        
+    }
+
 
     [DataContract]
     public class CommentsPageDto

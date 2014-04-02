@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.Text.RegularExpressions;
 using HAP = HtmlAgilityPack;
 
 namespace CacheHub
@@ -54,6 +55,140 @@ namespace CacheHub
                        };
         }
 
+        public void GetContent(string articleUrl)
+        {
+            
+        }
+
+        private ArticleDto ProcessContentInner(HAP.HtmlDocument html)
+        {
+            var node = html.DocumentNode.Descendants("article").FirstOrDefault();
+            if (node == null) return null;
+            var article = new ArticleDto();
+            article.Paragraphs =
+                node.SelectNodes("div[@class='b-posts-1-item__text']/p|div[@class='b-posts-1-item__text']/table")
+                    .Select(ParseParagraph)
+                    .ToList();
+
+            return article;
+        }
+
+        private ArticleParagraphDto ParseParagraph(HAP.HtmlNode paragraphNode)
+        {
+            if (paragraphNode.Name == "table")
+                return ProcessTableParagraph(paragraphNode);
+            var paragraph = new ArticleParagraphDto {Content = ProcessChildContent(paragraphNode)};
+            return paragraph;
+        }
+
+        private List<ArticleParagraphContentDto> ProcessChildContent(HAP.HtmlNode node)
+        {
+            List<ArticleParagraphContentDto> result = null;
+            
+            foreach (var childNode in node.ChildNodes)
+            {
+                var processChildren = false;
+                ArticleParagraphContentDto content = null;
+                switch (childNode.Name)
+                {
+                    case "#text":
+                        content = new ArticleParagraphContentDto
+                        {
+                            ContentType = "t",
+                            Content = childNode.InnerText
+                        };
+                        break;
+                    case "a":
+                        processChildren = childNode.HasChildNodes;
+                        content = new ArticleParagraphContentDto
+                        {
+                            ContentType = "a",
+                            //Content = childNode.InnerText,
+                            Url = childNode.Attributes["href"].Value
+                        };
+                        break;
+                    case "em":
+                        processChildren = childNode.HasChildNodes;
+                        content = new ArticleParagraphContentDto
+                        {
+                            ContentType = "i",
+                            //Content = childNode.InnerText
+                        };
+                        break;
+                    case "strong":
+                        processChildren = childNode.HasChildNodes;
+                        content = new ArticleParagraphContentDto
+                        {
+                            ContentType = "b",
+                            //Content = childNode.InnerText
+                        };
+                        break;
+                    case "img":
+                        content = new ArticleParagraphContentDto
+                        {
+                            ContentType = "img",
+                            Content =
+                                childNode.HasAttributes && childNode.Attributes.Contains("alt")
+                                    ? childNode.Attributes["alt"].Value
+                                    : string.Empty,
+                            Url = childNode.Attributes["src"].Value
+                        };
+                        break;
+                    case "iframe":
+                        content = ProcessIFrame(childNode);
+                        break;
+                }
+                if (null != content)
+                {
+                    if (processChildren)
+                        content.ChildContent = ProcessChildContent(childNode);
+
+                    if (null != content.ChildContent || !string.IsNullOrEmpty(content.ContentType))
+                    {
+                        if (null == result)
+                            result = new List<ArticleParagraphContentDto>();
+                        result.Add(content);
+                    }
+                }
+            }
+            return result;
+        }
+
+        private ArticleParagraphDto ProcessTableParagraph(HAP.HtmlNode node)
+        {
+            return new ArticleParagraphDto();
+        }
+
+        private ArticleParagraphContentDto ProcessIFrame(HAP.HtmlNode node)
+        {
+            var content = new ArticleParagraphContentDto
+            {
+                Content = string.Empty,
+                ContentType = "v"
+            };
+            var url = node.HasAttributes && node.Attributes.Contains("src")
+                ? node.Attributes["src"].Value
+                : string.Empty;
+            if (url.StartsWith("//www"))
+                url = url.Replace("//www", "http://www");
+            var match = Regex.Match(url, @"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)", RegexOptions.IgnoreCase);
+            if (match.Success )
+            {
+                string id = match.Groups[1].Value;
+                content.Thumbnail = string.Format("http://img.youtube.com/vi/{0}/0.jpg", id);
+                content.Url = string.Format("http://www.youtube.com/watch?v={0}", id);
+                content.VideoId = id;
+            }
+            else
+            {
+                match = Regex.Match(url, @"vimeo\.com/(?:.*#|.*/videos/)?([0-9]+)");
+                if (match.Success)
+                    content.VideoId = match.Groups[1].Value;
+                content.Url = url;
+            }
+            return content;
+        }
+
         private List<CommentDto> ProcessComments(string articleUrl)
         {
             ObjectCache cache = MemoryCache.Default;
@@ -73,6 +208,7 @@ namespace CacheHub
                     html.LoadHtml(sr.ReadToEnd());
                 }
                 var comments = ProcessCommentsInner2(html);
+                //var content = ProcessContentInner(html);
 
                 var cacheItemPolicy = new CacheItemPolicy();
                 cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddMinutes(5.0);
