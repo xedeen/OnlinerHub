@@ -67,11 +67,14 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content.cs" />
     <Compile Include="IOnlinerHub.cs" />
+    <Compile Include="IParser.cs" />
     <Compile Include="Model\FeedCard.cs" />
     <Compile Include="OnlinerHub.svc.cs">
       <DependentUpon>OnlinerHub.svc</DependentUpon>
     </Compile>
+    <Compile Include="OnlinerParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

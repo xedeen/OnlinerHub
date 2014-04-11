@@ -23,24 +23,32 @@ namespace CacheHub
         [OperationContract]
         [WebInvoke(UriTemplate = "content/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
         ArticlePageDto GetContent(string articleUrl, int cursor);
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "header/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
+        Header GetHeader(string articleUrl);
     }
 
     public class FullArticlePage
     {
-        public List<ArticlePageItemBase> ArticleParagraphs { get; set; }
+        public Article Article { get; set; }
         public List<CommentDto> Comments { get; set; }
     }
 
     [DataContract]
-    [KnownType(typeof(ArticleParagraphDto))]
-    [KnownType(typeof(ArticleTableDto))]
+    [KnownType(typeof (P))]
+    [KnownType(typeof (Table))]
+    [KnownType(typeof(A))]
+    [KnownType(typeof(Video))]
+    [KnownType(typeof(Image))]
+    [KnownType(typeof(TextBlock))]
     public class ArticlePageDto
     {
         [DataMember]
         public string Error { get; set; }
 
         [DataMember]
-        public List<ArticlePageItemBase> paragraphs { get; set; }
+        public List<ParagraphBase> paragraphs { get; set; }
 
         [DataMember]
         public int? previous_page_cursor { get; set; }
@@ -48,58 +56,6 @@ namespace CacheHub
         [DataMember]
         public int? next_page_cursor { get; set; }
     }
-
-    [DataContract]
-    public class ArticlePageItemBase
-    {
-        public int inner_id { get; set; }
-    }
-
-    [DataContract]
-    public class ArticleParagraphDto : ArticlePageItemBase
-    {
-        [DataMember]
-        public List<ArticleParagraphContentDto> Content { get; set; }
-    }
-
-    [DataContract]
-    public class ArticleTableDto : ArticlePageItemBase
-    {
-        [DataMember]
-        public List<ArticleTableRowDto> Rows { get; set; }
-    }
-
-    [DataContract]
-    public class ArticleTableRowDto
-    {
-        [DataMember]
-        public List<ArticleTableCellDto> Cells { get; set; }
-    }
-
-    [DataContract]
-    public class ArticleTableCellDto
-    {
-        [DataMember]
-        public List<ArticleParagraphContentDto> Content { get; set; }
-    }
-
-    [DataContract]
-    public class ArticleParagraphContentDto
-    {
-        [DataMember]
-        public string ContentType { get; set; } //t for text, a for link, i for em b for strong, v for iframe
-        [DataMember]
-        public string Content { get; set; }
-        [DataMember]
-        public string Url { get; set; } //null for non-link or image source or iframe source
-        [DataMember]
-        public string Thumbnail { get; set; } //only for youtube video
-        [DataMember]
-        public string VideoId { get; set; }
-        [DataMember]
-        public List<ArticleParagraphContentDto> ChildContent { get; set; }
-    }
-
 
     [DataContract]
     public class CommentsPageDto

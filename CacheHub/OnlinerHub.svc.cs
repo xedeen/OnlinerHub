@@ -60,28 +60,38 @@ namespace CacheHub
             var cursorNext = cursor;
             var page = ProcessArticlePage(articleUrl);
 
-            if (null == page || null == page.ArticleParagraphs)
-                return new ArticlePageDto { Error = "Cannot retrieve comments" };
+            if (null == page || null == page.Article || null == page.Article.Content)
+                return new ArticlePageDto {Error = "Cannot retrieve content"};
 
-            if (page.ArticleParagraphs.Count > numberOfObjectsPerPage)
+            var content = page.Article.Content;
+            if (page.Article.Content.Count > numberOfObjectsPerPage)
             {
-                cursorNext = page.ArticleParagraphs.Count > (cursor + 1) * numberOfObjectsPerPage
+                cursorNext = page.Article.Content.Count > (cursor + 1) * numberOfObjectsPerPage
                                  ? cursor + 1
                                  : cursor;
 
-                page.ArticleParagraphs =
-                    page.ArticleParagraphs.Where(
+                content =
+                    page.Article.Content.Where(
                         c =>
-                        c.inner_id >= cursor * numberOfObjectsPerPage && c.inner_id < (cursor + 1) * numberOfObjectsPerPage)
+                        c.InnerId >= cursor * numberOfObjectsPerPage && c.InnerId < (cursor + 1) * numberOfObjectsPerPage)
                             .ToList();
             }
 
             return new ArticlePageDto
             {
-                paragraphs = page.ArticleParagraphs,
-                next_page_cursor = cursorNext == cursor ? (int?)null : cursorNext,
-                previous_page_cursor = cursor > 0 ? cursor - 1 : (int?)null
+                paragraphs = content,
+                next_page_cursor = cursorNext == cursor ? (int?) null : cursorNext,
+                previous_page_cursor = cursor > 0 ? cursor - 1 : (int?) null
             };
+        }
+
+        public Header GetHeader(string articleUrl)
+        {
+            var page = ProcessArticlePage(articleUrl);
+
+            if (null == page || null == page.Article || null == page.Article.Header)
+                return new Header { Error = "Cannot retrieve header" };
+            return page.Article.Header;
         }
 
         private FullArticlePage ProcessArticlePage(string articleUrl)
@@ -92,9 +102,9 @@ namespace CacheHub
             if (cache.Contains(articleUrl + "/comments"))
                 fullPage.Comments = cache.Get(articleUrl + "/comments") as List<CommentDto>;
             if (cache.Contains(articleUrl + "/content"))
-                fullPage.ArticleParagraphs = cache.Get(articleUrl + "/content") as List<ArticlePageItemBase>;
+                fullPage.Article = cache.Get(articleUrl + "/content") as Article;
 
-            if (null == fullPage.Comments || null == fullPage.ArticleParagraphs)
+            if (null == fullPage.Comments || null == fullPage.Article)
             {
                 try
                 {
@@ -108,10 +118,15 @@ namespace CacheHub
                         html.LoadHtml(sr.ReadToEnd());
                     }
 
-                    if (null == fullPage.ArticleParagraphs)
+                    if (null == fullPage.Article)
                     {
-                        fullPage.ArticleParagraphs = ProcessContentInner(html);
-                        cache.Add(articleUrl + "/content", fullPage.ArticleParagraphs,
+                        var p = new OnlinerParser();
+                        fullPage.Article = new Article
+                        {
+                            Header = p.ParseHeader(html),
+                            Content = p.Parse(html)
+                        };
+                        cache.Add(articleUrl + "/content", fullPage.Article,
                         new CacheItemPolicy { AbsoluteExpiration = DateTime.Now.AddHours(1.0) });
                     }
                     if (null == fullPage.Comments)
@@ -127,159 +142,6 @@ namespace CacheHub
                 }
             }
             return fullPage;
-        }
-
-        private List<ArticlePageItemBase> ProcessContentInner(HAP.HtmlDocument html)
-        {
-            var node = html.DocumentNode.Descendants("article").FirstOrDefault();
-            if (node == null) return null;
-            int innerId = 0;
-            return
-                node.SelectNodes("div[@class='b-posts-1-item__text']/p|div[@class='b-posts-1-item__text']/table")
-                    .Select(pn => ParseParagraph(pn, innerId++))
-                    .ToList();
-        }
-
-        private ArticlePageItemBase ParseParagraph(HAP.HtmlNode paragraphNode, int innerId)
-        {
-            if (paragraphNode.Name == "table")
-                return ProcessTableParagraph(paragraphNode, innerId);
-            return new ArticleParagraphDto {Content = ProcessChildContent(paragraphNode),inner_id = innerId};
-            
-        }
-
-        private List<ArticleParagraphContentDto> ProcessChildContent(HAP.HtmlNode node)
-        {
-            List<ArticleParagraphContentDto> result = null;
-            
-            foreach (var childNode in node.ChildNodes)
-            {
-                var processChildren = false;
-                ArticleParagraphContentDto content = null;
-                switch (childNode.Name)
-                {
-                    case "#text":
-                        content = new ArticleParagraphContentDto
-                        {
-                            ContentType = "t",
-                            Content = childNode.InnerText
-                        };
-                        break;
-                    case "a":
-                        processChildren = childNode.HasChildNodes;
-                        content = new ArticleParagraphContentDto
-                        {
-                            ContentType = "a",
-                            //Content = childNode.InnerText,
-                            Url = childNode.Attributes["href"].Value
-                        };
-                        break;
-                    case "em":
-                        processChildren = childNode.HasChildNodes;
-                        content = new ArticleParagraphContentDto
-                        {
-                            ContentType = "i",
-                            //Content = childNode.InnerText
-                        };
-                        break;
-                    case "strong":
-                        processChildren = childNode.HasChildNodes;
-                        content = new ArticleParagraphContentDto
-                        {
-                            ContentType = "b",
-                            //Content = childNode.InnerText
-                        };
-                        break;
-                    case "img":
-                        content = new ArticleParagraphContentDto
-                        {
-                            ContentType = "img",
-                            Content =
-                                childNode.HasAttributes && childNode.Attributes.Contains("alt")
-                                    ? childNode.Attributes["alt"].Value
-                                    : string.Empty,
-                            Url = childNode.Attributes["src"].Value
-                        };
-                        break;
-                    case "iframe":
-                        content = ProcessIFrame(childNode);
-                        break;
-                }
-                if (null != content)
-                {
-                    if (processChildren)
-                        content.ChildContent = ProcessChildContent(childNode);
-
-                    if (null != content.ChildContent || !string.IsNullOrEmpty(content.ContentType))
-                    {
-                        if (null == result)
-                            result = new List<ArticleParagraphContentDto>();
-                        result.Add(content);
-                    }
-                }
-            }
-            return result;
-        }
-
-        private ArticleTableDto ProcessTableParagraph(HAP.HtmlNode tableNode, int innerId)
-        {
-            var table = new ArticleTableDto {inner_id = innerId};
-            var rows = tableNode.SelectNodes("tbody/tr");
-            foreach (var rowNode in rows)
-            {
-                var row = new ArticleTableRowDto();
-
-                var columns = rowNode.SelectNodes("td");
-                foreach (var cellNode in columns)
-                {
-                    var cellParagraph = cellNode.ChildNodes.FirstOrDefault(c => c.Name == "p");
-                    var cellContent = ProcessChildContent(cellParagraph ?? cellNode);
-                    if (null != cellContent)
-                    {
-                        var cell = new ArticleTableCellDto
-                        {
-                            Content = cellContent
-                        };
-                        if (null == row.Cells)
-                            row.Cells = new List<ArticleTableCellDto>();
-                        row.Cells.Add(cell);
-                    }
-                }
-                if (null == table.Rows)
-                    table.Rows = new List<ArticleTableRowDto>();
-                table.Rows.Add(row);
-            }
-            return table;
-        }
-
-        private ArticleParagraphContentDto ProcessIFrame(HAP.HtmlNode node)
-        {
-            var content = new ArticleParagraphContentDto
-            {
-                Content = string.Empty,
-                ContentType = "v"
-            };
-            var url = node.HasAttributes && node.Attributes.Contains("src")
-                ? node.Attributes["src"].Value
-                : string.Empty;
-            if (url.StartsWith("//www"))
-                url = url.Replace("//www", "http://www");
-            var match = Regex.Match(url, @"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)", RegexOptions.IgnoreCase);
-            if (match.Success )
-            {
-                string id = match.Groups[1].Value;
-                content.Thumbnail = string.Format("http://img.youtube.com/vi/{0}/0.jpg", id);
-                content.Url = string.Format("http://www.youtube.com/watch?v={0}", id);
-                content.VideoId = id;
-            }
-            else
-            {
-                match = Regex.Match(url, @"vimeo\.com/(?:.*#|.*/videos/)?([0-9]+)");
-                if (match.Success)
-                    content.VideoId = match.Groups[1].Value;
-                content.Url = url;
-            }
-            return content;
         }
 
         private List<CommentDto> ProcessCommentsInner2(HAP.HtmlDocument html)
