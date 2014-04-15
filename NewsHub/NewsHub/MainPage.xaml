@@ -1,0 +1,62 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="NewsHub.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <phone:Pivot TitleTemplate="{StaticResource NoTitleTemplate}"
+                     Name="FeedSourcePivot" SelectionChanged="PageChanged">
+            <phone:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Margin="12,0,0,38">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Foreground="{StaticResource PhoneAccentBrush}" Text="{Binding}" Style="{StaticResource PivotItemHeaderTextStyle}" Grid.Row="0"/>
+                    </Grid>
+                </DataTemplate>
+            </phone:Pivot.HeaderTemplate>
+            <phone:PivotItem 
+                Name="Tech" 
+                Visibility="{Binding Settings.IsOnlinerTechSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                Header="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-58,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}"
+                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
+            </phone:PivotItem>
+            <phone:PivotItem 
+                Name="Auto"  
+                Visibility="{Binding Settings.IsOnlinerAutoSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                Header="{Binding Path=LocalizedResources.AutoSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-58,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Auto}"
+                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
+            </phone:PivotItem>
+            <phone:PivotItem 
+                Name="People"  
+                Visibility="{Binding Settings.IsOnlinerPeopleSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                Header="{Binding Path=LocalizedResources.PeopleSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-58,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding People}"
+                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
+            </phone:PivotItem>
+            <phone:PivotItem 
+                Name="Realt"  
+                Visibility="{Binding Settings.IsOnlinerRealtSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                Header="{Binding Path=LocalizedResources.RealtSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-58,-22,0" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Realt}"
+                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
+            </phone:PivotItem>
+        </phone:Pivot>
+        <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" IsHitTestVisible="False" />-->
+    </Grid>
+</phone:PhoneApplicationPage>
