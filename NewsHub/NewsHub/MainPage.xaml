@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
     d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -16,7 +17,8 @@
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <phone:Pivot TitleTemplate="{StaticResource NoTitleTemplate}"
-                     Name="FeedSourcePivot" SelectionChanged="PageChanged">
+                     Name="FeedSourcePivot" SelectionChanged="PageChanged"
+                     Background="{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedBackGroundSelector}}">
             <phone:Pivot.HeaderTemplate>
                 <DataTemplate>
                     <Grid Margin="12,0,0,38">
@@ -32,8 +34,9 @@
                 Name="Tech" 
                 Visibility="{Binding Settings.IsOnlinerTechSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
                 Header="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}">
-                <phone:LongListSelector Margin="0,-58,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}"
-                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
+                <toolkit:LongListMultiSelector Margin="0,-58,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}"
+                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"
+                                               Name="TechList"/>
             </phone:PivotItem>
             <phone:PivotItem 
                 Name="Auto"  
