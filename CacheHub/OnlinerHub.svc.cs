@@ -72,7 +72,7 @@ namespace CacheHub
 
                 content =
                     page.Article.Content.Where(
-                        c =>
+                        c =>null!=c &&
                         c.InnerId >= cursor * numberOfObjectsPerPage && c.InnerId < (cursor + 1) * numberOfObjectsPerPage)
                             .ToList();
             }

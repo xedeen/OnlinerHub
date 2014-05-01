@@ -116,7 +116,18 @@ namespace NewsHub
         //}
         private void OnFeedSelected(object sender, SelectionChangedEventArgs e)
         {
-            
+            var item = (sender as LongListSelector) == null
+                ? null
+                : (sender as LongListSelector).SelectedItem as FeedItemViewModel == null
+                    ? null
+                    : (sender as LongListSelector).SelectedItem;
+
+            if (null == (item as FeedItemViewModel) || null == (item as FeedItemViewModel).Uri) return;
+            var uri = (item as FeedItemViewModel).Uri;
+
+            (sender as LongListSelector).SelectedItem = null;
+            App.ViewModel.SetFeedSelection(item as FeedItemViewModel);
+            NavigationService.Navigate(new Uri(string.Format("/ArticlePage.xaml?uri={0}", uri), UriKind.Relative));
         }
     }
 }

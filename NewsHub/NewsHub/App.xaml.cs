@@ -15,6 +15,7 @@ namespace NewsHub
     public partial class App : Application
     {
         private static MainViewModel viewModel = null;
+        private static ArticleViewModel articleViewModel = null;
 
         /// <summary>
         /// A static ViewModel used by the views to bind against.
@@ -29,6 +30,18 @@ namespace NewsHub
                     viewModel = new MainViewModel();
 
                 return viewModel;
+            }
+        }
+
+        public static ArticleViewModel ArticleViewModel
+        {
+            get
+            {
+                // Delay creation of the view model until necessary
+                if (articleViewModel == null)
+                    articleViewModel = new ArticleViewModel();
+
+                return articleViewModel;
             }
         }
 
@@ -88,14 +101,28 @@ namespace NewsHub
         {   
             if (!e.IsApplicationInstancePreserved)
             {
-                ViewModel.CurrentFeedType = IsolatedStorageSettings.ApplicationSettings.Contains("CurrentFeedType")
+                LoadMainModel();
+            }
+        }
+
+        private void LoadMainModel()
+        {
+            ViewModel.CurrentFeedType = IsolatedStorageSettings.ApplicationSettings.Contains("CurrentFeedType")
                     ? (FeedType)IsolatedStorageSettings.ApplicationSettings["CurrentFeedType"]
                     : FeedType.Auto;
-                if (!ViewModel.IsLoading)
-                {
-                    ViewModel.LoadData(ViewModel.CurrentFeedType);
-                }
+            if (!ViewModel.IsLoading)
+            {
+                ViewModel.LoadData(ViewModel.CurrentFeedType);
             }
+        }
+
+        private void LoadArticleModel()
+        {
+            var uri = IsolatedStorageSettings.ApplicationSettings.Contains("CurrentArticleUri")
+                ? (string) IsolatedStorageSettings.ApplicationSettings["CurrentArticleUri"]
+                : string.Empty;
+            if (!ArticleViewModel.IsLoading)
+                ArticleViewModel.LoadData(uri);
         }
 
         // Code to execute when the application is deactivated (sent to background)

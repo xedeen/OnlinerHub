@@ -14,7 +14,7 @@ using NewsHub.Resources;
 
 namespace NewsHub.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : LoadViewModelBase
     {
         private readonly object _readLock = new object();
 
@@ -34,24 +34,6 @@ namespace NewsHub.ViewModels
         public ObservableCollection<FeedItemViewModel> Realt { get; private set; }
 
         private bool _storageFeedsRequested = false;
-
-
-        private bool _isLoading = false;
-        public bool IsLoading
-        {
-            get
-            {
-                return _isLoading;
-            }
-            set
-            {
-                _isLoading = value;
-                NotifyPropertyChanged("IsLoading");
-
-            }
-        }
-
-        private FeedType _currentSelectedPageType = FeedType.Auto;
         private FeedType _currentFeedType = FeedType.Auto;
         public FeedType CurrentFeedType
         {
@@ -60,14 +42,12 @@ namespace NewsHub.ViewModels
             {
                 _currentFeedType = value;
                 NotifyPropertyChanged("CurrentFeedType");
-
             }
         }
 
 
         
         public readonly AppSettings _appSettings = new AppSettings();
-
         public AppSettings Settings
         {
             get { return _appSettings; }
@@ -284,37 +264,10 @@ namespace NewsHub.ViewModels
             }
         }
 
-        public static void Save<T>(IsolatedStorageFile store, string fileName, T item)
+        public void SetFeedSelection(FeedItemViewModel feedItem)
         {
-            using (var fileStream = new IsolatedStorageFileStream(fileName, FileMode.Create, FileAccess.Write,
-                FileShare.None, store))
-            {
-                var serializer = new DataContractSerializer(typeof(T));
-                serializer.WriteObject(fileStream, item);
-            }
-        }
-
-        public T Load<T>(IsolatedStorageFile store, string fileName)
-        {
-            using (var fileStream = new IsolatedStorageFileStream(fileName, FileMode.Open, FileAccess.Read,
-                FileShare.None, store))
-            {
-                var serializer = new DataContractSerializer(typeof(T));
-                return (T)serializer.ReadObject(fileStream);
-            }
-        }
-
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(String propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            if (Settings.IsMarkReadWhenOpen)
+                feedItem.IsRead = true;
         }
     }
 }

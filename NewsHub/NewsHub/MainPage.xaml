@@ -34,9 +34,9 @@
                 Name="Tech" 
                 Visibility="{Binding Settings.IsOnlinerTechSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
                 Header="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}">
-                <toolkit:LongListMultiSelector Margin="0,-58,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}"
-                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"
-                                               Name="TechList"/>
+                <phone:LongListSelector Margin="0,-60,0,0" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}"
+                                        ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
+
             </phone:PivotItem>
             <phone:PivotItem 
                 Name="Auto"  
