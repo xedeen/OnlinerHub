@@ -65,6 +65,20 @@ namespace NewsHub.Converters
                         isEmpty = false;
                     }
                 }
+                if (item is Image)
+                {
+                    if (item is Video)
+                    {
+                        
+                    }
+                    else
+                    {
+                        sb.AppendLine(string.Format(
+                            "<BlockUIContainer xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"><Image  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Source=\"{0}\"/></BlockUIContainer>",
+                            (item as Image).SourceUrl));
+                        isEmpty = false;
+                    }
+                }
             }
             sb.AppendLine("</Paragraph></RichTextBox></StackPanel>");
             return isEmpty ? string.Empty : sb.ToString();

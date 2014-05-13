@@ -31,10 +31,11 @@
     </phone:PhoneApplicationPage.Resources>
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--TitlePanel contains the name of the application and page title-->
-        <phone:LongListSelector Name="ContentListBox" 
-                                ItemTemplate = "{StaticResource ContentItemTemplate}"
-                 ItemsSource="{Binding Article.ContentCollection}"
-                                ItemRealized="OnItemRealized">
+        <phone:LongListSelector 
+            Name="ContentListBox"
+            ItemsSource="{Binding Article.ContentCollection}"
+            ItemTemplate = "{StaticResource ArticleDynamicTemplate}"
+            ItemRealized="OnItemRealized">
             <phone:LongListSelector.ListHeader>
                 <StackPanel Background="{StaticResource PhoneChromeBrush}" Margin="5,5">
                     <TextBlock Text="www.onliner.by"></TextBlock>

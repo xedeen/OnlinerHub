@@ -10,7 +10,9 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using NewsHub.Annotations;
+using NewsHub.Commands;
 using NewsHub.OnlinerHub;
 
 namespace NewsHub.ViewModels
@@ -19,6 +21,17 @@ namespace NewsHub.ViewModels
     {
         private readonly object _readLock = new object();
         private readonly Dictionary<string, ArticleItemViewModel> _memCachedArticles = new Dictionary<string, ArticleItemViewModel>();
+        public ICommand ItemClickCommand { get; private set; }
+
+        public ArticleViewModel()
+        {
+            ItemClickCommand = new Command(PrepareClick);
+        }
+
+        private void PrepareClick()
+        {
+            var b = false;
+        }
 
         private ArticleItemViewModel _article;
         public ArticleItemViewModel Article

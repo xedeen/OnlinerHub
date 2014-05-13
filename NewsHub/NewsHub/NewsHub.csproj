@@ -98,6 +98,7 @@
     <Compile Include="ArticlePage.xaml.cs">
       <DependentUpon>ArticlePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Commands\Command.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ContentExtractor.cs" />
     <Compile Include="Converters\TextTrimmer.cs" />
@@ -113,7 +114,9 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Selectors\FeedBackGroundSelector.cs" />
+    <Compile Include="Selectors\ArticleTemplateSelector.cs" />
     <Compile Include="Selectors\FeedTemplateSelector.cs" />
+    <Compile Include="Selectors\TemplateSelector.cs" />
     <Compile Include="Service References\OnlinerHub\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
