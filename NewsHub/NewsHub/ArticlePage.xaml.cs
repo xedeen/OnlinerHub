@@ -9,9 +9,8 @@ using System.Windows.Data;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using NewsHub.OnlinerHub;
-using NewsHub.Resources;
 using NewsHub.ViewModels;
+using NewsParser.Model.Base;
 
 namespace NewsHub
 {
@@ -39,7 +38,7 @@ namespace NewsHub
         {
             
         }
-
+        
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             var progressIndicator = SystemTray.ProgressIndicator;
@@ -60,11 +59,6 @@ namespace NewsHub
                 progressIndicator, ProgressIndicator.IsIndeterminateProperty, binding);
             progressIndicator.Text = "Loading"; //AppResources.ArticleLoadingMsg;
 
-        }
-
-        private void OnFlick(object sender, FlickGestureEventArgs e)
-        {
-            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -90,8 +84,8 @@ namespace NewsHub
             {
                 if (e.ItemKind == LongListSelectorItemKind.Item)
                 {
-                    if (null!=e.Container.Content && e.Container.Content is ParagraphBase &&
-                        (e.Container.Content as ParagraphBase).Equals(
+                    if (null!=e.Container.Content && e.Container.Content is ParagraphViewModel &&
+                        (e.Container.Content as ParagraphViewModel).Equals(
                             ContentListBox.ItemsSource[ContentListBox.ItemsSource.Count - _offsetKnob]))
                     {
                         App.ArticleViewModel.LoadPage(_pageNumber++);

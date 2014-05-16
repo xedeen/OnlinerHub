@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 using System.Windows.Data;
 using System.Windows.Markup;
-using NewsHub.OnlinerHub;
+using NewsParser.Model;
 
 namespace NewsHub.Converters
 {

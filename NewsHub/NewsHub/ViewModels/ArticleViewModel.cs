@@ -11,9 +11,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using NewsHub.Annotations;
 using NewsHub.Commands;
-using NewsHub.OnlinerHub;
+using NewsParser.Controller;
+using NewsParser.Model.Events;
+
 
 namespace NewsHub.ViewModels
 {
@@ -25,12 +26,12 @@ namespace NewsHub.ViewModels
 
         public ArticleViewModel()
         {
-            ItemClickCommand = new Command(PrepareClick);
+            ItemClickCommand = new RelayCommand(Test);
         }
 
-        private void PrepareClick()
+        private void Test(object obj)
         {
-            var b = false;
+            var b = obj;
         }
 
         private ArticleItemViewModel _article;
@@ -62,47 +63,62 @@ namespace NewsHub.ViewModels
                 }
             }
             Article = new ArticleItemViewModel {Uri = uri};
-            LoadHeader();
+            //LoadHeader();
             LoadPage(0);
         }
 
         private void LoadHeader()
         {
-            var client = new OnlinerHubClient();
-            client.GetHeaderCompleted += GetHeaderCompleted;
-            client.GetHeaderAsync(Article.Uri);
+            //var client = new OnlinerHubClient();
+            //client.GetHeaderCompleted += GetHeaderCompleted;
+            //client.GetHeaderAsync(Article.Uri);
         }
 
         public void LoadPage(int pageNumber)
         {
             IsLoading = true;
-            var client = new OnlinerHubClient();
-            client.GetContentCompleted += GetContentPageCompleted;
-            client.GetContentAsync(Article.Uri, pageNumber);
+            LoadPage();
+            //var client = new OnlinerHubClient();
+            //client.GetContentCompleted += GetContentPageCompleted;
+            //client.GetContentAsync(Article.Uri, pageNumber);
         }
 
-        private void GetContentPageCompleted(object sender, GetContentCompletedEventArgs e)
+        public void LoadPage()
+        {
+            var p = new OnlinerParser();
+            p.ParseComplete += OnArticleProcessed;
+            p.Parse(Article.Uri);
+        }
+
+        private void OnArticleProcessed(object sender, ParseCompleteEventArgs args)
         {
             try
             {
-                if (e.Error == null && !e.Cancelled)
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    this.Article.ContentCollection.Clear();
+                    if (null != args.Article.Content)
                     {
-                        if (!e.Result.previous_page_cursor.HasValue)
-                            this.Article.ContentCollection.Clear();
-                        if (null != e.Result.paragraphs)
+                        foreach (var p in args.Article.Content)
                         {
-                            foreach (var p in e.Result.paragraphs)
-                            {
-                                this.Article.ContentCollection.Add(p);
-                            }
+                            this.Article.ContentCollection.Add(
+                                new ParagraphViewModel {Content = p}
+                                );
                         }
-                        Article.EOF = null == e.Result.next_page_cursor;
-                        if (Article.EOF && _memCachedArticles.ContainsKey(Article.Uri))
-                            _memCachedArticles.Add(Article.Uri, Article.Clone());
-                    });
-                }
+                    }
+                    if (null != args.Article.Header.Tags)
+                    {
+                        foreach (var tag in args.Article.Header.Tags)
+                        {
+                            this.Article.TagsCollection.Add(tag);
+                        }
+                    }
+                    Article.Title = args.Article.Header.Title;
+                    Article.HeaderImgUri = args.Article.Header.Image.SourceUrl;
+                    Article.EOF = true;
+                    if (Article.EOF && !_memCachedArticles.ContainsKey(Article.Uri))
+                        _memCachedArticles.Add(Article.Uri, Article.Clone());
+                });
             }
             catch (Exception exception)
             {
@@ -111,34 +127,7 @@ namespace NewsHub.ViewModels
             }
             finally
             {
-                IsLoading = false;
-            }
-
-        }
-
-        private void GetHeaderCompleted(object sender, GetHeaderCompletedEventArgs e)
-        {
-            try
-            {
-                if (e.Error == null && !e.Cancelled)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        Article.Title = e.Result.Title;
-                        if (null != e.Result.Tags)
-                        {
-                            foreach (var tag in e.Result.Tags)
-                            {
-                                this.Article.TagsCollection.Add(tag);
-                            }
-                        }
-                    });
-                }
-            }
-            catch (Exception exception)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(
-                    () => MessageBox.Show("Network error occured " + exception.Message));
+                Deployment.Current.Dispatcher.BeginInvoke(() => { IsLoading = false; });
             }
         }
 

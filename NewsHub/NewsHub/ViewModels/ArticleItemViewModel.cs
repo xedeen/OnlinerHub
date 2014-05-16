@@ -8,13 +8,17 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using NewsHub.Annotations;
-using NewsHub.OnlinerHub;
+using System.Windows.Input;
+using NewsHub.Commands;
+using NewsParser.Model;
+using NewsParser.Model.Base;
 
 namespace NewsHub.ViewModels
 {
     public class ArticleItemViewModel : INotifyPropertyChanged
     {
+        public ICommand ImageLinkClickCommand { get; set; }
+            
         public ArticleItemViewModel Clone()
         {
             return (ArticleItemViewModel)this.MemberwiseClone();
@@ -22,9 +26,16 @@ namespace NewsHub.ViewModels
 
         public ArticleItemViewModel()
         {
-            ContentCollection = new ObservableCollection<ParagraphBase>();
+            ContentCollection = new ObservableCollection<ParagraphViewModel>();
             TagsCollection = new ObservableCollection<Tag>();
+            ImageLinkClickCommand = new RelayCommand(ImageLinkClickHandler);
         }
+
+        private void ImageLinkClickHandler(object obj)
+        {
+            var b = obj;
+        }
+
 
         private string _title;
         public string Title
@@ -40,7 +51,21 @@ namespace NewsHub.ViewModels
             }
         }
 
-        public ObservableCollection<ParagraphBase> ContentCollection
+        private string _headerImgUri;
+        public string HeaderImgUri
+        {
+            get { return _headerImgUri; }
+            set
+            {
+                if (value != _headerImgUri)
+                {
+                    _headerImgUri = value;
+                    NotifyPropertyChanged("HeaderImgUri");
+                }
+            }
+        }
+
+        public ObservableCollection<ParagraphViewModel> ContentCollection
         {
             get;
             private set;
