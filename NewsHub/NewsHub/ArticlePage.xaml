@@ -12,34 +12,21 @@
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
-
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <phone:PhoneApplicationPage.Resources>
-        <DataTemplate x:Key="ContentItemTemplate">
-            <Grid Margin="0,6,0,15">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="1">
-                    <ContentControl Content="{Binding Path=., Converter={StaticResource ContentExtractor}}" />
-                </Grid>
-            </Grid>
-        </DataTemplate>
-
-    </phone:PhoneApplicationPage.Resources>
+    
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <!--TitlePanel contains the name of the application and page title-->
         <phone:LongListSelector 
             Name="ContentListBox"
             ItemsSource="{Binding Article.ContentCollection}"
             ItemTemplate = "{StaticResource ArticleDynamicTemplate}"
             ItemRealized="OnItemRealized">
+            <phone:LongListSelector.Background>
+                <SolidColorBrush Color="#faf7ee" Opacity="1"/>
+            </phone:LongListSelector.Background>
             <phone:LongListSelector.ListHeader>
-                <StackPanel Background="{StaticResource PhoneChromeBrush}" Margin="5,5">
-                    <TextBlock Text="www.onliner.by"></TextBlock>
-                    <TextBlock  Style="{StaticResource PhoneTextTitle2Style}" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Article.Title}" Margin="1,10"></TextBlock>
-                    <Image VerticalAlignment="Stretch">
+                <StackPanel Margin="12,12">
+                    <TextBlock Style ="{StaticResource NormalText}" Margin="12,12" Text="www.onliner.by"></TextBlock>
+                    <TextBlock  Style="{StaticResource H0}" TextWrapping="Wrap" Text="{Binding Article.Title}" Margin="12,12"></TextBlock>
+                    <Image Margin="12,12" VerticalAlignment="Stretch">
                         <Image.Source>
                             <BitmapImage UriSource="{Binding Article.HeaderImgUri}" CreateOptions="BackgroundCreation"/>
                         </Image.Source>

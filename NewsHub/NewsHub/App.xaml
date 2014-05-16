@@ -19,14 +19,44 @@
         <selectors:FeedBackGroundSelector x:Key="FeedBackGroundSelector" />
 
         <system:Double x:Key="PivotItemHeaderFontSize">28</system:Double>
+        <system:String x:Key="20Pt">20pt</system:String>
+        
         <system:Int32 x:Key="HeaderLen">73</system:Int32>
         <system:Int32 x:Key="HeaderLenClear">100</system:Int32>
         <system:Int32 x:Key="DescLen">108</system:Int32>
         <system:Int32 x:Key="DescLenClear">164</system:Int32>
 
+        <Style x:Key="H0" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="34.67" />
+            <Setter Property="Foreground" Value="{StaticResource PhoneBackgroundBrush}"/>
+        </Style>
 
+        <Style x:Key="H1" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="21.33" />
+            <Setter Property="Foreground" Value="{StaticResource PhoneBackgroundBrush}"/>
+        </Style>
+        <Style x:Key="NormalText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="18.67" />
+            <Setter Property="Foreground" Value="{StaticResource PhoneBackgroundBrush}"/>
+        </Style>
+
+        <Style x:Key="NormalTextArticle" TargetType="RichTextBox">
+            <Setter Property="FontFamily" Value="Cambria" />
+            <Setter Property="FontSize" Value="26.67" />
+            <Setter Property="Foreground" Value="{StaticResource PhoneBackgroundBrush}"/>
+            <Setter Property="Background" Value="#faf7ee"/>
+        </Style>
+        
+        <DataTemplate x:Key="ArticleDynamicTemplate">
+            <selectors:ArticleTemplateSelector Content="{Binding}"/>
+        </DataTemplate>
         <DataTemplate x:Key="NoTitleTemplate"/>
-
         <DataTemplate x:Key="FeedItemTemplateRich">
             <Grid Width="400" >
                 <Grid.RowDefinitions>
@@ -46,10 +76,10 @@
                     <StackPanel.Background>
                         <SolidColorBrush Color="#faf7ee" Opacity="1"/>
                     </StackPanel.Background>
-                    <TextBlock Text="{Binding TitleU, ConverterParameter={StaticResource HeaderLen}, Converter={StaticResource TextTrimmer}}" TextWrapping="Wrap" Margin="5,0,5,8" 
-        				Foreground="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextTitle2Style}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
+                    <TextBlock   Text="{Binding TitleU, ConverterParameter={StaticResource HeaderLen}, Converter={StaticResource TextTrimmer}}" TextWrapping="Wrap" Margin="5,0,5,8" 
+        				 Style="{StaticResource H1}"/>
                     <TextBlock Text="{Binding Description, ConverterParameter={StaticResource DescLen}, Converter={StaticResource TextTrimmer}}" TextWrapping="Wrap" Margin="15,0,0,15" 
-        				Foreground ="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextNormalStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
+        				Style="{StaticResource NormalText}"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -67,7 +97,7 @@
                         <SolidColorBrush Color="#faf7ee" Opacity="1"/>
                     </StackPanel.Background>
                     <TextBlock Text="{Binding TitleU, ConverterParameter={StaticResource HeaderLenClear}, Converter={StaticResource TextTrimmer}}" TextWrapping="Wrap" Margin="5,0,5,8" 
-        				Foreground="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextTitle2Style}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
+        				Foreground="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource H1}" />
                     <TextBlock Text="{Binding Description, ConverterParameter={StaticResource DescLenClear}, Converter={StaticResource TextTrimmer}}" TextWrapping="Wrap" Margin="15,0,0,15" 
         				Foreground ="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextNormalStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
                 </StackPanel>
@@ -81,9 +111,6 @@
             <Setter Property="FontSize" Value="{StaticResource PivotItemHeaderFontSize}"/>
             <Setter Property="CharacterSpacing" Value="-35"/>
         </Style>
-        <DataTemplate x:Key="ArticleDynamicTemplate">
-            <selectors:ArticleTemplateSelector Content="{Binding}"/>
-        </DataTemplate>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

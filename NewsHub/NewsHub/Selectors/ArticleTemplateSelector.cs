@@ -21,7 +21,7 @@ namespace NewsHub.Selectors
             sb.AppendLine(
                 "<StackPanel Width=\"Auto\" HorizontalAlignment=\"Stretch\" Margin=\"0,10,0,10\">");
             sb.AppendLine(
-                "<RichTextBox TextWrapping=\"Wrap\">");
+                "<RichTextBox TextWrapping=\"Wrap\" Style=\"{StaticResource NormalTextArticle}\">");
             sb.AppendLine("<Paragraph TextAlignment=\"Justify\">");
 
             var isEmpty = true;
@@ -47,9 +47,11 @@ namespace NewsHub.Selectors
                 if (item is A)
                     if (!string.IsNullOrEmpty(item.Text))
                     {
-                        sb.AppendLine(
-                            string.Format("<Hyperlink NavigateUri=\"{0}\" TargetName=\"_blank\">{1} </Hyperlink>",
-                                (item as A).HRef, item.Text));
+                        sb.Append("<Hyperlink Foreground=\"{StaticResource PhoneAccentBrush}\" NavigateUri=\"");
+                        sb.Append((item as A).HRef);
+                        sb.Append("\" TargetName=\"_blank\">");
+                        sb.Append(item.Text);
+                        sb.Append("</Hyperlink>");
                         isEmpty = false;
                     }
                 if (item is TextBlock)
