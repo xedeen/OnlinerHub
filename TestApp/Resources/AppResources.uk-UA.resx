@@ -194,4 +194,7 @@
   <data name="DeleteReadArticlesTitle" xml:space="preserve">
     <value>Не зберігати прочитані статті</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>Стиль відображення</value>
+  </data>
 </root>

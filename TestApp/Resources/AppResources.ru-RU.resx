@@ -194,4 +194,7 @@
   <data name="DeleteReadArticlesTitle" xml:space="preserve">
     <value>Не сохранять прочитанные статьи</value>
   </data>
+  <data name="AppStyleTitle" xml:space="preserve">
+    <value>Стиль просмотра</value>
+  </data>
 </root>

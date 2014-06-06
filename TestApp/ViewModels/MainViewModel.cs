@@ -67,7 +67,7 @@ namespace Onliner.ViewModels
             }
         }
 
-        private FeedType _currentSelectedPageType = FeedType.Auto;
+        //private FeedType _currentSelectedPageType = FeedType.Auto;
         private FeedType _currentFeedType = FeedType.Auto;
         public FeedType CurrentFeedType
         {

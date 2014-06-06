@@ -197,4 +197,7 @@
   <data name="DeleteReadArticlesTitle" xml:space="preserve">
     <value>Do not store read articles locally</value>
   </data>
+  <data name="AppStyleTitle" xml:space="preserve">
+    <value>Application style</value>
+  </data>
 </root>

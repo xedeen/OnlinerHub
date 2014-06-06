@@ -24,7 +24,6 @@ namespace Onliner
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
             this.Loaded += MainPage_Loaded;
-            MainPanorama.SelectionChanged += PageChanged;
         }
 
         private void BuildLocalizedApplicationBar()
@@ -38,7 +37,7 @@ namespace Onliner
 
         private void PageChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item = (MainPanorama.SelectedItem as PanoramaItem);
+            var item = (FeedSourcePivot.SelectedItem as PivotItem);
             if (null != item && !App.ViewModel.IsLoading)
             {
                 switch (item.Name)
@@ -93,7 +92,7 @@ namespace Onliner
                     pageN = 0;
                     break;
             }
-            MainPanorama.DefaultItem = MainPanorama.Items[pageN];
+            FeedSourcePivot.SelectedItem = FeedSourcePivot.Items[pageN];
             if (!App.ViewModel.IsLoading)
             {
                 App.ViewModel.LoadData(App.ViewModel.CurrentFeedType);

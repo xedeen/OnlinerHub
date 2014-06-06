@@ -98,7 +98,6 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\CommentExtractor.cs" />
     <Compile Include="Converters\FeedTemplateSelector.cs" />
-    <Compile Include="Converters\FeedBackGroundSelector.cs" />
     <Compile Include="Converters\TextTrimmer.cs" />
     <Compile Include="ArticlePage.xaml.cs">
       <DependentUpon>ArticlePage.xaml</DependentUpon>
@@ -119,6 +118,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Selectors\FeedBackGroundSelector.cs" />
+    <Compile Include="Selectors\FeedForeGroundSelector.cs" />
+    <Compile Include="Selectors\MarginsSelector.cs" />
+    <Compile Include="Selectors\TemplateSelector.cs" />
     <Compile Include="Service References\OnlinerHub\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

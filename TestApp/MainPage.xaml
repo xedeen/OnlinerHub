@@ -11,40 +11,54 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait"  Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
     
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <phone:Panorama TitleTemplate="{StaticResource SmallTitleTemplate}" 
-                        Background="{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedBackGroundSelector}}" Title="{Binding Path=LocalizedResources.MainTitle, Source={StaticResource LocalizedStrings}}" Name="MainPanorama">
-            <phone:PanoramaItem Name="Tech" Visibility="{Binding Settings.IsOnlinerTechSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
-                                Header="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}"
-                                HeaderTemplate="{StaticResource PanoramaItemHeaderTemplate}">
-                <phone:LongListSelector Margin="0,-68,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}"
+        <phone:Pivot TitleTemplate="{StaticResource NoTitleTemplate}"
+                     Name="FeedSourcePivot" SelectionChanged="PageChanged"
+                     Background="{Binding Settings.ApplicationStyle, Converter={StaticResource FeedBackGroundSelector}}">
+            <phone:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Margin="12,0,0,38">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Foreground="{StaticResource PhoneAccentBrush}" Text="{Binding}" Style="{StaticResource PivotItemHeaderTextStyle}" Grid.Row="0"/>
+                    </Grid>
+                </DataTemplate>
+            </phone:Pivot.HeaderTemplate>
+            <phone:PivotItem 
+                Name="Tech" 
+                Visibility="{Binding Settings.IsOnlinerTechSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                Header="{Binding Path=LocalizedResources.TechSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-60,0,0" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Tech}"
                                         ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
-            </phone:PanoramaItem>
-            <phone:PanoramaItem Name="Auto"  
-                                Visibility="{Binding Settings.IsOnlinerAutoSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
-                                HeaderTemplate="{StaticResource PanoramaItemHeaderTemplate}"
-                                Header="{Binding Path=LocalizedResources.AutoSectionTitle, Source={StaticResource LocalizedStrings}}">
-                <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Auto}"
+
+            </phone:PivotItem>
+            <phone:PivotItem 
+                Name="Auto"  
+                Visibility="{Binding Settings.IsOnlinerAutoSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                Header="{Binding Path=LocalizedResources.AutoSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-58,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Auto}"
                                         ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
-            </phone:PanoramaItem>
-            <phone:PanoramaItem Name="People"  
-                                Visibility="{Binding Settings.IsOnlinerPeopleSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
-                                HeaderTemplate="{StaticResource PanoramaItemHeaderTemplate}"
-                                Header="{Binding Path=LocalizedResources.PeopleSectionTitle, Source={StaticResource LocalizedStrings}}">
-                <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding People}"
+            </phone:PivotItem>
+            <phone:PivotItem 
+                Name="People"  
+                Visibility="{Binding Settings.IsOnlinerPeopleSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                Header="{Binding Path=LocalizedResources.PeopleSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-58,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding People}"
                                         ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
-            </phone:PanoramaItem>
-            <phone:PanoramaItem Name="Realt"  
-                                Visibility="{Binding Settings.IsOnlinerRealtSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
-                                HeaderTemplate="{StaticResource PanoramaItemHeaderTemplate}"
-                                Header="{Binding Path=LocalizedResources.RealtSectionTitle, Source={StaticResource LocalizedStrings}}">
-                <phone:LongListSelector Margin="0,-38,-22,2" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Realt}"
+            </phone:PivotItem>
+            <phone:PivotItem 
+                Name="Realt"  
+                Visibility="{Binding Settings.IsOnlinerRealtSubscribed, Converter={StaticResource BoolToHiddenConverter}}"
+                Header="{Binding Path=LocalizedResources.RealtSectionTitle, Source={StaticResource LocalizedStrings}}">
+                <phone:LongListSelector Margin="0,-58,-22,0" SelectionChanged="OnFeedSelected" ItemsSource="{Binding Realt}"
                                         ItemTemplate = "{Binding Settings.IsMinimalFeedStyle, Converter={StaticResource FeedTemplateSelector}}"/>
-            </phone:PanoramaItem>
-        </phone:Panorama>
+            </phone:PivotItem>
+        </phone:Pivot>
     </Grid>
 </phone:PhoneApplicationPage>

@@ -21,18 +21,21 @@ namespace Onliner.ViewModels
         private const string articleFontSize = "articleFontSize";
         private const string isMarkReadWhenOpen = "isMarkReadWhenOpen";
         private const string isDeleteReadArticles = "isDeleteReadArticles";
+        private const string applicationStyle = "applicationStyle";
         
         private const bool subscribtionSettingDefault = true;
 
         
         public ObservableCollection<string> FontNames { get; set; }
         public ObservableCollection<string> FontSizes { get; set; }
+        public ObservableCollection<string> AppStyles { get; set; } 
 
         public AppSettings()
         {
             settings = IsolatedStorageSettings.ApplicationSettings;
             FontNames = new ObservableCollection<string> {"segoe wp", "calibri", "cambria", "georgia", "verdana"};
             FontSizes = new ObservableCollection<string> { "x-small", "small", "medium", "large", "x-large" };
+            AppStyles = new ObservableCollection<string> {"metro", "paper", "light", "dark"};
         }
 
         
@@ -161,6 +164,18 @@ namespace Onliner.ViewModels
             }
         }
 
+        public string ApplicationStyle
+        {
+            get { return GetValueOrDefault<string>(applicationStyle, "metro"); }
+            set
+            {
+                if (AddOrUpdateValue(applicationStyle, value))
+                {
+                    Save();
+                    NotifyPropertyChanged("ApplicationStyle");
+                }
+            }
+        }
 
         #region generics
         public bool AddOrUpdateValue(string Key, Object value)

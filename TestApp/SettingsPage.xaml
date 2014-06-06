@@ -59,6 +59,7 @@
                                 <DataTemplate>
                                     <TextBlock FontFamily="{StaticResource PhoneFontFamilyNormal}"
                                     TextWrapping="Wrap"
+                                               
                                     Text="{Binding}" />
                                 </DataTemplate>
                             </tk:ToggleSwitch.ContentTemplate>
@@ -77,40 +78,49 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0">
                             <TextBlock Text="{Binding Path=LocalizedResources.ViewSettingsBlockTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextTitle1Style}"></TextBlock>
                         </StackPanel>
-                        <tk:ToggleSwitch Grid.Row="1" 
+                        <StackPanel Grid.Row="1">
+                            <TextBlock Text="{Binding Path=LocalizedResources.AppStyleTitle, Source={StaticResource LocalizedStrings}}"></TextBlock>
+                            <tk:ListPicker VerticalAlignment="Center" ItemsSource="{Binding Settings.AppStyles}"
+                                           SelectedItem="{Binding Settings.ApplicationStyle, Mode=TwoWay}">
+                            </tk:ListPicker>
+                        </StackPanel>
+                        <tk:ToggleSwitch Grid.Row="2" 
                                          Content="{Binding Path=LocalizedResources.FeedStyleTitle, Source={StaticResource LocalizedStrings}}"
                                          IsChecked="{Binding Settings.IsMinimalFeedStyle, Mode=TwoWay}">
                             <tk:ToggleSwitch.ContentTemplate>
                                 <DataTemplate>
                                     <TextBlock FontFamily="{StaticResource PhoneFontFamilyNormal}"
+                                               FontSize="{StaticResource PhoneFontSizeNormal}"
                                     TextWrapping="Wrap"
                                     Text="{Binding}" />
                                 </DataTemplate>
                             </tk:ToggleSwitch.ContentTemplate>
                         </tk:ToggleSwitch>
-                        <StackPanel Grid.Row="2">
+                        <StackPanel Grid.Row="3">
                             <TextBlock Text="{Binding Path=LocalizedResources.FontFamilyTitle, Source={StaticResource LocalizedStrings}}"></TextBlock>
                             <tk:ListPicker VerticalAlignment="Center" ItemsSource="{Binding Settings.FontNames}"
                                            SelectedItem="{Binding Settings.ArticleFont, Mode=TwoWay}">
                             </tk:ListPicker>
                         </StackPanel>
-                        <StackPanel Grid.Row="3">
+                        <StackPanel Grid.Row="4">
                             <TextBlock Text="{Binding Path=LocalizedResources.FontSizeTitle, Source={StaticResource LocalizedStrings}}"></TextBlock>
                             <tk:ListPicker VerticalAlignment="Center" ItemsSource="{Binding Settings.FontSizes}"
                                            SelectedItem="{Binding Settings.ArticleFontSize, Mode=TwoWay}">
                             </tk:ListPicker>
                         </StackPanel>
-                        <tk:ToggleSwitch Grid.Row="4" 
+                        <tk:ToggleSwitch Grid.Row="5" 
                                          Content="{Binding Path=LocalizedResources.MarkReadWhenOpenTitle, Source={StaticResource LocalizedStrings}}"
                                          IsChecked="{Binding Settings.IsMarkReadWhenOpen, Mode=TwoWay}">
                             <tk:ToggleSwitch.ContentTemplate>
                                 <DataTemplate>
                                     <TextBlock FontFamily="{StaticResource PhoneFontFamilyNormal}"
                                     TextWrapping="Wrap"
+                                               FontSize="{StaticResource PhoneFontSizeNormal}"
                                     Text="{Binding}" />
                                 </DataTemplate>
                             </tk:ToggleSwitch.ContentTemplate>

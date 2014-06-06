@@ -5,30 +5,103 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:converters="clr-namespace:Onliner.Converters"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:selectors="clr-namespace:Onliner.Selectors">
 
     <!--Application Resources-->
     <Application.Resources>
+        <local:LocalizedStrings xmlns:local="clr-namespace:Onliner" x:Key="LocalizedStrings"/>
+        
         <converters:TextTrimmer x:Key="TextTrimmer" />
         <converters:CommentExtractor x:Key="CommentExtractor" />
         <converters:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Collapsed" />
         <converters:FeedTemplateSelector x:Key="FeedTemplateSelector" />
-        <converters:FeedBackGroundSelector x:Key="FeedBackGroundSelector" />
         
+
+        <selectors:MarginsSelector x:Key="MarginsSelector" />
+        <selectors:FeedBackGroundSelector x:Key="FeedBackGroundSelector" />
+        <selectors:FeedHeaderForegroundSelector x:Key="FeedHeaderForegroundSelector" />
+        <selectors:FeedTextForegroundSelector x:Key="FeedTextForegroundSelector" />
+
+        <sys:String x:Key="FeedsPageName">Feeds</sys:String>
         
+        <sys:Double x:Key="PivotItemHeaderFontSize">28</sys:Double>
+        <sys:String x:Key="20Pt">20pt</sys:String>
+
         <sys:Int32 x:Key="HeaderLen">73</sys:Int32>
         <sys:Int32 x:Key="HeaderLenClear">100</sys:Int32>
         <sys:Int32 x:Key="DescLen">108</sys:Int32>
         <sys:Int32 x:Key="DescLenClear">164</sys:Int32>
         <sys:Double x:Key="PanoramaItemHeaderFontSize">36</sys:Double>
         <sys:Double x:Key="ArticleTitleFontSize">23</sys:Double>
-        
-        
-        <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
-            <Setter Property="FontSize" Value="{StaticResource PanoramaItemHeaderFontSize}"/>
-            <Setter Property="CharacterSpacing" Value="-35"/>
+
+        <Style x:Key="H0" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="34.67" />
         </Style>
+
+        <Style x:Key="H1" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="21.33" />
+        </Style>
+
+        <Style x:Key="H1_Paper" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="21.33" />
+            <Setter Property="Foreground" Value="#FF0A0A0A"></Setter>
+        </Style>
+        <Style x:Key="H1_Light" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="21.33" />
+            <Setter Property="Foreground" Value="#FF000000"></Setter>
+        </Style>
+        <Style x:Key="H1_Dark" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="21.33" />
+            <Setter Property="Foreground" Value="#FFFFFFFF"></Setter>
+        </Style>
+        <Style x:Key="H1_Metro" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="21.33" />
+            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
+        </Style>
+        
+        <Style x:Key="Normal_Paper" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="18.67" />
+            <Setter Property="Foreground" Value="#FF0A0A0A"></Setter>
+        </Style>
+        <Style x:Key="Normal_Light" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="18.67" />
+            <Setter Property="Foreground" Value="#FF000000"></Setter>
+        </Style>
+        <Style x:Key="Normal_Dark" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="18.67" />
+            <Setter Property="Foreground" Value="#FFFFFFFF"></Setter>
+        </Style>
+        <Style x:Key="Normal_Metro" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="18.67" />
+            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"></Setter>
+        </Style>
+
+        <Style x:Key="NormalTextArticle" TargetType="RichTextBox">
+            <Setter Property="FontFamily" Value="Cambria" />
+            <Setter Property="FontSize" Value="26.67" />
+        </Style>
+        
         <Style x:Key="ArticleTitleTextStyle" TargetType="TextBlock">
             <Setter Property="TextWrapping" Value="Wrap"></Setter>
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
@@ -36,79 +109,66 @@
             <Setter Property="CharacterSpacing" Value="-35"/>
         </Style>
 
-        <DataTemplate x:Key="SmallTitleTemplate">
-            <!--<Grid>
-                <ContentPresenter Margin="0,15">
-                    <TextBlock Text="{Binding}" FontSize="36" />
-                </ContentPresenter>
-            </Grid>-->
-        </DataTemplate>
-       <DataTemplate x:Key="SmallHeaderTemplate">
-            <Grid>
-                <ContentPresenter Margin="0,0">
-                    <TextBlock Text="{Binding}" FontSize="36" />
-                </ContentPresenter>
-            </Grid>
-        </DataTemplate>
+        <Style x:Key="TestStyle" TargetType="StackPanel">
+        </Style>
 
         <DataTemplate x:Key="FeedItemTemplateRich">
-            <Grid Width="400" >
+            <Grid Width="{Binding .,Converter={StaticResource MarginsSelector}}">
+                
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Background="Beige">
-                    <TextBlock Foreground="{StaticResource PhoneBackgroundBrush}" Text="{Binding PublishDateS}"></TextBlock>
+                <StackPanel Grid.Row="0" Background="{StaticResource PhoneAccentBrush}">
+                    <TextBlock Foreground="{StaticResource PhoneBackgroundBrush}" Text="{Binding PublishDateS}"/>
                 </StackPanel>
                 <Image VerticalAlignment="Stretch" CacheMode="BitmapCache" Grid.Row="1">
                     <Image.Source>
                         <BitmapImage UriSource="{Binding ImageUri}" CreateOptions="BackgroundCreation"/>
                     </Image.Source>
                 </Image>
-                <StackPanel Grid.Row="2" Margin="0,0,0,20">
-                    <StackPanel.Background>
-                        <SolidColorBrush Color="Beige" Opacity="1"/>
-                    </StackPanel.Background>
-                    <TextBlock Text="{Binding TitleU, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLen}}" TextWrapping="Wrap" Margin="5,0,5,8" 
-                               Foreground="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextTitle2Style}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
-                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLen}}" TextWrapping="Wrap" Margin="15,0,0,15" 
-                               Foreground ="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextNormalStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
+                <StackPanel Grid.Row="2" 
+                            Margin="0,0,0,20" 
+                            Background="{Binding Settings.ApplicationStyle, Converter={StaticResource FeedBackGroundSelector}}"
+>
+                    <TextBlock   
+                        Text="{Binding TitleU, ConverterParameter={StaticResource HeaderLen}, Converter={StaticResource TextTrimmer}}" TextWrapping="Wrap" Margin="5,0,5,8" 
+                        Style="{Binding Converter={StaticResource FeedHeaderForegroundSelector}}"/>
+
+                    <TextBlock 
+                        Text="{Binding Description, ConverterParameter={StaticResource DescLen}, Converter={StaticResource TextTrimmer}}" TextWrapping="Wrap" Margin="15,0,0,15" 
+                        Style="{Binding Converter={StaticResource FeedTextForegroundSelector}}"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="FeedItemTemplateClear">
-            <Grid Width="400" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Background="Beige">
-                    <TextBlock Foreground="{StaticResource PhoneBackgroundBrush}" Text="{Binding PublishDateS}"></TextBlock>
-                </StackPanel>
-                <StackPanel Grid.Row="1" Margin="0,0,0,20">
-                    <StackPanel.Background>
-                        <SolidColorBrush Color="Beige" Opacity="1"/>
-                    </StackPanel.Background>
-                    <TextBlock Text="{Binding TitleU, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource HeaderLenClear}}" TextWrapping="Wrap" Margin="5,0,5,8" 
-                               Foreground="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextTitle2Style}" FontSize="{StaticResource PhoneFontSizeNormal}" FontWeight="Bold" />
-                    <TextBlock Text="{Binding Description, Converter={StaticResource TextTrimmer}, ConverterParameter={StaticResource DescLenClear}}" TextWrapping="Wrap" Margin="15,0,0,15" 
-                               Foreground ="{StaticResource PhoneBackgroundBrush}" Style="{StaticResource PhoneTextNormalStyle}" FontSize="{StaticResource PhoneFontSizeSmall}"/>
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-        
-        <DataTemplate x:Key="PanoramaItemHeaderTemplate">
-            <Grid Margin="12,0,0,38">
+            <Grid Width="{Binding .,Converter={StaticResource MarginsSelector}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Foreground="{StaticResource PhoneBackgroundBrush}" Text="{Binding}" Style="{StaticResource PanoramaItemHeaderTextStyle}" Grid.Row="0"/>
+                <StackPanel Grid.Row="0" Background="{StaticResource PhoneAccentBrush}">
+                    <TextBlock Foreground="{StaticResource PhoneBackgroundBrush}" Text="{Binding PublishDateS}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" 
+                            Margin="0,0,0,20"
+                            Background="{Binding Settings.ApplicationStyle, Converter={StaticResource FeedBackGroundSelector}}">
+                    <TextBlock 
+                        Text="{Binding TitleU, ConverterParameter={StaticResource HeaderLenClear}, Converter={StaticResource TextTrimmer}}" TextWrapping="Wrap" Margin="5,0,5,8"
+                        Style="{Binding Converter={StaticResource FeedHeaderForegroundSelector}}"/>
+                    <TextBlock 
+                        Text="{Binding Description, ConverterParameter={StaticResource DescLenClear}, Converter={StaticResource TextTrimmer}}" TextWrapping="Wrap" Margin="15,0,0,15" 
+        				Style="{Binding Converter={StaticResource FeedTextForegroundSelector}}"/>
+                </StackPanel>
             </Grid>
         </DataTemplate>
-        
-        <local:LocalizedStrings xmlns:local="clr-namespace:Onliner" x:Key="LocalizedStrings"/>
+        <DataTemplate x:Key="NoTitleTemplate" />
+        <Style x:Key="PivotItemHeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
+            <Setter Property="FontSize" Value="{StaticResource PivotItemHeaderFontSize}"/>
+            <Setter Property="CharacterSpacing" Value="-35"/>
+        </Style>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
