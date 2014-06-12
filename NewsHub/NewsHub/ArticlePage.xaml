@@ -14,6 +14,10 @@
     shell:SystemTray.IsVisible="True">
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
         <phone:LongListSelector 
             Name="ContentListBox"
             ItemsSource="{Binding Article.ContentCollection}"
@@ -34,6 +38,17 @@
                 </StackPanel>
             </phone:LongListSelector.ListHeader>
         </phone:LongListSelector>
+        
+        <StackPanel Name="CommentsPanel" Grid.Row="1" Visibility="{Binding CommentsVisible}">
+            <phone:LongListSelector 
+            Name="CommentListBox"
+            ItemsSource="{Binding Article.CommentsCollection}"
+            ItemTemplate = "{StaticResource CommentDynamicTemplate}">
+                <phone:LongListSelector.Background>
+                    <SolidColorBrush Color="#faf7ee" Opacity="1"/>
+                </phone:LongListSelector.Background>
+            </phone:LongListSelector>
+        </StackPanel>
     </Grid>
 
 </phone:PhoneApplicationPage>

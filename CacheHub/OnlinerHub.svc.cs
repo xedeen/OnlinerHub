@@ -4,11 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Caching;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
-using System.Text.RegularExpressions;
+using CacheHub.Model;
+using CacheHub.Model2;
 using HAP = HtmlAgilityPack;
 
 namespace CacheHub
@@ -54,7 +51,7 @@ namespace CacheHub
                        };
         }
 
-        public ArticlePageDto GetContent(string articleUrl, int cursor)
+        /*public ArticlePageDto GetContent(string articleUrl, int cursor)
         {
             const int numberOfObjectsPerPage = 3;
             var cursorNext = cursor;
@@ -83,16 +80,24 @@ namespace CacheHub
                 next_page_cursor = cursorNext == cursor ? (int?) null : cursorNext,
                 previous_page_cursor = cursor > 0 ? cursor - 1 : (int?) null
             };
+        }*/
+
+        public List<ContentItem> GetContentXaml(string articleUrl)
+        {
+            var page = ProcessArticlePage(articleUrl);
+            if (null != page)
+                return page.Article ?? new List<ContentItem>();
+            return new List<ContentItem>();
         }
 
-        public Header GetHeader(string articleUrl)
+        /*public Header GetHeader(string articleUrl)
         {
             var page = ProcessArticlePage(articleUrl);
 
             if (null == page || null == page.Article || null == page.Article.Header)
                 return new Header { Error = "Cannot retrieve header" };
             return page.Article.Header;
-        }
+        }*/
 
         private FullArticlePage ProcessArticlePage(string articleUrl)
         {
@@ -102,7 +107,7 @@ namespace CacheHub
             if (cache.Contains(articleUrl + "/comments"))
                 fullPage.Comments = cache.Get(articleUrl + "/comments") as List<CommentDto>;
             if (cache.Contains(articleUrl + "/content"))
-                fullPage.Article = cache.Get(articleUrl + "/content") as Article;
+                fullPage.Article = cache.Get(articleUrl + "/content") as List<ContentItem>;
 
             if (null == fullPage.Comments || null == fullPage.Article)
             {
@@ -120,12 +125,9 @@ namespace CacheHub
 
                     if (null == fullPage.Article)
                     {
-                        var p = new OnlinerParser();
-                        fullPage.Article = new Article
-                        {
-                            Header = p.ParseHeader(html),
-                            Content = p.Parse(html)
-                        };
+                        var p = new ArticleParser();
+                        fullPage.Article = p.Parse(html);
+
                         cache.Add(articleUrl + "/content", fullPage.Article,
                         new CacheItemPolicy { AbsoluteExpiration = DateTime.Now.AddHours(1.0) });
                     }

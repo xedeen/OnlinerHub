@@ -11,8 +11,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using HtmlAgilityPack;
 using NewsHub.Commands;
 using NewsParser.Controller;
+using NewsParser.Model;
 using NewsParser.Model.Events;
 
 
@@ -23,10 +25,13 @@ namespace NewsHub.ViewModels
         private readonly object _readLock = new object();
         private readonly Dictionary<string, ArticleItemViewModel> _memCachedArticles = new Dictionary<string, ArticleItemViewModel>();
         public ICommand ItemClickCommand { get; private set; }
+        private readonly OnlinerLoader _loader = new OnlinerLoader("xedin", "spectrum");
+        private HtmlAgilityPack.HtmlDocument _pageDocument;
 
         public ArticleViewModel()
         {
             ItemClickCommand = new RelayCommand(Test);
+            _loader.LoadComplete += OnLoadComplete;
         }
 
         private void Test(object obj)
@@ -45,6 +50,17 @@ namespace NewsHub.ViewModels
             }
         }
 
+        private Visibility _commentsVisible;
+        public Visibility CommentsVisible
+        {
+            get { return _commentsVisible; }
+            private set
+            {
+                _commentsVisible = value;
+                NotifyPropertyChanged("CommentsVisible");
+            }
+
+        }
 
         public void LoadData(string uri)
         {
@@ -63,34 +79,62 @@ namespace NewsHub.ViewModels
                 }
             }
             Article = new ArticleItemViewModel {Uri = uri};
-            //LoadHeader();
             LoadPage(0);
-        }
-
-        private void LoadHeader()
-        {
-            //var client = new OnlinerHubClient();
-            //client.GetHeaderCompleted += GetHeaderCompleted;
-            //client.GetHeaderAsync(Article.Uri);
         }
 
         public void LoadPage(int pageNumber)
         {
             IsLoading = true;
             LoadPage();
-            //var client = new OnlinerHubClient();
-            //client.GetContentCompleted += GetContentPageCompleted;
-            //client.GetContentAsync(Article.Uri, pageNumber);
+            this.CommentsVisible = Visibility.Collapsed;
         }
 
         public void LoadPage()
         {
-            var p = new OnlinerParser();
-            p.ParseComplete += OnArticleProcessed;
-            p.Parse(Article.Uri);
+            _loader.Load(Article.Uri);
         }
 
-        private void OnArticleProcessed(object sender, ParseCompleteEventArgs args)
+        private void OnLoadComplete(object sender, LoadCompleteEventArgs args)
+        {
+            if (args.Success)
+            {
+                _pageDocument = new HtmlDocument();
+                _pageDocument.LoadHtml(args.Page.DocumentNode.InnerHtml);
+                var parser = new OnlinerParser(args.Page);
+                parser.ArticleParsed += OnArticleProcessed;
+                parser.ParseArticleAsync();
+            }
+        }
+
+        private void OnCommentsParsed(object sender, CommentsCompleteEventArgs args)
+        {
+            try
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    this.Article.CommentsCollection.Clear();
+                    if (null != args.Comments)
+                    {
+                        foreach (var c in args.Comments)
+                        {
+                            this.Article.CommentsCollection.Add(c);
+                        }
+                        this.CommentsVisible = Visibility.Visible;
+                    }
+                });
+            }
+            catch (Exception exception)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(
+                    () => MessageBox.Show("Network error occured " + exception.Message));
+            }
+            finally
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => { IsLoading = false; });
+            }
+        }
+
+        private void OnArticleProcessed(object sender, ArticleCompleteEventArgs args)
         {
             try
             {
@@ -105,6 +149,12 @@ namespace NewsHub.ViewModels
                                 new ParagraphViewModel {Content = p}
                                 );
                         }
+                        this.Article.ContentCollection.Add(
+                            new ParagraphViewModel
+                            {
+                                Content = new Footer(),
+                                CommentsCmd = new RelayCommand(CommentCmdClicked)
+                            });
                     }
                     if (null != args.Article.Header.Tags)
                     {
@@ -151,6 +201,17 @@ namespace NewsHub.ViewModels
                         _memCachedArticles.Add(localArticle.Uri, localArticle);
                     return localArticle;
                 }
+            }
+        }
+
+        private void CommentCmdClicked(object obj)
+        {
+            if (null != _pageDocument)
+            {
+                IsLoading = true;
+                var parser = new OnlinerParser(_pageDocument);
+                parser.CommentsParsed += OnCommentsParsed;
+                parser.ParseCommentsAsync();
             }
         }
     }

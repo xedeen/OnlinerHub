@@ -56,6 +56,9 @@
         <DataTemplate x:Key="ArticleDynamicTemplate">
             <selectors:ArticleTemplateSelector Content="{Binding}"/>
         </DataTemplate>
+        <DataTemplate x:Key="CommentDynamicTemplate">
+            <selectors:CommentTemplateSelector Content="{Binding}"/>
+        </DataTemplate>
         <DataTemplate x:Key="NoTitleTemplate"/>
         <DataTemplate x:Key="FeedItemTemplateRich">
             <Grid Width="400" >
@@ -103,7 +106,6 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-
 
 
         <Style x:Key="PivotItemHeaderTextStyle" TargetType="TextBlock">

@@ -5,6 +5,9 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using CacheHub.Model;
+using CacheHub.Model.Base;
+using CacheHub.Model2;
 
 namespace CacheHub
 {
@@ -20,18 +23,22 @@ namespace CacheHub
         [WebInvoke(UriTemplate = "comments/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
         CommentsPageDto GetComments(string articleUrl, int cursor);
 
-        [OperationContract]
-        [WebInvoke(UriTemplate = "content/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
-        ArticlePageDto GetContent(string articleUrl, int cursor);
+        //[OperationContract]
+        //[WebInvoke(UriTemplate = "content/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
+        //ArticlePageDto GetContent(string articleUrl, int cursor);
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "header/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
-        Header GetHeader(string articleUrl);
+        [WebInvoke(UriTemplate = "content/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
+        List<ContentItem> GetContentXaml(string articleUrl);
+
+        //[OperationContract]
+        //[WebInvoke(UriTemplate = "header/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
+        //Header GetHeader(string articleUrl);
     }
 
     public class FullArticlePage
     {
-        public Article Article { get; set; }
+        public List<ContentItem> Article { get; set; }
         public List<CommentDto> Comments { get; set; }
     }
 

@@ -1,0 +1,6 @@
+﻿<#@ template language="C#" #>
+				</Paragraph>
+			</RichTextBox>
+		</StackPanel>
+	</Grid>
+</DataTemplate>

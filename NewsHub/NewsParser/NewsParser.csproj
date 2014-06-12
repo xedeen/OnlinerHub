@@ -94,8 +94,11 @@
     <Compile Include="Model\Article.cs" />
     <Compile Include="Model\Base\ContentItemBase.cs" />
     <Compile Include="Model\Base\ParagraphBase.cs" />
+    <Compile Include="Model\Comment.cs" />
+    <Compile Include="Model\CommentAuthor.cs" />
     <Compile Include="Model\Events\LoadCompleteEventArgs.cs" />
     <Compile Include="Model\Events\ParseCompleteEventArgs.cs" />
+    <Compile Include="Model\Footer.cs" />
     <Compile Include="Model\Header.cs" />
     <Compile Include="Model\Image.cs" />
     <Compile Include="Model\Modifiers.cs" />
@@ -105,6 +108,7 @@
     <Compile Include="Model\Tag.cs" />
     <Compile Include="Model\TextBlock.cs" />
     <Compile Include="Model\Video.cs" />
+    <Compile Include="Model\BlockItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

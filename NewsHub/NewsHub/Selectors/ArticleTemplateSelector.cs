@@ -50,7 +50,7 @@ namespace NewsHub.Selectors
                         sb.Append("<Hyperlink Foreground=\"{StaticResource PhoneAccentBrush}\" NavigateUri=\"");
                         sb.Append((item as A).HRef);
                         sb.Append("\" TargetName=\"_blank\">");
-                        sb.Append(item.Text);
+                        sb.Append(item.Text.Replace("&nbsp;", ""));
                         sb.Append("</Hyperlink>");
                         isEmpty = false;
                     }
@@ -60,7 +60,7 @@ namespace NewsHub.Selectors
                     {
                         var modifiers = (item as TextBlock).TextModifiers;
                         sb.AppendLine(
-                            string.Format("<Run Text=\"{0}\" {1} {2}/>", item.Text,
+                            string.Format("<Run Text=\"{0}\" {1} {2}/>", item.Text.Replace("&nbsp;", ""),
                                 (modifiers | 0x0001) == modifiers ? "FontWeight=\"Bold\"" : string.Empty,
                                 (modifiers | 0x0010) == modifiers ? "FontStyle=\"Italic\"" : string.Empty));
                         isEmpty = false;
@@ -111,10 +111,20 @@ namespace NewsHub.Selectors
                     x += ProcessParagraph(content as P);
                 if (content is Table)
                     x += ProcessTable(content as Table);
+                if (content is Footer)
+                    x += ProcessFooter(content as Footer);
             }
             x += "</Grid> </DataTemplate>";
             var dt = (DataTemplate)XamlReader.Load(x);
             return dt;
+        }
+
+        private string ProcessFooter(Footer footer)
+        {
+            var x = string.Empty;
+            x +=
+                "<StackPanel><Button HorizontalAlignment=\"Right\" Width=\"250\" Command=\"{Binding CommentsCmd}\" Content=\"View comments\"></Button></StackPanel>";
+            return x;
         }
     }
 }

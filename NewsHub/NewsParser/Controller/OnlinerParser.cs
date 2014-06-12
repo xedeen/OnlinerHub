@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using NewsParser.Controller.Interface;
 using NewsParser.Model;
 using NewsParser.Model.Base;
@@ -15,48 +16,124 @@ namespace NewsParser.Controller
 {
     public class OnlinerParser : IParser
     {
-        public event ParseCompleteDelegate ParseComplete;
+        public event ArticleCompleteDelegate ArticleParsed;
+        public event CommentsCompleteDelegate CommentsParsed;
 
-        public void Parse(string uri)
+        private HAP.HtmlDocument _html = null;
+
+        public OnlinerParser(HAP.HtmlDocument doc)
         {
-            var loader = new OnlinerLoader("xedin", "spectrum");
-            loader.LoadComplete += OnLoadComplete;
-            loader.Load(uri);
+            _html = doc;
         }
 
-        private void OnLoadComplete(object sender, LoadCompleteEventArgs args)
+        public void ParseArticleAsync()
         {
-            if (!args.Success || null == args.Page)
-            {
-                if (ParseComplete != null)
-                    ParseComplete(this, new ParseCompleteEventArgs {Success = false});
-                return;
-            }
+            Task.Factory.StartNew(ParseArticleAsyncTask);
+        }
+
+        public void ParseCommentsAsync()
+        {
+             Task.Factory.StartNew(ParseCommentsAsyncTask);
+        }
+
+        private async void ParseArticleAsyncTask()
+        {
             var success = true;
             List<ParagraphBase> result = null;
             Header header = null;
+            long postId = 0;
+
             try
             {
-                result = Parse(args.Page);
-                header = ParseHeader(args.Page);
+                result = Parse(_html, out postId);
+                header = ParseHeader(_html);
+                _html = new HAP.HtmlDocument();
+                _html.LoadHtml(_html.DocumentNode.InnerHtml);
             }
-            catch
+            catch (Exception e)
             {
                 success = false;
             }
 
-            if (null != ParseComplete)
-                ParseComplete(this, new ParseCompleteEventArgs
+            if (null != ArticleParsed)
+                ArticleParsed.Invoke(this, new ArticleCompleteEventArgs
                 {
-                    Article = new Article {Content = result,Header = header},
+                    Article = new Article {Content = result, Header = header, PostId = postId},
+                    Success = success
+                });
+        }
+
+        private async void ParseCommentsAsyncTask()
+        {
+            if (null == _html) return;
+            var result = new List<Comment>();
+            var success = false;
+
+            var node = _html.GetElementbyId("onliner_comments").ChildNodes.FirstOrDefault(x => x.Name == "ul");
+            if (node != null)
+            {
+                var innerId = 0;
+                result =
+                    node.SelectNodes("li[@data-comment-id]")
+                        .Select(commentNode => ParseComment(commentNode, innerId++))
+                        .Where(comment => null != comment)
+                        .ToList();
+                success = true;
+            }
+
+            if (null != CommentsParsed)
+                CommentsParsed.Invoke(this, new CommentsCompleteEventArgs
+                {
+                    Comments = result,
                     Success = success
                 });
         }
 
 
-        public List<ParagraphBase> Parse(HAP.HtmlDocument html)
+
+
+        private void OnLoadComplete(object sender, LoadCompleteEventArgs args)
         {
-            var postId = ParsePostId(html);
+            if (!args.Success || null == args.Page)
+            {
+                if (ArticleParsed != null)
+                    ArticleParsed(this, new ArticleCompleteEventArgs {Success = false});
+                _html = null;
+                return;
+            }
+
+
+            var success = true;
+            List<ParagraphBase> result = null;
+            Header header = null;
+            long postId = 0;
+            
+            try
+            {
+                result = Parse(args.Page, out postId);
+                header = ParseHeader(args.Page);
+                _html = new HAP.HtmlDocument();
+                _html.LoadHtml(args.Page.DocumentNode.InnerHtml);
+            }
+            catch (Exception e)
+            {
+                success = false;
+            }
+
+            Task.Factory.StartNew(ParseCommentsAsync);
+
+            if (null != ArticleParsed)
+                ArticleParsed.Invoke(this, new ArticleCompleteEventArgs
+                {
+                    Article = new Article {Content = result, Header = header, PostId = postId},
+                    Success = success
+                });
+        }
+
+
+        public List<ParagraphBase> Parse(HAP.HtmlDocument html, out long postId)
+        {
+            postId = ParsePostId(html);
             var node = html.DocumentNode.Descendants("article").FirstOrDefault();
             if (node == null) return null;
             int innerId = 0;
@@ -81,7 +158,7 @@ namespace NewsParser.Controller
             };
         }
 
-        private int ParsePostId(HAP.HtmlDocument html)
+        private long ParsePostId(HAP.HtmlDocument html)
         {
             var node =
                 html.DocumentNode.Descendants("form")
@@ -95,8 +172,8 @@ namespace NewsParser.Controller
                 "div[@class='b-comments-form']/div[@class='b-comments-form-button']/input[@name='postId']");
             if (null == hiddenInput || !hiddenInput.HasAttributes || null == hiddenInput.Attributes["value"])
                 return 0;
-            var retVal = 0;
-            Int32.TryParse(hiddenInput.Attributes["value"].Value, out retVal);
+            long retVal = 0;
+            Int64.TryParse(hiddenInput.Attributes["value"].Value, out retVal);
             return retVal;
         }
 
@@ -118,6 +195,131 @@ namespace NewsParser.Controller
                 HRef = node.Attributes["href"].Value,
                 Size = node.ParentNode.Name == "strong" ? TagSize.Big : TagSize.Small
             };
+        }
+        
+
+        private Comment ParseComment(HAP.HtmlNode commentNode, int innerId)
+        {
+            long id = 0;
+            Int64.TryParse(commentNode.Attributes["data-comment-id"].Value, out id);
+
+            try
+            {
+                var comment = new Comment();
+                comment.Author = ParseAuthor(commentNode.SelectSingleNode("div/strong[@class='author']"));
+                comment.Content = ParseContent(commentNode.SelectSingleNode("div[@class='comment-content']"));
+                comment.Id = id;
+                comment.InnerId = innerId;
+
+                return comment;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        private CommentAuthor ParseAuthor(HAP.HtmlNode node)
+        {
+            if (null == node) return null;
+            var link = node.SelectSingleNode("a[@href]");
+            var img = node.SelectSingleNode("a/figure[@class='author-image']/img[@src]");
+            return new CommentAuthor
+            {
+                ProfileUrl = link == null ? string.Empty : link.Attributes["href"].Value,
+                AvatarSourceUrl = img == null ? string.Empty : img.Attributes["src"].Value,
+                Name = null == link ? string.Empty : link.InnerText
+            };
+        }
+
+        private List<BlockItem> ParseContent(HAP.HtmlNode content)
+        {
+            var currentContent = new List<BlockItem>();
+            ProcessNode(content, null, currentContent, 0);
+            return currentContent;
+        }
+
+        private void ProcessNode(HAP.HtmlNode node, BlockItem currentBlock, List<BlockItem> blocks, TextModifiers modifiers)
+        {
+            foreach (var child in node.ChildNodes)
+            {
+                if (currentBlock == null)
+                {
+                    currentBlock = new BlockItem {Content = new P()};
+                    blocks.Add(currentBlock);
+                }
+
+                switch (child.Name)
+                {
+                    case "blockquote":
+                        var newBlock = new BlockItem {IsBlockquote = true};
+                        ProcessNode(child.SelectSingleNode("div"), newBlock, blocks, 0);
+                        if (currentBlock.IsBlockquote)
+                        {
+                            if (null == currentBlock.Children)
+                                currentBlock.Children = new List<BlockItem>();
+                            currentBlock.Children.Add(newBlock);
+                        }
+                        else
+                        {
+                            blocks.Add(newBlock);
+                            currentBlock = null;
+                        }
+                        break;
+                    case "cite":
+                        currentBlock.Title = child.InnerText.Trim('\n');
+                        break;
+                    case "p":
+                        ProcessNode(child, currentBlock, blocks, 0);
+                        //ProcessNode(child, currentBlock, commentContent,
+                        //  ProcessBlockItem(child, currentBlock, currentFormatting));
+                        break;
+                    case "strong":
+                        ProcessNode(child, currentBlock, blocks, modifiers | TextModifiers.Bold);
+                        break;
+                    case "em":
+                        ProcessNode(child, currentBlock, blocks, modifiers | TextModifiers.Italic);
+                        break;
+                    case "#text":
+                        ProcessBlockItem(child, currentBlock, modifiers);
+                        break;
+                    case "a":
+                        var text = child.InnerText.Trim('\n').Trim();
+                        if (!string.IsNullOrEmpty(text))
+                        {
+                            if (null == currentBlock.Content)
+                                currentBlock.Content = new P();
+                            if (null == currentBlock.Content.Items)
+                                currentBlock.Content.Items = new List<ContentItemBase>();
+
+                            currentBlock.Content.Items.Add(new A
+                            {
+                                Text = text,
+                                HRef = child.Attributes["href"].Value
+                            });
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void ProcessBlockItem(HAP.HtmlNode node, BlockItem currentBlock, TextModifiers modifiers)
+        {
+            var text = node.InnerText.Trim('\n').Trim();
+            
+            if (!string.IsNullOrEmpty(text))
+            {
+                if (null == currentBlock.Content)
+                    currentBlock.Content = new P();
+                if (null == currentBlock.Content.Items)
+                    currentBlock.Content.Items = new List<ContentItemBase>();
+
+                currentBlock.Content.Items.Add(new TextBlock
+                {
+                    Text = text,
+                    TextModifiers = (int) modifiers
+                });
+            }
         }
 
         public void CreateXaml(List<ParagraphBase> paragraphs)

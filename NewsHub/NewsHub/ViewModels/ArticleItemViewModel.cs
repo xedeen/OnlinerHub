@@ -27,6 +27,7 @@ namespace NewsHub.ViewModels
         public ArticleItemViewModel()
         {
             ContentCollection = new ObservableCollection<ParagraphViewModel>();
+            CommentsCollection = new ObservableCollection<Comment>();
             TagsCollection = new ObservableCollection<Tag>();
             ImageLinkClickCommand = new RelayCommand(ImageLinkClickHandler);
         }
@@ -70,6 +71,8 @@ namespace NewsHub.ViewModels
             get;
             private set;
         }
+
+        public ObservableCollection<Comment> CommentsCollection { get; private set; }
 
         public ObservableCollection<Tag>  TagsCollection
         {

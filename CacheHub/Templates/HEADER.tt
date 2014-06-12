@@ -1,0 +1,15 @@
+﻿<#@ template language="C#" #>
+<#@ parameter name="HREF" type="System.String" #>
+<#@ parameter name="TITLE" type="System.String" #>
+<#@ parameter name="IMAGE_SOURCE" type="System.String" #>
+
+
+<StackPanel Margin="12,12">
+                    <TextBlock Style ="{StaticResource NormalText}" Margin="12,12" Text="www.onliner.by"></TextBlock>
+                    <TextBlock  Style="{StaticResource H0}" TextWrapping="Wrap" Text="{Binding Article.Title}" Margin="12,12"></TextBlock>
+                    <Image Margin="12,12" VerticalAlignment="Stretch">
+                        <Image.Source>
+                            <BitmapImage UriSource="{Binding Article.HeaderImgUri}" CreateOptions="BackgroundCreation"/>
+                        </Image.Source>
+                    </Image>
+                </StackPanel>

@@ -8,7 +8,9 @@ namespace NewsParser.Controller.Interface
 {
     public interface IParser
     {
-        event ParseCompleteDelegate ParseComplete;
-        void Parse(string uri);
+        event ArticleCompleteDelegate ArticleParsed;
+        event CommentsCompleteDelegate CommentsParsed;
+        void ParseArticleAsync();
+        void ParseCommentsAsync();
     }
 }

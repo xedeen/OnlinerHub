@@ -15,6 +15,7 @@ namespace NewsHub.ViewModels
     {
         public ParagraphBase Content { get; set; }
         public ICommand LinkCmd { get; private set; }
+        public ICommand CommentsCmd { get; set; }
         public ParagraphViewModel()
         {
             LinkCmd = new RelayCommand(ClickHandler);
@@ -34,5 +35,8 @@ namespace NewsHub.ViewModels
             };
             webBrowserTask.Show();
         }
+
+
+
     }
 }

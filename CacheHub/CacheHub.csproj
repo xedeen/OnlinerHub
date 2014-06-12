@@ -67,27 +67,101 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Content.cs" />
+    <Compile Include="ArticleParser.cs" />
     <Compile Include="IOnlinerHub.cs" />
     <Compile Include="IParser.cs" />
-    <Compile Include="Model\FeedCard.cs" />
+    <Compile Include="Model2\ContentItem.cs" />
+    <Compile Include="Model\A.cs" />
+    <Compile Include="Model\Article.cs" />
+    <Compile Include="Model\Base\ContentItemBase.cs" />
+    <Compile Include="Model\Base\ParagraphBase.cs" />
+    <Compile Include="Model\BlockItem.cs" />
+    <Compile Include="Model\Comment.cs" />
+    <Compile Include="Model\CommentAuthor.cs" />
+    <Compile Include="Model\Footer.cs" />
+    <Compile Include="Model\Header.cs" />
+    <Compile Include="Model\Image.cs" />
+    <Compile Include="Model\Modifiers.cs" />
+    <Compile Include="Model\P.cs" />
+    <Compile Include="Model\Table.cs" />
+    <Compile Include="Model\TableRow.cs" />
+    <Compile Include="Model\Tag.cs" />
+    <Compile Include="Model\TextBlock.cs" />
+    <Compile Include="Model\Video.cs" />
     <Compile Include="OnlinerHub.svc.cs">
       <DependentUpon>OnlinerHub.svc</DependentUpon>
     </Compile>
     <Compile Include="OnlinerParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Templates\A.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>A.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\HEADER.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HEADER.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\MEDIA.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MEDIA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\P_END.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>P_END.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\P_START.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>P_START.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\TEXTBLOCK.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TEXTBLOCK.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Content Include="Templates\P_START.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>P_START.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\P_END.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>P_END.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\TEXTBLOCK.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TEXTBLOCK.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\A.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>A.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\MEDIA.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>MEDIA.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\HEADER.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>HEADER.cs</LastGenOutput>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

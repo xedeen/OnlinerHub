@@ -1,0 +1,4 @@
+﻿<#@ template language="C#" #>
+<#@ parameter name="TEXT_CONTENT" type="System.String" #>
+<#@ parameter name="HREF" type="System.String" #>
+<Hyperlink Foreground="{StaticResource PhoneAccentBrush}" NavigateUri="<# Write(HREF); #>" TargetName="_blank"><# Write(TEXT_CONTENT); #></Hyperlink>

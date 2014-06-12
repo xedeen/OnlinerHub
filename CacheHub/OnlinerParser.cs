@@ -3,15 +3,67 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
+using CacheHub.Model;
+using CacheHub.Model.Base;
 using HAP = HtmlAgilityPack;
 
 namespace CacheHub
 {
+    public enum XamlMarkupType
+    {
+        Header,
+        ArticleParagraph,
+        ArticleFooter,
+        Comment,
+        Footer
+    }
+
+    public class XamlMarkup
+    {
+        public string DataTemplate { get; set; }
+        public XamlMarkupType MarkupType { get; set; }
+        public int InnerId { get; set; }
+
+    }
     public class OnlinerParser : IParser
     {
-        public List<ParagraphBase> Parse(HAP.HtmlDocument html)
+
+        public List<XamlMarkup> ConvertArticle(HAP.HtmlDocument html)
         {
+            var article = html.DocumentNode.Descendants("article").FirstOrDefault();
+            if (article == null) return null;
+            var innerId = 0;
+            var result = new List<XamlMarkup> {};
+            result.AddRange(
+                article.SelectNodes("div[@class='b-posts-1-item__text']/p|div[@class='b-posts-1-item__text']/table")
+                    .Select(node => ConvertParagraph(node, ++innerId))
+                    .Where(p => null != p));
+            return result;
+        }
+
+        private XamlMarkup ConvertParagraph(HAP.HtmlNode node, int innerId)
+        {
+            try
+            {
+
+                return new XamlMarkup
+                {
+                    DataTemplate = "",
+                    InnerId = innerId,
+                    MarkupType = XamlMarkupType.ArticleParagraph
+                };
+            }
+            catch (Exception e)
+            {
+                
+            }
+            return null;
+        }
+
+
+
+        public List<ParagraphBase> Parse(HAP.HtmlDocument html)
+        {   
             var node = html.DocumentNode.Descendants("article").FirstOrDefault();
             if (node == null) return null;
             int innerId = 0;
@@ -116,9 +168,9 @@ namespace CacheHub
             return p.Items.Count > 0 ? p : null;
         }
 
-        private List<BaseContentItem> ParseNode(HAP.HtmlNode node, TextModifiers modifiers)
+        private List<ContentItemBase> ParseNode(HAP.HtmlNode node, TextModifiers modifiers)
         {
-            var result = new List<BaseContentItem>();
+            var result = new List<ContentItemBase>();
             foreach (var childNode in node.ChildNodes)
             {   
                 switch (childNode.Name)

@@ -1,0 +1,25 @@
+﻿<#@ template language="C#" #>
+<#@ parameter name="HREF" type="System.String" #>
+<#@ parameter name="IMAGE_SOURCE" type="System.String" #>
+<#@ parameter name="IS_VIDEO" type="System.Boolean" #>
+<InlineUIContainer>
+	<# if (!String.IsNullOrEmpty(HREF)) #><Grid><# #>
+		<Image VerticalAlignment="Stretch">
+			<Image.Source>
+				<BitmapImage UriSource="<# Write(IMAGE_SOURCE); #>" CreateOptions="BackgroundCreation"/>
+			</Image.Source>
+		</Image>
+	<# if (IS_VIDEO && !String.IsNullOrEmpty(HREF)) #>
+		<Button  Command="{Binding LinkCmd}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<StackPanel>
+				<Image Source="Assets\Video.png" Height="128" Width="128" />
+			</StackPanel>
+		</Button>
+	<# #>
+	<# if (!IS_VIDEO && !String.IsNullOrEmpty(HREF)) #>
+		<Button  Command="{Binding LinkCmd}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<StackPanel>
+				<Image Source="Assets\ImgLink.png" Height="128" Width="128" />
+			</StackPanel>
+		</Button>
+	<# #>
