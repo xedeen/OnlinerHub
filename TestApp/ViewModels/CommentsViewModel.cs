@@ -78,6 +78,13 @@ namespace Onliner.ViewModels
             private set;
         }
 
+        public readonly AppSettings _appSettings = new AppSettings();
+
+        public AppSettings Settings
+        {
+            get { return _appSettings; }
+        }
+
 
         #endregion
 

@@ -24,6 +24,23 @@ namespace Onliner
             _viewModel = (CommentsViewModel)Resources["commentsViewModel"];
             commentsListBox.ItemRealized += commentsListBox_ItemRealized;
             this.Loaded += CommentsPage_Loaded;
+            this.OrientationChanged += Page_OrientationChanged;
+        }
+
+        private void Page_OrientationChanged(object sender, OrientationChangedEventArgs e)
+        {
+            if ((e.Orientation & PageOrientation.Portrait) == (PageOrientation.Portrait))
+            {
+                LayoutRoot.Margin = new Thickness(0, 0, 0, 0);
+            }
+            else if ((e.Orientation & PageOrientation.LandscapeLeft) == (PageOrientation.LandscapeLeft))
+            {
+                LayoutRoot.Margin = new Thickness(0, 0, 72, 0);
+            }
+            else if ((e.Orientation & PageOrientation.LandscapeRight) == (PageOrientation.LandscapeRight))
+            {
+                LayoutRoot.Margin = new Thickness(72, 0, 0, 0);
+            } 
         }
 
         private void BuildLocalizedApplicationBar()

@@ -69,10 +69,12 @@ namespace Onliner
 
             if (null == (item as FeedItemViewModel) || null == (item as FeedItemViewModel).Uri) return;
             var uri = (item as FeedItemViewModel).Uri;
+            var title = (item as FeedItemViewModel).TitleU;
 
             (sender as LongListSelector).SelectedItem = null;
             App.ViewModel.SetFeedSelection(item as FeedItemViewModel);
-            NavigationService.Navigate(new Uri(string.Format("/ArticleViewPage.xaml?uri={0}", uri), UriKind.Relative));
+            NavigationService.Navigate(new Uri(string.Format("/ArticleViewPage.xaml?uri={0}&title={1}", uri, title),
+                UriKind.Relative));
         }
 
 

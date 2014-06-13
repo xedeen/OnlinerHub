@@ -76,14 +76,15 @@ namespace Onliner.Converters
             if (block.is_blockquote)
             {
                 res += "<Border xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Grid.Row=\"{ROWNUM}\" CornerRadius=\"6\" BorderBrush=\"Gray\" BorderThickness=\"2\"";
-                res += string.Format(" Margin=\"{0},0,0,0\">", 32*level);
+                var maxlevel = level > 4 ? 4 : level;
+                res += string.Format(" Margin=\"{0},5,0,0\">", 32*maxlevel);
                 res += "<StackPanel xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Width=\"Auto\" HorizontalAlignment=\"Stretch\"";
 
                 res += " Margin=\"5,0,5,0\" Visibility=\"Visible\">";
                 if (!string.IsNullOrEmpty(block.title))
                 {
                     res += string.Format("<TextBlock Text=\"{0}\"", block.title);
-                    res += " Style=\"{StaticResource PhoneTextNormalStyle}\" FontWeight=\"Bold\" />";
+                    res += " Style=\"{Binding Converter={StaticResource FeedHeaderForegroundSelector}}\" FontWeight=\"Bold\" />";
                 }
             }
             else
@@ -91,7 +92,7 @@ namespace Onliner.Converters
                 res += "<StackPanel xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Grid.Row=\"{ROWNUM}\"  Width=\"Auto\" HorizontalAlignment=\"Stretch\">";
             }
             
-            res += "<RichTextBox xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TextWrapping=\"Wrap\" TextAlignment=\"Left\">";
+            res += "<RichTextBox xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" Style=\"{Binding Converter={StaticResource ArticleTextForegroundSelector}}\"  TextWrapping=\"Wrap\" TextAlignment=\"Left\">";
             res += "<Paragraph>";
             var isEmpty = true;
 

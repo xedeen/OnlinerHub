@@ -10,7 +10,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
@@ -28,14 +28,19 @@
             Name="ContentListBox"
             DataContext="{StaticResource contentViewModel}"
             ItemsSource="{Binding ContentCollection}"
-            ItemTemplate = "{StaticResource ArticleDynamicTemplate}">
-            <phone:LongListSelector.Background>
-                <SolidColorBrush Color="#faf7ee" Opacity="1"/>
-            </phone:LongListSelector.Background>
+            ItemTemplate = "{StaticResource ArticleDynamicTemplate}"
+            Background="{Binding Settings.ApplicationStyle, Converter={StaticResource FeedBackGroundSelector}}">
+            
             <phone:LongListSelector.ListHeader>
                 <StackPanel Margin="12,12">
-                    <TextBlock Style ="{StaticResource Normal_Metro}" Margin="12,12" Text="www.onliner.by"></TextBlock>
-                    <TextBlock  Style="{StaticResource H0}" TextWrapping="Wrap" Text="{Binding Title}" Margin="12,12"></TextBlock>
+                    <TextBlock 
+                        Style="{Binding Converter={StaticResource FeedTextForegroundSelector}}" 
+                        Margin="12,12" 
+                        Text="www.onliner.by"/>
+                    <TextBlock  
+                        Style="{Binding Converter={StaticResource FeedHeaderForegroundSelector}}"
+                        TextWrapping="Wrap"
+                        Text="{Binding Title}" Margin="12,12"/>
                     <!--<Image Margin="12,12" VerticalAlignment="Stretch">
                         <Image.Source>
                             <BitmapImage UriSource="{Binding Article.HeaderImgUri}" CreateOptions="BackgroundCreation"/>

@@ -9,7 +9,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d"
     xmlns:vm="clr-namespace:Onliner.ViewModels"
     shell:SystemTray.IsVisible="True">
@@ -49,7 +49,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid Background="{StaticResource PhoneChromeBrush}">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -59,7 +59,11 @@
                                 <BitmapImage UriSource="{Binding AvatarUrl}" CreateOptions="BackgroundCreation"/>
                             </Image.Source>
                         </Image>
-                        <TextBlock Text="{Binding AuthorName}" Grid.Column="1" Foreground="{StaticResource PhoneAccentBrush}" VerticalAlignment="Top"/>
+                        <TextBlock Text="{Binding AuthorName}"
+                                   Grid.Column="1" 
+                                   VerticalAlignment="Center"
+                                   Style="{Binding Converter={StaticResource FeedHeaderForegroundSelector}}"
+                                   FontWeight="Bold"/>
                     </Grid>
                 <Grid Grid.Row="1">
                         <ContentControl Content="{Binding Content, Converter={StaticResource CommentExtractor}}" />
@@ -74,14 +78,19 @@
     <Grid x:Name="LayoutRoot" Background="Transparent" DataContext="{StaticResource commentsViewModel}">
         <!--TitlePanel contains the name of the application and page title-->
         <phone:LongListSelector Name="commentsListBox" 
+                 Background="{Binding Settings.ApplicationStyle, Converter={StaticResource FeedBackGroundSelector}}"
                  DataContext="{StaticResource commentsViewModel}"
                  ItemTemplate="{StaticResource CommentItemTemplate}"                 
                  ItemsSource="{Binding CommentCollection}"                               
                  ListFooter="{Binding}">
             <phone:LongListSelector.ListHeader>
-                <StackPanel Background="{StaticResource PhoneChromeBrush}" Margin="5,5">
-                    <TextBlock Text="www.onliner.by"></TextBlock>
-                    <TextBlock  Style="{StaticResource PhoneTextTitle2Style}" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Title}" Margin="1,10"></TextBlock>
+                <StackPanel Margin="5,5">
+                    <TextBlock 
+                        Text="www.onliner.by"
+                        Style="{Binding Converter={StaticResource FeedTextForegroundSelector}}" />
+                    <TextBlock  
+                        Style="{Binding Converter={StaticResource FeedHeaderForegroundSelector}}"
+                        TextWrapping="Wrap" Text="{Binding Title}" Margin="1,10"></TextBlock>
                 </StackPanel>
             </phone:LongListSelector.ListHeader>
             </phone:LongListSelector>
