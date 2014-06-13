@@ -15,9 +15,9 @@ namespace CacheHub
 {
     public class ArticleParser
     {
-        private readonly TEXTBLOCK _textBlockTemplate = new TEXTBLOCK();
-        private readonly Templates.A _linkTemplate = new Templates.A();
-        private readonly Templates.MEDIA _mediaTemplate = new Templates.MEDIA();
+        //private readonly TEXTBLOCK _textBlockTemplate = new TEXTBLOCK();
+        //private readonly Templates.A _linkTemplate = new Templates.A();
+        //private readonly Templates.MEDIA _mediaTemplate = new Templates.MEDIA();
 
         private readonly string _pStart = (new P_START()).TransformText();
         private readonly string _pEnd = (new P_END()).TransformText();
@@ -124,24 +124,30 @@ namespace CacheHub
                     case "#text":
                         if (string.IsNullOrEmpty(parentLinkSource))
                         {
-                            _textBlockTemplate.Session = new Dictionary<string, object>
+                            var tbt = new TEXTBLOCK
                             {
-                                {"TEXT_CONTENT", childNode.InnerText.Replace("&nbsp", string.Empty)},
-                                {"IS_BOLD", ((int) modifiers | 0x0001) == (int) modifiers},
-                                {"IS_ITALIC", ((int) modifiers | 0x0010) == (int) modifiers}
+                                Session = new Dictionary<string, object>
+                                {
+                                    {"TEXT_CONTENT", childNode.InnerText.Replace("&nbsp", string.Empty)},
+                                    {"IS_BOLD", ((int) modifiers | 0x0001) == (int) modifiers},
+                                    {"IS_ITALIC", ((int) modifiers | 0x0010) == (int) modifiers}
+                                }
                             };
-                            _textBlockTemplate.Initialize();
-                            sb.Append(_textBlockTemplate.TransformText());
+                            tbt.Initialize();
+                            sb.Append(tbt.TransformText());
                         }
                         else
                         {
-                            _linkTemplate.Session = new Dictionary<string, object>
+                            var at = new A
                             {
-                                {"HREF", parentLinkSource},
-                                {"TEXT_CONTENT", childNode.InnerText.Replace("&nbsp", string.Empty)}
+                                Session = new Dictionary<string, object>
+                                {
+                                    {"HREF", parentLinkSource},
+                                    {"TEXT_CONTENT", childNode.InnerText.Replace("&nbsp", string.Empty)}
+                                }
                             };
-                            _linkTemplate.Initialize();
-                            sb.Append(_linkTemplate.TransformText());
+                            at.Initialize();
+                            sb.Append(at.TransformText());
                         }
                         break;
                     case "a":
@@ -154,15 +160,18 @@ namespace CacheHub
                         sb.Append(ParseNode(childNode, modifiers | TextModifiers.Bold));
                         break;
                     case "img":
-                        _mediaTemplate.Session=new Dictionary<string, object>
+                        var mt = new MEDIA
                         {
-                            {"HREF", parentLinkSource},
-                            {"IMAGE_SOURCE", childNode.Attributes["src"].Value},
-                            {"IS_VIDEO", false}
+                            Session = new Dictionary<string, object>
+                            {
+                                {"HREF", parentLinkSource},
+                                {"IMAGE_SOURCE", childNode.Attributes["src"].Value},
+                                {"IS_VIDEO", false}
+                            }
                         };
-                        _mediaTemplate.Initialize();
-                        sb.Append(_mediaTemplate.TransformText());
-                        _latestLink = childNode.Attributes["src"].Value;
+                        mt.Initialize();
+                        sb.Append(mt.TransformText());
+                        _latestLink = parentLinkSource;
                         break;
                     case "iframe":
                         sb.Append(ProcessVideo(childNode));
@@ -197,14 +206,17 @@ namespace CacheHub
                   //  content.VideoId = match.Groups[1].Value;
                 href = url;
             }
-            _mediaTemplate.Session = new Dictionary<string, object>
-                        {
-                            {"HREF", href},
-                            {"IMAGE_SOURCE", sourceUrl},
-                            {"IS_VIDEO", true}
-                        };
-            _mediaTemplate.Initialize();
-            sb.Append(_mediaTemplate.TransformText());
+            var mt = new MEDIA
+            {
+                Session = new Dictionary<string, object>
+                {
+                    {"HREF", href},
+                    {"IMAGE_SOURCE", sourceUrl},
+                    {"IS_VIDEO", true}
+                }
+            };
+            mt.Initialize();
+            sb.Append(mt.TransformText());
             _latestLink = href;
             return sb.ToString();
         }
