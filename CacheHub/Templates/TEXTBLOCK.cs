@@ -15,7 +15,7 @@ namespace CacheHub.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
+    #line 1 "D:\sources\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "12.0.0.0")]
     public partial class TEXTBLOCK : TEXTBLOCKBase
     {
@@ -27,35 +27,35 @@ namespace CacheHub.Templates
         {
             this.Write("<Run Text=\"");
             
-            #line 5 "D:\GitHub\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
+            #line 5 "D:\sources\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
  Write(TEXT_CONTENT); 
             
             #line default
             #line hidden
             this.Write("\" ");
             
-            #line 5 "D:\GitHub\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
+            #line 5 "D:\sources\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
  if (IS_BOLD) 
             
             #line default
             #line hidden
             this.Write(" FontWeight=\"Bold\"");
             
-            #line 5 "D:\GitHub\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
+            #line 5 "D:\sources\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
  
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 5 "D:\GitHub\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
+            #line 5 "D:\sources\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
  if (IS_ITALIC) 
             
             #line default
             #line hidden
-            this.Write(" FontStyle=\"Italic");
+            this.Write(" FontStyle=\"Italic\"");
             
-            #line 5 "D:\GitHub\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
+            #line 5 "D:\sources\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
  
             
             #line default
@@ -64,7 +64,7 @@ namespace CacheHub.Templates
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 1 "D:\GitHub\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
+        #line 1 "D:\sources\OnlinerHub\CacheHub\Templates\TEXTBLOCK.tt"
 
 private string _TEXT_CONTENTField;
 

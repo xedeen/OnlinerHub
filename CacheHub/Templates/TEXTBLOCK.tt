@@ -2,5 +2,5 @@
 <#@ parameter name="TEXT_CONTENT" type="System.String" #>
 <#@ parameter name="IS_BOLD" type="System.Boolean" #>
 <#@ parameter name="IS_ITALIC" type="System.Boolean" #>
-<Run Text="<# Write(TEXT_CONTENT); #>" <# if (IS_BOLD) #> FontWeight="Bold"<# #> <# if (IS_ITALIC) #> FontStyle="Italic<# #> />
+<Run Text="<# Write(TEXT_CONTENT); #>" <# if (IS_BOLD) #> FontWeight="Bold"<# #> <# if (IS_ITALIC) #> FontStyle="Italic"<# #> />
 
