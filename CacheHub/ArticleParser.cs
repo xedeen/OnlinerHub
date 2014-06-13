@@ -22,6 +22,8 @@ namespace CacheHub
         private readonly string _pStart = (new P_START()).TransformText();
         private readonly string _pEnd = (new P_END()).TransformText();
 
+        private string _latestLink;
+
         public List<ContentItem> Parse(string articleUri)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(articleUri);
@@ -101,9 +103,11 @@ namespace CacheHub
                 {
                     InnerId = innerId,
                     ContentType = ContentItemType.Content,
-                    Xaml = xaml
+                    Xaml = xaml,
+                    LatestLink = _latestLink
                 };
             }
+            _latestLink = string.Empty;
             return null;
         }
 
@@ -158,6 +162,7 @@ namespace CacheHub
                         };
                         _mediaTemplate.Initialize();
                         sb.Append(_mediaTemplate.TransformText());
+                        _latestLink = childNode.Attributes["src"].Value;
                         break;
                     case "iframe":
                         sb.Append(ProcessVideo(childNode));
@@ -200,6 +205,7 @@ namespace CacheHub
                         };
             _mediaTemplate.Initialize();
             sb.Append(_mediaTemplate.TransformText());
+            _latestLink = href;
             return sb.ToString();
         }
     }

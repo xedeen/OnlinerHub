@@ -38,6 +38,8 @@ namespace CacheHub.Model2
         public ContentItemType ContentType { get; set; }
         [DataMember]
         public string Xaml { get; set; }
+        [DataMember]
+        public string LatestLink { get; set; }
     }
 
 }
