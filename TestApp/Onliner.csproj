@@ -92,6 +92,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ArticleViewPage.xaml.cs">
+      <DependentUpon>ArticleViewPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CommentsPage.xaml.cs">
       <DependentUpon>CommentsPage.xaml</DependentUpon>
     </Compile>
@@ -106,7 +109,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\ArticleParagraphModel.cs" />
     <Compile Include="Model\BlockItemModel.cs" />
+    <Compile Include="Model\Commands\RelayCommand.cs" />
     <Compile Include="Model\CommentModel.cs" />
     <Compile Include="Model\ParagraphItemModel.cs" />
     <Compile Include="Model\ParagraphModel.cs" />
@@ -118,6 +123,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Selectors\ArticleTemplateSelector.cs" />
     <Compile Include="Selectors\FeedBackGroundSelector.cs" />
     <Compile Include="Selectors\FeedForeGroundSelector.cs" />
     <Compile Include="Selectors\MarginsSelector.cs" />
@@ -132,6 +138,7 @@
     </Compile>
     <Compile Include="ViewModels\AppSettings.cs" />
     <Compile Include="ViewModels\ArticleViewModel.cs" />
+    <Compile Include="ViewModels\ArticleContentViewModel.cs" />
     <Compile Include="ViewModels\CommentsViewModel.cs" />
     <Compile Include="ViewModels\FeedItemViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -144,6 +151,10 @@
     <Page Include="ArticlePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ArticleViewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CommentsPage.xaml">
       <SubType>Designer</SubType>
@@ -163,6 +174,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\ImgLink.png" />
+    <Content Include="Assets\Video.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
@@ -174,6 +187,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\OnlinerHub\Onliner.OnlinerHub.CommentsPageDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnlinerHub\Onliner.OnlinerHub.ContentItem.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\OnlinerHub\OnlinerHub.wsdl" />
@@ -190,6 +206,9 @@
     <Content Include="ServiceReferences.ClientConfig" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\OnlinerHub\OnlinerHub3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\OnlinerHub\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

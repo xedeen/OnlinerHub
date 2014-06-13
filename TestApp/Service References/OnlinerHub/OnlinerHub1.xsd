@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CacheHub" />
+  <xs:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model2" />
   <xs:element name="GetReadability">
     <xs:complexType>
       <xs:sequence>
@@ -27,6 +28,20 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CacheHub" minOccurs="0" name="GetCommentsResult" nillable="true" type="q1:CommentsPageDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetContentXaml">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="articleUrl" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetContentXamlResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CacheHub.Model2" minOccurs="0" name="GetContentXamlResult" nillable="true" type="q2:ArrayOfContentItem" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

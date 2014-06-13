@@ -72,7 +72,7 @@ namespace Onliner
 
             (sender as LongListSelector).SelectedItem = null;
             App.ViewModel.SetFeedSelection(item as FeedItemViewModel);
-            NavigationService.Navigate(new Uri(string.Format("/ArticlePage.xaml?uri={0}", uri), UriKind.Relative));
+            NavigationService.Navigate(new Uri(string.Format("/ArticleViewPage.xaml?uri={0}", uri), UriKind.Relative));
         }
 
 

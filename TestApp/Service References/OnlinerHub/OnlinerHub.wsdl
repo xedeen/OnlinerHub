@@ -5,6 +5,7 @@
       <xsd:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CacheHub" />
+      <xsd:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model2" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOnlinerHub_GetReadability_InputMessage">
@@ -19,6 +20,12 @@
   <wsdl:message name="IOnlinerHub_GetComments_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetCommentsResponse" />
   </wsdl:message>
+  <wsdl:message name="IOnlinerHub_GetContentXaml_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetContentXaml" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinerHub_GetContentXaml_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetContentXamlResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOnlinerHub">
     <wsdl:operation name="GetReadability">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinerHub/GetReadability" message="tns:IOnlinerHub_GetReadability_InputMessage" />
@@ -27,6 +34,10 @@
     <wsdl:operation name="GetComments">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinerHub/GetComments" message="tns:IOnlinerHub_GetComments_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlinerHub/GetCommentsResponse" message="tns:IOnlinerHub_GetComments_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContentXaml">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinerHub/GetContentXaml" message="tns:IOnlinerHub_GetContentXaml_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinerHub/GetContentXamlResponse" message="tns:IOnlinerHub_GetContentXaml_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOnlinerHub" type="tns:IOnlinerHub">
@@ -42,6 +53,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetComments">
       <soap:operation soapAction="http://tempuri.org/IOnlinerHub/GetComments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetContentXaml">
+      <soap:operation soapAction="http://tempuri.org/IOnlinerHub/GetContentXaml" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
