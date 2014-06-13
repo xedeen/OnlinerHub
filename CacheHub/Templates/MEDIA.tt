@@ -15,6 +15,7 @@
 				<Image Source="Assets\Video.png" Height="128" Width="128" />
 			</StackPanel>
 		</Button>
+		</Grid>
 	<# #>
 	<# if (!IS_VIDEO && !String.IsNullOrEmpty(HREF)) #>
 		<Button  Command="{Binding LinkCmd}" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -22,5 +23,6 @@
 				<Image Source="Assets\ImgLink.png" Height="128" Width="128" />
 			</StackPanel>
 		</Button>
+		</Grid>
 	<# #>
 	</InlineUIContainer>

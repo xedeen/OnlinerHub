@@ -56,25 +56,27 @@ namespace CacheHub.Templates
             #line hidden
             this.Write("\t\t<Button  Command=\"{Binding LinkCmd}\" BorderThickness=\"0\" HorizontalAlignment=\"C" +
                     "enter\" VerticalAlignment=\"Center\">\r\n\t\t\t<StackPanel>\r\n\t\t\t\t<Image Source=\"Assets\\V" +
-                    "ideo.png\" Height=\"128\" Width=\"128\" />\r\n\t\t\t</StackPanel>\r\n\t\t</Button>\r\n\t");
+                    "ideo.png\" Height=\"128\" Width=\"128\" />\r\n\t\t\t</StackPanel>\r\n\t\t</Button>\r\n\t\t</Grid>\r" +
+                    "\n\t");
             
-            #line 18 "D:\sources\OnlinerHub\CacheHub\Templates\MEDIA.tt"
+            #line 19 "D:\sources\OnlinerHub\CacheHub\Templates\MEDIA.tt"
  
             
             #line default
             #line hidden
             this.Write("\t");
             
-            #line 19 "D:\sources\OnlinerHub\CacheHub\Templates\MEDIA.tt"
+            #line 20 "D:\sources\OnlinerHub\CacheHub\Templates\MEDIA.tt"
  if (!IS_VIDEO && !String.IsNullOrEmpty(HREF)) 
             
             #line default
             #line hidden
             this.Write("\t\t<Button  Command=\"{Binding LinkCmd}\" BorderThickness=\"0\" HorizontalAlignment=\"C" +
                     "enter\" VerticalAlignment=\"Center\">\r\n\t\t\t<StackPanel>\r\n\t\t\t\t<Image Source=\"Assets\\I" +
-                    "mgLink.png\" Height=\"128\" Width=\"128\" />\r\n\t\t\t</StackPanel>\r\n\t\t</Button>\r\n\t");
+                    "mgLink.png\" Height=\"128\" Width=\"128\" />\r\n\t\t\t</StackPanel>\r\n\t\t</Button>\r\n\t\t</Grid" +
+                    ">\r\n\t");
             
-            #line 25 "D:\sources\OnlinerHub\CacheHub\Templates\MEDIA.tt"
+            #line 27 "D:\sources\OnlinerHub\CacheHub\Templates\MEDIA.tt"
  
             
             #line default
