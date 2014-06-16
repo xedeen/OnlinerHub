@@ -5,11 +5,12 @@ namespace Onliner.ViewModels
 {
     public enum FeedType
     {
-        Tech,
-        Auto,
-        People,
-        Realt
+        Tech = 0,
+        Auto = 1,
+        People = 2,
+        Realt = 3
     }
+
     public class FeedItemViewModel : INotifyPropertyChanged
     {
         private FeedType _type;

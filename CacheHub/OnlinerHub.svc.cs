@@ -90,6 +90,14 @@ namespace CacheHub
             return new List<ContentItem>();
         }
 
+        public Header GetHeader(string articleUrl)
+        {
+            var page = ProcessArticlePage(articleUrl);
+            if (null != page)
+                return page.Header ?? new Header();
+            return new Header();
+        }
+
         /*public Header GetHeader(string articleUrl)
         {
             var page = ProcessArticlePage(articleUrl);
@@ -108,8 +116,10 @@ namespace CacheHub
                 fullPage.Comments = cache.Get(articleUrl + "/comments") as List<CommentDto>;
             if (cache.Contains(articleUrl + "/content"))
                 fullPage.Article = cache.Get(articleUrl + "/content") as List<ContentItem>;
+            if (cache.Contains(articleUrl + "/header"))
+                fullPage.Header = cache.Get(articleUrl + "/header") as Header;
 
-            if (null == fullPage.Comments || null == fullPage.Article)
+            if (null == fullPage.Comments || null == fullPage.Article || null == fullPage.Header)
             {
                 try
                 {
@@ -123,13 +133,22 @@ namespace CacheHub
                         html.LoadHtml(sr.ReadToEnd());
                     }
 
+                    if (null == fullPage.Header)
+                    {
+                        var p = new ArticleParser();
+                        fullPage.Header = p.ParseHeader(html);
+
+                        cache.Add(articleUrl + "/header", fullPage.Header,
+                            new CacheItemPolicy { AbsoluteExpiration = DateTime.Now.AddHours(1.0) });
+                    }
+
                     if (null == fullPage.Article)
                     {
                         var p = new ArticleParser();
                         fullPage.Article = p.Parse(html);
 
                         cache.Add(articleUrl + "/content", fullPage.Article,
-                        new CacheItemPolicy { AbsoluteExpiration = DateTime.Now.AddHours(1.0) });
+                            new CacheItemPolicy {AbsoluteExpiration = DateTime.Now.AddHours(1.0)});
                     }
                     if (null == fullPage.Comments)
                     {

@@ -31,6 +31,10 @@ namespace CacheHub
         [WebInvoke(UriTemplate = "content/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
         List<ContentItem> GetContentXaml(string articleUrl);
 
+        [OperationContract]
+        [WebInvoke(UriTemplate = "header/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
+        Header GetHeader(string articleUrl);
+
         //[OperationContract]
         //[WebInvoke(UriTemplate = "header/{articleUrl}", Method = "GET", ResponseFormat = WebMessageFormat.Json)]
         //Header GetHeader(string articleUrl);
@@ -40,6 +44,7 @@ namespace CacheHub
     {
         public List<ContentItem> Article { get; set; }
         public List<CommentDto> Comments { get; set; }
+        public Header Header { get; set; }
     }
 
     [DataContract]

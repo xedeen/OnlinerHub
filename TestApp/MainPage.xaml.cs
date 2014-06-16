@@ -81,20 +81,33 @@ namespace Onliner
         // Load data for the ViewModel Items
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var pageN = 1;
-            switch (App.ViewModel.CurrentFeedType)
+            var items = new List<PivotItem>{Tech, Auto, People, Realt};
+            FeedSourcePivot.Items.Clear();
+            
+            foreach (var pi in items)
             {
-                case FeedType.People:
-                    pageN = 2;
-                    break;
-                case FeedType.Realt:
-                    pageN = 3;
-                    break;
-                case FeedType.Tech:
-                    pageN = 0;
-                    break;
+                if (pi.Visibility==Visibility.Visible)
+                    FeedSourcePivot.Items.Add(pi);
             }
-            FeedSourcePivot.SelectedItem = FeedSourcePivot.Items[pageN];
+            if (FeedSourcePivot.Items.Count==0)
+                return;
+
+            var pageN = (int) App.ViewModel.CurrentFeedType;
+            if (items[pageN].Visibility == Visibility.Visible)
+            {
+                FeedSourcePivot.SelectedItem = items[pageN];
+            }
+            else
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    if (items[i].Visibility == Visibility.Visible)
+                    {
+                        FeedSourcePivot.SelectedItem = items[i];
+                        App.ViewModel.CurrentFeedType = (FeedType) i;
+                    }
+                }
+            }
             if (!App.ViewModel.IsLoading)
             {
                 App.ViewModel.LoadData(App.ViewModel.CurrentFeedType);

@@ -99,8 +99,9 @@ namespace Onliner.Converters
             foreach (var item in block.content.items)
             {
                 if (item.link != null)
-                    res += string.Format("<Hyperlink NavigateUri=\"{0}\" TargetName=\"_blank\">{1} </Hyperlink>",
-                        item.link, item.content);
+                    res += ("<Hyperlink Foreground=\"{StaticResource PhoneAccentBrush}\"" +
+                            string.Format(" NavigateUri=\"{0}\" TargetName=\"_blank\">{1} </Hyperlink>",
+                                item.link, item.content));
                 else
                 {
                     if (!string.IsNullOrEmpty(item.content))

@@ -7,9 +7,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml.Schema;
+using CacheHub.Model;
 using CacheHub.Model2;
 using CacheHub.Templates;
+using A = CacheHub.Templates.A;
 using HAP=HtmlAgilityPack;
+using TextModifiers = CacheHub.Model2.TextModifiers;
 
 namespace CacheHub
 {
@@ -220,5 +223,41 @@ namespace CacheHub
             _latestLink = href;
             return sb.ToString();
         }
+
+        public Header ParseHeader(HAP.HtmlDocument html)
+        {
+            var node = html.DocumentNode.Descendants("article").FirstOrDefault();
+            if (null == node) return null;
+            return new Header
+            {
+                Title = node.SelectSingleNode("h3[@class='b-posts-1-item__title']/a/span").InnerText,
+                Tags =
+                    node.SelectNodes("div[@class='b-post-tags-1']/strong/a|div[@class='b-post-tags-1']/small/a")
+                        .Select(ParseTag)
+                        .ToList(),
+                Image = ParseImage(node.SelectSingleNode("figure[@class='b-posts-1-item__image']/img"))
+            };
+        }
+
+        private Image ParseImage(HAP.HtmlNode node)
+        {
+            if (null == node) return null;
+            return new Image
+            {
+                SourceUrl = node.Attributes["src"].Value
+            };
+        }
+
+
+        private Tag ParseTag(HAP.HtmlNode node)
+        {
+            return new Tag
+            {
+                Text = node.InnerText,
+                HRef = node.Attributes["href"].Value,
+                Size = node.ParentNode.Name == "strong" ? TagSize.Big : TagSize.Small
+            };
+        }
+
     }
 }

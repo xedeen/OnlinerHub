@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Windows;
@@ -100,7 +101,7 @@ namespace Onliner.ViewModels
                             this.ContentCollection.Clear();
                         if (null != e.Result)
                         {
-                            foreach (var p in e.Result)
+                            foreach (var p in e.Result.Where(p=>p!=null))
                             {
                                 this.ContentCollection.Add(new ArticleParagraphModel
                                 {
