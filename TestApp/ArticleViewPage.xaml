@@ -41,11 +41,11 @@
                         Style="{Binding Converter={StaticResource FeedHeaderForegroundSelector}}"
                         TextWrapping="Wrap"
                         Text="{Binding Title}" Margin="12,12"/>
-                    <!--<Image Margin="12,12" VerticalAlignment="Stretch">
+                    <Image Margin="12,12" VerticalAlignment="Stretch">
                         <Image.Source>
-                            <BitmapImage UriSource="{Binding Article.HeaderImgUri}" CreateOptions="BackgroundCreation"/>
+                            <BitmapImage UriSource="{Binding Header.Image.SourceUrl}" CreateOptions="BackgroundCreation"/>
                         </Image.Source>
-                    </Image>-->
+                    </Image>
                 </StackPanel>
             </phone:LongListSelector.ListHeader>
         </phone:LongListSelector>

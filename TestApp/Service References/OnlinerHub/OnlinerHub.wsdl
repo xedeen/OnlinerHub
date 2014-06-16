@@ -6,6 +6,8 @@
       <xsd:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CacheHub" />
       <xsd:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model2" />
+      <xsd:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model" />
+      <xsd:import schemaLocation="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model.Base" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOnlinerHub_GetReadability_InputMessage">
@@ -26,6 +28,12 @@
   <wsdl:message name="IOnlinerHub_GetContentXaml_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetContentXamlResponse" />
   </wsdl:message>
+  <wsdl:message name="IOnlinerHub_GetHeader_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHeader" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinerHub_GetHeader_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHeaderResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOnlinerHub">
     <wsdl:operation name="GetReadability">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinerHub/GetReadability" message="tns:IOnlinerHub_GetReadability_InputMessage" />
@@ -38,6 +46,10 @@
     <wsdl:operation name="GetContentXaml">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinerHub/GetContentXaml" message="tns:IOnlinerHub_GetContentXaml_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlinerHub/GetContentXamlResponse" message="tns:IOnlinerHub_GetContentXaml_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHeader">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinerHub/GetHeader" message="tns:IOnlinerHub_GetHeader_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinerHub/GetHeaderResponse" message="tns:IOnlinerHub_GetHeader_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOnlinerHub" type="tns:IOnlinerHub">
@@ -62,6 +74,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetContentXaml">
       <soap:operation soapAction="http://tempuri.org/IOnlinerHub/GetContentXaml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHeader">
+      <soap:operation soapAction="http://tempuri.org/IOnlinerHub/GetHeader" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

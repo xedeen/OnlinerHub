@@ -26,9 +26,11 @@
     <MetadataFile FileName="OnlinerHub1.xsd" MetadataType="Schema" ID="d35cdfe6-1137-4a78-b8a7-c706fc607af4" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd0" />
     <MetadataFile FileName="OnlinerHub.wsdl" MetadataType="Wsdl" ID="36578afa-6836-4f92-bde0-a0dbba62313f" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?wsdl" />
     <MetadataFile FileName="OnlinerHub3.xsd" MetadataType="Schema" ID="85f3a282-820f-4983-b087-83917cba4831" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd3" />
+    <MetadataFile FileName="OnlinerHub2.xsd" MetadataType="Schema" ID="a3e5c062-069e-4912-b820-6660dc770f9d" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd1" />
     <MetadataFile FileName="OnlinerHub.xsd" MetadataType="Schema" ID="48f74208-7027-4eaf-b9c3-154ce67d4caa" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd2" />
     <MetadataFile FileName="OnlinerHub.disco" MetadataType="Disco" ID="58241cb4-c677-43a5-ae58-644d20c13c3f" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?disco" />
-    <MetadataFile FileName="OnlinerHub2.xsd" MetadataType="Schema" ID="a3e5c062-069e-4912-b820-6660dc770f9d" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd1" />
+    <MetadataFile FileName="OnlinerHub4.xsd" MetadataType="Schema" ID="e98ba89f-e157-44fc-aca8-3b0257a3c71b" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd5" />
+    <MetadataFile FileName="OnlinerHub41.xsd" MetadataType="Schema" ID="cf8a8f69-12bb-48a2-b0b1-c4afef285b23" SourceId="1" SourceUrl="http://onlinerhub.apphb.com/OnlinerHub.svc?xsd=xsd4" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

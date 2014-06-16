@@ -188,6 +188,9 @@
     <None Include="Service References\OnlinerHub\Onliner.OnlinerHub.ContentItem.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\OnlinerHub\Onliner.OnlinerHub.Header.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\OnlinerHub\OnlinerHub.wsdl" />
     <None Include="Service References\OnlinerHub\OnlinerHub.xsd">
       <SubType>Designer</SubType>
@@ -203,6 +206,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\OnlinerHub\OnlinerHub3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnlinerHub\OnlinerHub4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnlinerHub\OnlinerHub41.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\OnlinerHub\Reference.svcmap">

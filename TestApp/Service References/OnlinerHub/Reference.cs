@@ -464,6 +464,226 @@ namespace Onliner.OnlinerHub {
         Footer = 2,
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ParagraphBase", Namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model.Base")]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Onliner.OnlinerHub.Header))]
+    public partial class ParagraphBase : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Header", Namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model")]
+    public partial class Header : Onliner.OnlinerHub.ParagraphBase {
+        
+        private string ErrorField;
+        
+        private Onliner.OnlinerHub.Image ImageField;
+        
+        private System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.Tag> TagsField;
+        
+        private string TitleField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Error {
+            get {
+                return this.ErrorField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ErrorField, value) != true)) {
+                    this.ErrorField = value;
+                    this.RaisePropertyChanged("Error");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Onliner.OnlinerHub.Image Image {
+            get {
+                return this.ImageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ImageField, value) != true)) {
+                    this.ImageField = value;
+                    this.RaisePropertyChanged("Image");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.Tag> Tags {
+            get {
+                return this.TagsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TagsField, value) != true)) {
+                    this.TagsField = value;
+                    this.RaisePropertyChanged("Tags");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Title {
+            get {
+                return this.TitleField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TitleField, value) != true)) {
+                    this.TitleField = value;
+                    this.RaisePropertyChanged("Title");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Image", Namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model")]
+    public partial class Image : Onliner.OnlinerHub.ContentItemBase {
+        
+        private string HRefField;
+        
+        private string SourceUrlField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string HRef {
+            get {
+                return this.HRefField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.HRefField, value) != true)) {
+                    this.HRefField = value;
+                    this.RaisePropertyChanged("HRef");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SourceUrl {
+            get {
+                return this.SourceUrlField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SourceUrlField, value) != true)) {
+                    this.SourceUrlField = value;
+                    this.RaisePropertyChanged("SourceUrl");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Tag", Namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model")]
+    public partial class Tag : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string HRefField;
+        
+        private Onliner.OnlinerHub.TagSize SizeField;
+        
+        private string TextField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string HRef {
+            get {
+                return this.HRefField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.HRefField, value) != true)) {
+                    this.HRefField = value;
+                    this.RaisePropertyChanged("HRef");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Onliner.OnlinerHub.TagSize Size {
+            get {
+                return this.SizeField;
+            }
+            set {
+                if ((this.SizeField.Equals(value) != true)) {
+                    this.SizeField = value;
+                    this.RaisePropertyChanged("Size");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Text {
+            get {
+                return this.TextField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TextField, value) != true)) {
+                    this.TextField = value;
+                    this.RaisePropertyChanged("Text");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ContentItemBase", Namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model.Base")]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Onliner.OnlinerHub.Image))]
+    public partial class ContentItemBase : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string TextField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Text {
+            get {
+                return this.TextField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TextField, value) != true)) {
+                    this.TextField = value;
+                    this.RaisePropertyChanged("Text");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TagSize", Namespace="http://schemas.datacontract.org/2004/07/CacheHub.Model")]
+    public enum TagSize : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Small = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Big = 1,
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="OnlinerHub.IOnlinerHub")]
     public interface IOnlinerHub {
@@ -482,6 +702,11 @@ namespace Onliner.OnlinerHub {
         System.IAsyncResult BeginGetContentXaml(string articleUrl, System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.ContentItem> EndGetContentXaml(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IOnlinerHub/GetHeader", ReplyAction="http://tempuri.org/IOnlinerHub/GetHeaderResponse")]
+        System.IAsyncResult BeginGetHeader(string articleUrl, System.AsyncCallback callback, object asyncState);
+        
+        Onliner.OnlinerHub.Header EndGetHeader(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -547,6 +772,25 @@ namespace Onliner.OnlinerHub {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class GetHeaderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetHeaderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public Onliner.OnlinerHub.Header Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((Onliner.OnlinerHub.Header)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class OnlinerHubClient : System.ServiceModel.ClientBase<Onliner.OnlinerHub.IOnlinerHub>, Onliner.OnlinerHub.IOnlinerHub {
         
         private BeginOperationDelegate onBeginGetReadabilityDelegate;
@@ -566,6 +810,12 @@ namespace Onliner.OnlinerHub {
         private EndOperationDelegate onEndGetContentXamlDelegate;
         
         private System.Threading.SendOrPostCallback onGetContentXamlCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginGetHeaderDelegate;
+        
+        private EndOperationDelegate onEndGetHeaderDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetHeaderCompletedDelegate;
         
         private BeginOperationDelegate onBeginOpenDelegate;
         
@@ -625,6 +875,8 @@ namespace Onliner.OnlinerHub {
         public event System.EventHandler<GetCommentsCompletedEventArgs> GetCommentsCompleted;
         
         public event System.EventHandler<GetContentXamlCompletedEventArgs> GetContentXamlCompleted;
+        
+        public event System.EventHandler<GetHeaderCompletedEventArgs> GetHeaderCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
@@ -770,6 +1022,52 @@ namespace Onliner.OnlinerHub {
                         articleUrl}, this.onEndGetContentXamlDelegate, this.onGetContentXamlCompletedDelegate, userState);
         }
         
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult Onliner.OnlinerHub.IOnlinerHub.BeginGetHeader(string articleUrl, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetHeader(articleUrl, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Onliner.OnlinerHub.Header Onliner.OnlinerHub.IOnlinerHub.EndGetHeader(System.IAsyncResult result) {
+            return base.Channel.EndGetHeader(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetHeader(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            string articleUrl = ((string)(inValues[0]));
+            return ((Onliner.OnlinerHub.IOnlinerHub)(this)).BeginGetHeader(articleUrl, callback, asyncState);
+        }
+        
+        private object[] OnEndGetHeader(System.IAsyncResult result) {
+            Onliner.OnlinerHub.Header retVal = ((Onliner.OnlinerHub.IOnlinerHub)(this)).EndGetHeader(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetHeaderCompleted(object state) {
+            if ((this.GetHeaderCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetHeaderCompleted(this, new GetHeaderCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetHeaderAsync(string articleUrl) {
+            this.GetHeaderAsync(articleUrl, null);
+        }
+        
+        public void GetHeaderAsync(string articleUrl, object userState) {
+            if ((this.onBeginGetHeaderDelegate == null)) {
+                this.onBeginGetHeaderDelegate = new BeginOperationDelegate(this.OnBeginGetHeader);
+            }
+            if ((this.onEndGetHeaderDelegate == null)) {
+                this.onEndGetHeaderDelegate = new EndOperationDelegate(this.OnEndGetHeader);
+            }
+            if ((this.onGetHeaderCompletedDelegate == null)) {
+                this.onGetHeaderCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetHeaderCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetHeaderDelegate, new object[] {
+                        articleUrl}, this.onEndGetHeaderDelegate, this.onGetHeaderCompletedDelegate, userState);
+        }
+        
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {
             return ((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(callback, asyncState);
         }
@@ -883,6 +1181,19 @@ namespace Onliner.OnlinerHub {
             public System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.ContentItem> EndGetContentXaml(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.ContentItem> _result = ((System.Collections.ObjectModel.ObservableCollection<Onliner.OnlinerHub.ContentItem>)(base.EndInvoke("GetContentXaml", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginGetHeader(string articleUrl, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = articleUrl;
+                System.IAsyncResult _result = base.BeginInvoke("GetHeader", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public Onliner.OnlinerHub.Header EndGetHeader(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                Onliner.OnlinerHub.Header _result = ((Onliner.OnlinerHub.Header)(base.EndInvoke("GetHeader", _args, result)));
                 return _result;
             }
         }

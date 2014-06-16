@@ -58,6 +58,20 @@ namespace Onliner.ViewModels
             }
         }
 
+        private Header _header;
+        public Header Header
+        {
+            get { return _header; }
+            set
+            {
+                if (_header != value)
+                {
+                    _header = value;
+                    NotifyPropertyChanged("Header");
+                }
+            }
+        }
+
         public ObservableCollection<ArticleParagraphModel> ContentCollection
         {
             get;
@@ -85,8 +99,32 @@ namespace Onliner.ViewModels
             IsLoading = true;
 
             var client = new OnlinerHubClient();
+            client.GetHeaderCompleted += PageHeaderCallBack;
             client.GetContentXamlCompleted += ContentPageCallback ;
+            client.GetHeaderAsync(this.Uri.ToString());
             client.GetContentXamlAsync(this.Uri.ToString());
+        }
+
+        private void PageHeaderCallBack(object sender, GetHeaderCompletedEventArgs e)
+        {
+            try
+            {
+                if (e.Error == null && !e.Cancelled)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {   
+                        if (null != e.Result)
+                        {
+                            this.Header = e.Result;
+                        }
+                    });
+                }
+            }
+            catch (Exception exception)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(
+                    () => MessageBox.Show("Network error occured " + exception.Message));
+            }
         }
 
         private void ContentPageCallback(object sender, GetContentXamlCompletedEventArgs e)
