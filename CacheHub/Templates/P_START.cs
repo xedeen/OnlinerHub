@@ -29,7 +29,7 @@ namespace CacheHub.Templates
               xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
 	<Grid Name=""ContentPanel""  Margin=""12,0,12,0"">
 		<StackPanel Width=""Auto"" HorizontalAlignment=""Stretch"" Margin=""0,10,0,10"">
-			<RichTextBox TextWrapping=""Wrap"" Style=""{Binding Converter={StaticResource ArticleTextForegroundSelector}}"">
+			<RichTextBox TextWrapping=""Wrap"">
 				<Paragraph TextAlignment=""Justify"">");
             return this.GenerationEnvironment.ToString();
         }

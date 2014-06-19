@@ -29,8 +29,8 @@
             DataContext="{StaticResource contentViewModel}"
             ItemsSource="{Binding ContentCollection}"
             ItemTemplate = "{StaticResource ArticleDynamicTemplate}"
-            Background="{Binding Settings.ApplicationStyle, Converter={StaticResource FeedBackGroundSelector}}">
-            
+            Background="{Binding Settings.ApplicationStyle, Converter={StaticResource FeedBackGroundSelector}}"
+            Style="{Binding Converter={StaticResource ArticleTextForegroundSelector}}">
             <phone:LongListSelector.ListHeader>
                 <StackPanel Margin="12,12">
                     <TextBlock 
